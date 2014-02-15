@@ -1,0 +1,33 @@
+<template name="schedulePage">
+  {{#with currentSchedule}}
+    <table style="vertical-align: top;">
+      <tr>
+        <td style="vertical-align: top;">
+          <div id="main" class="left-column" style="width: 400px !important;">
+            <div class="post-header">
+      	      {{> scheduleItem}}
+            </div>
+            <div>
+              {{> scheduleTotals}}
+            </div>
+            <div>
+         	    <ul class="events">
+          	    {{#each periods}}
+                  <li>
+                    {{> period}}
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </td>
+        <td style="width: 40px;">&nbsp;</td>
+        <td style="vertical-align: top;">
+          <div id="schedule-calendar" class="pull-right">
+            {{> calWeek}}
+          </div>
+        </td>
+      </tr>
+    </table>
+  {{/with}}
+</template>

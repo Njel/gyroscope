@@ -1,0 +1,131 @@
+#legend {
+    position: absolute;
+    margin: 740px 0 0 510px;
+    color: #555;
+    *border: 1px solid red;
+    width: 640px;
+}
+
+#legend .paid-day {
+    width: 10px;
+    height: 10px;
+    background: #468847;
+    display: inline-block;
+}
+
+#legend .unpaid-day {
+    width: 10px;
+    height: 10px;
+    background: #5CC65E;
+    display: inline-block;
+}
+
+#legend .selected-day {
+    width: 10px;
+    height: 10px;
+    background: #6eafbf;
+    display: inline-block;
+}
+
+#legend .legal-day {
+    width: 10px;
+    height: 10px;
+    background: #aaa;
+    display: inline-block;
+}
+
+#employee-calendar {
+	border: 0px solid; 
+	width:670px; 
+	height:850px;
+}
+
+.progress-employee {
+    *border-radius: 0 0 0 0 !important;
+    box-shadow: none !important;
+    height: 7px !important;
+    margin: 25px 0 20px 0;
+}
+
+.progress-null{
+    color: #444444;
+    margin: -45px 0 0 -3px;
+}
+
+.progress-actual{
+    color: #444444;
+    margin-top: 12px;
+}
+.progress-total{
+    color: #444444;
+    margin: -18px 0px 0px 456px;
+}
+
+#calendar {
+	margin-top: 10px;
+}
+
+#year {
+	position: relative;
+	width: 500px;
+	margin: auto;
+    font-size: 19px;
+    height: 25px;
+    margin-top: 7px;
+    padding-top: 5px;
+    border: 0px solid black;
+    text-align: center;
+}
+
+#logs {
+	border:0px solid; 
+	width:460px;
+    display: none;
+}
+
+#argument {
+	margin: 5px 0 10px 40px; 
+	width: 400px;
+}
+
+#prev, #prev:hover {
+    border: 0px solid black;
+    width: 36px;
+    height: 47px;
+    margin: 0px 0 -50px 10px;
+    background: transparent url(../images/images/prev.png);
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#prev {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#prev:hover {
+    opacity:1;
+    filter:alpha(opacity=100);
+}
+
+#next, #next:hover {
+    border: 0px solid black;
+    width: 36px;
+    height: 47px;
+    margin: 0px 10px -50px 0;
+    background: transparent url(../images/images/next.png);
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#next {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#next:hover {
+    opacity:1;
+    filter:alpha(opacity=100)
+}

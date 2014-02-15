@@ -1,0 +1,32 @@
+<template name="groups">
+  <form class="form-inline">
+    <a href="" class="btn btn-success add">+ Add group</a>
+  </form>
+  {{#if showDialogGroup}}
+    {{> groupDialog}}
+  {{/if}}
+  {{#if showDialogGrpDelConf}}
+    {{> grpDelConfDialog}}
+  {{/if}}
+  {{> groupsList}}
+</template>
+
+<template name="groupsList">
+  <div class="groups">
+    <table class="table table-striped table-middle">
+      <tbody>
+        <tr>
+          <td width="60">#</td>
+          <td>Name</td>
+          <td width="320"># Employees</td>
+          <td width="240"></td>
+          <td width="60"></td>
+          <td width="80"></td>
+        </tr>
+  	    {{#each groups}}
+  	      {{> groupsListItem}}
+  	    {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

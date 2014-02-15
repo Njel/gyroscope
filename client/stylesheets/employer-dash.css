@@ -1,0 +1,253 @@
+.request-daysleft {
+    font-size: 13px;
+    margin-left: 340px;
+    width: 100px;
+    margin-bottom: -17px;
+}
+
+#legend {
+    position: absolute;
+    margin: 310px 0 0 520px;
+    color: #555;
+    font-size: 12px;
+    width: 600px;
+}
+
+#legend .paid-day {
+    width: 10px;
+    height: 10px;
+    background: #468847;
+    display: inline-block;
+}
+
+#legend .unpaid-day {
+    width: 10px;
+    height: 10px;
+    background: #5CC65E;
+    display: inline-block;
+}
+
+#legend .legal-day {
+    width: 10px;
+    height: 10px;
+    background: #aaa;
+    display: inline-block;
+}
+
+#legend .pending-day {
+    width: 10px;
+    height: 10px;
+    background: #016983;
+    display: inline-block;
+}
+
+#legend .red-day {
+    width: 10px;
+    height: 10px;
+    background: #b94a48;
+    display: inline-block;
+}
+
+#wrapper-calendar {
+	border: 0px solid; 
+	width:670px; 
+	height:700px;
+	margin: -30px 0 0 0;
+	*overflow: hidden;
+}
+
+#year {
+    position: relative;
+    width: 500px;
+    margin: auto;
+    font-size: 19px;
+    height: 25px;
+    margin-top: 7px;
+    padding-top: 5px;
+    border: 0px solid black;
+    text-align: center;
+}
+
+#calendar {
+	margin: 30px 0 0 0;
+}
+
+
+.table-container {
+	position: relative;
+    width:636px; /* Total width of visible columns + border widths */
+    height:200px;
+    margin: 20px 0 0 14px;
+    border:solid 0px #000;
+    background-color: transparent;
+    overflow:hidden;
+}
+
+.sliding-window {
+    width:636px; /* Total width of all columns in sliding-window + border widths (159 * number of month) */
+    height:300px;
+    overflow:hidden;
+}
+
+
+.sliding-window div {
+    float:left;
+    margin: 0 6px 0 6px;
+    width:147px;
+    height:300px;
+    border:solid 0px #999;
+}
+
+#prev, #prev:hover {
+    border: 0px solid black;
+    width: 36px;
+    height: 47px;
+    margin: 0px 0 -50px 10px;
+    background: transparent url(../images/images/prev.png) no-repeat;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#prev {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#prev:hover {
+    opacity:1;
+    filter:alpha(opacity=100);
+    cursor: pointer;
+}
+
+#next, #next:hover {
+    border: 0px solid black;
+    width: 36px;
+    height: 47px;
+    margin: 0px 10px -50px 0;
+    background: transparent url(../images/images/next.png);
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#next {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#next:hover {
+    opacity:1;
+    filter:alpha(opacity=100);
+    cursor: pointer;
+}
+
+.left-column {
+    width: 465px;
+}
+
+#add-form {
+    width: 425px;
+    background-color: #EAF4FD;
+    border: 1px solid #DCEDFE;
+}
+
+.request-date {
+    display: inline;
+}
+
+.view-request {
+    font-size: 14px;
+}
+
+.pending-request {
+    background-color: #f5f5f5;
+    border: 1px solid #dadada;
+}
+
+.pending-request:hover {
+    cursor: pointer;
+    -moz-box-shadow: 0 0 10px #bababa !important;
+    -webkit-box-shadow: 0 0 10px #bababa !important; 
+    box-shadow: 0 0 10px #bababa !important;
+}
+
+.approved-request {
+    background-color: #f5f5f5;
+    border: 1px solid #dadada;
+}
+
+.approved-request:hover {
+    cursor: pointer;
+    -moz-box-shadow: 0 0 10px #bababa !important;
+    -webkit-box-shadow: 0 0 10px #bababa !important; 
+    box-shadow: 0 0 10px #bababa !important;
+}
+
+.refused-request {
+    background-color: #f5f5f5;
+    border: 1px solid #dadada;
+}
+
+.refused-request:hover {
+    cursor: pointer;
+    -moz-box-shadow: 0 0 10px #bababa !important;
+    -webkit-box-shadow: 0 0 10px #bababa !important; 
+    box-shadow: 0 0 10px #bababa !important;
+}
+
+.days-wrapper {
+    text-align: left;
+}
+
+.request-response {
+    display: none;
+}
+
+.request-message {
+    display: none;
+}
+
+.request-days {
+    display: inline-block;
+    color: #5A5A5A;
+    background-color: #DCDCDC;
+    margin: 4px;
+    padding: 2px 0 2px 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid #bbb;
+}
+
+.red {
+    border-left: 5px solid #b94a48;
+}
+
+.blue {
+    border-left: 5px solid #6eafbf;
+}
+
+.green {
+    border-left: 5px solid #468847;
+}
+
+.h-control-days {
+    margin-top: 7px;
+}
+
+.req-status {
+    text-align: center;
+}
+
+.request-header {
+    height: 68px;
+    margin: -20px 0 -50px 0;
+    padding: 20px 6px 0 0;
+    position: relative;
+    width: 429px;
+    z-index: 1000;
+}
+

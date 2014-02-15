@@ -1,0 +1,38 @@
+<template name="postsListItem">
+  <div class="post" style="padding: 8px 10px 4px 10px;">
+    <!-- <a href="#" class="upvote btn {{upvotedClass}}">⬆</a> -->
+    <div class="post-content">
+<!--      <h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3> -->
+      <h3><a href="">{{empFullName userId}} - {{title}}</a></h3>
+      <p>
+      	<i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>,
+        <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+      	<!-- {{#if ownPost}}<a href="{{postEditPath this}}">Edit</a>{{/if}} -->
+      </p>
+    </div>
+    <table class="buttons">
+      <tr>
+        <td style="width: 52px;">
+          <a href="{{postPagePath this}}" class="btn btn-mini btn-primary">Details</a>
+        </td>
+        <td style="width: 56px;">
+          {{#if ownPost}}
+            <a href=""><button class="btn btn-mini edit"><i class="icon-edit"></i>&nbsp;&nbsp;Edit</button></a>
+          {{/if}}
+        </td>
+        <td style="width: 70px;">
+          {{#if ownPost}}
+            <a href="">
+              <button class="btn btn-mini btn-success submitBtn"><i class="icon-white icon-upload"></i>&nbsp;&nbsp;Submit</button>
+            </a>
+          {{/if}}
+        </td>
+        <td style="width: 20px;">
+          <a href="">
+            <button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove"></i></button>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>

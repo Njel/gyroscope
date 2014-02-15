@@ -1,0 +1,27 @@
+<template name="postSubmit">
+  <form class="main">
+    {{#with currDate}}
+    <div class="control-group">
+      <label class="control-label" for="year">Year</label>
+      <div class="controls">
+        <input name="year" type="text" value="{{year}}" placeholder="Year"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="title">Month</label>
+      <div class="controls">
+        <select type="text" name="month" id="month" value="{{month}}">
+          {{#each months}}
+            <option value='{{v}}'{{selectedValue v currDate.month}}>{{m}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" value="Create" class="btn btn-primary"/>
+      </div>
+    </div>
+    {{/with}}
+  </form>
+</template>

@@ -1,0 +1,39 @@
+<template name="eventSubmit">
+  <form name="event" class="event-form">
+    <div class="control-group">
+      <label class="control-label" for="day">Day</label>
+      <div class="controls">
+        <input name="day" type="text" value="" placeholder="Day in the month"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="type">Type</label>
+      <div class="controls">
+        <input name="type" type="text" value="" placeholder="Type of event"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="stime">Start Time</label>
+      <div class="controls">
+        <input name="stime" type="text" value="" placeholder="Time the event starts"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="etime">End Time</label>
+      <div class="controls">
+        <input name="etime" type="text" value="" placeholder="Time the event ends"/>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="title">Description</label>
+      <div class="controls">
+        <textarea name="title"></textarea>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn">Add Event</button>
+      </div>
+    </div>
+  </form>
+</template>

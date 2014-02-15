@@ -1,0 +1,33 @@
+<template name="postTotals">
+  {{#with totals}}
+	<table>
+	<tbody>
+    {{#with evts}}
+	  <tr>
+	    <td><div class='external-event label-day' style='width: 60px;'>Events:</div></td>
+	    <td><div class='external-event paid-day totals' style='width: 40px;'>T: {{T}}</div></td>
+		<td><div class='external-event unpaid-day totals' style='width: 40px;'>C: {{C}}</div></td>
+		<td><div class='external-event legal-day totals' style='width: 40px;'>S: {{S}}</div></td>
+		<td><div class='external-event totals' style='width: 40px;'>R: {{R}}</div></td>
+		<td><div class='external-event sick-day totals' style='width: 40px;'>M: {{M}}</div></td>
+		<td><div class='external-event separator' style='width: 0px;'></div></td>
+		<td><div class='external-event total-day' style='width: 60px;'>Tot.: {{Tot}}</div></td>
+	  </tr>
+	{{/with}}
+    {{#with hours}}
+	  <tr style="padding: 0px; margin: 0px;">
+	    <td><div class='external-event label-day' style='width: 60px;'>Hours:</div></td>
+	    <td><div class='external-event paid-day totals' style='width: 40px;'>T: {{T}}</div></td>
+		<td><div class='external-event unpaid-day totals' style='width: 40px;'>C: {{C}}</div></td>
+		<td><div class='external-event legal-day totals' style='width: 40px;'>S: {{S}}</div></td>
+		<td><div class='external-event totals' style='width: 40px;'>R: {{R}}</div></td>
+		<td><div class='external-event sick-day totals' style='width: 40px;'>M: {{M}}</div></td>
+		<td><div class='external-event separator' style='width: 0px;'></div></td>
+		<td><div class='external-event total-day' style='width: 60px;'>Tot.: {{Tot}}</div></td>
+	  </tr>
+	  <tr><td colspan="8" style="height: 4px;"></td></tr>
+	{{/with}}
+	</tbody>
+	</table>
+  {{/with}}
+</template>

@@ -1,0 +1,13 @@
+<template name="scheduleItem">
+  <div class="post">
+    <div class="post-content">
+      <h3><a href="{{url}}">{{empName}}</a></h3>
+      <p>
+      	<i>created by</i> <b>{{userName createdBy}}</b>,
+        <a href="{{schedulePagePath this}}">{{pluralize periodsCount "period"}}</a>
+      	{{#if ownSchedule}}<a href="{{scheduleEditPath this}}">Edit</a>{{/if}}
+      </p>
+    </div>
+    <a href="{{schedulePagePath this}}" class="submit btn btn-primary">Submit</a>
+  </div>
+</template>

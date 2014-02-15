@@ -1,0 +1,8 @@
+<head>
+  <title>Gyroscope</title>
+</head>
+<body>
+  <div class="container">
+    {{> calendar}}
+  </div>
+</body>

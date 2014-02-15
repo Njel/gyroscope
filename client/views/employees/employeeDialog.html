@@ -1,0 +1,83 @@
+<template name="employeeDialog">
+  <div id="employeeDialog" class="modal">
+    {{#with emp}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        {{#if selectedEmployee}}
+        	<h3>Update Employee</h3>
+        {{else}}
+          <h3>Add an Employee</h3>
+        {{/if}}
+      </div>
+      <div class="modal-body">
+        <table>
+          <tr>
+            <td>
+              <label for="fname">First Name <span style="color: red">*</span></label>
+              <input type="text" name="fname" value="{{fname}}" id="fname">
+            </td>
+            <td>
+              <label for="lname">Last Name <span style="color: red">*</span></label>
+              <input type="text" name="lname" value="{{lname}}" id="lname">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <label for="email">Email <span style="color: red">*</span></label>
+              <input type="text" name="email" value="{{email}}" id="email" style="width: 428px;">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="userId">Username</label>
+              <select type="text" name="userId" id="userId" value="{{userId}}">
+                <option value="">(None)</option>
+                {{#each users}}
+                  <option value='{{_id}}'{{selectedValue _id emp.userId}}>{{username}}</option>
+                {{/each}}
+              </select>
+            </td>
+            <td>
+              <label for="group">Group</label>
+              <select type="text" name="group" id="group" value="{{group}}">
+                <option value="">(None)</option>
+                {{#each groups}}
+                  <option value='{{_id}}'{{selectedValue name emp.group}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="al">Annual Leave Days</label>
+              <input type="text" name="al" value="{{AL}}" id="al">
+            </td>
+            <td>
+              <label for="sl">Sick Leave Days</label>
+              <input type="text" name="sl" value="{{SL}}" id="sl">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        {{#if selectedEmployee}}
+          <table>
+            <tr>
+              <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">
+                Created at {{dateTimeFormat created}} by {{createdBy}}<br />
+                Last modified at {{dateTimeFormat modified}} by {{modifiedBy}}
+              </td>
+              <td style="width: 160px;">
+                <a href="" class="btn btn-success save">Save</a>
+                <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+              </td>
+            </tr>
+          </table>
+        {{else}}
+          <a href="" class="btn btn-success add">Add</a>
+          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+        {{/if}}
+      </div>
+    {{/with}}
+  </div>
+</template>

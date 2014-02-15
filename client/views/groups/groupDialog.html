@@ -1,0 +1,37 @@
+<template name="groupDialog">
+  <div id="groupDialog" class="modal">
+    {{#with grp}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        {{#if selectedGroup}}
+        	<h3>Update Group</h3>
+        {{else}}
+          <h3>Add an Group</h3>
+        {{/if}}
+      </div>
+      <div class="modal-body">
+          <label for="title">Name <span style="color: red">*</span></label>
+          <input type="text" name="name" value="{{name}}" id="name">
+      </div>
+      <div class="modal-footer">
+        {{#if selectedGroup}}
+          <table>
+            <tr>
+              <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">
+                Created at {{dateTimeFormat created}} by {{userName createdBy}}<br />
+                Last modified at {{dateTimeFormat modified}} by {{userName modifiedBy}}
+              </td>
+              <td style="width: 160px;">
+                <a href="" class="btn btn-success save">Save</a>
+                <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+              </td>
+            </tr>
+          </table>
+        {{else}}
+          <a href="" class="btn btn-success add">Add</a>
+          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+        {{/if}}
+      </div>
+    {{/with}}
+  </div>
+</template>

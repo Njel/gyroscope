@@ -1,0 +1,13 @@
+<template name="employeesListItem">
+      <tr height="24">
+        <td>{{id}}</td>
+        <td><a href="" class="details"><b>{{fname}} {{lname}}</b></a></td>
+        <td>{{email}}</td>
+        <td>{{groupName group}}</td>
+        <td>{{AL}}</td>
+        <td>{{SL}}</td>
+        <td><a href="/schedules/{{_id}}"><button class="btn btn-mini"><i class="icon-edit edit"></i>&nbsp;&nbsp;Schedule</button></a></td>
+        <td><a href=""><button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button></a></td>
+        <td><a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i>&nbsp;&nbsp;Delete</button></a></td>
+      </tr>
+</template>

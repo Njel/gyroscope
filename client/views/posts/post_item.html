@@ -1,0 +1,15 @@
+<template name="postItem">
+  <div class="post">
+    <!-- <a href="#" class="upvote btn {{upvotedClass}}">⬆</a> -->
+    <div class="post-content">
+<!--      <h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3> -->
+      <h3><a href="">{{empFullName userId}} - {{title}}</a></h3>
+      <p>
+      	<i>created by</i> <b>{{userName createdBy}}</b>,
+        <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+      	<!-- {{#if ownPost}}<a href="{{postEditPath this}}">Edit</a>{{/if}} -->
+      </p>
+    </div>
+    <!-- <a href="{{postPagePath this}}" class="submit btn btn-primary">Submit</a> -->
+  </div>
+</template>

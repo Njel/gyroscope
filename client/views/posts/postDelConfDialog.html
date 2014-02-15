@@ -1,0 +1,32 @@
+<template name="postDelConfDialog">
+  <div id="postDelConfDialog" class="modal">
+    {{#with post}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+       	<h3>Delete Month Confirmation</h3>
+      </div>
+      <div class="modal-body">
+        <table>
+          <tr><td style="width: 120px;"><b>Title:</b></td><td>{{title}}</td></tr>
+          <tr><td><b>Year:</b></td><td>{{year}}</td></tr>
+          <tr><td><b>Month:</b></td><td>{{month}}</td></tr>
+          <tr><td><b># Events:</b></td><td>{{nbEvts}}</td></tr>
+        </table>
+      </div>
+      <div class="modal-footer" style="text-align: left;">
+        <table style="width: 700px">
+          <tr>
+            <td>
+              <span style="valign: bottom; font-size: 12px;">
+                <input type="CheckBox" name="delEvts" value="off">&nbsp;&nbsp;<b>Delete associated events?</b>&nbsp;&nbsp;</span>
+            </td>
+            <td>
+              <a href="" class="btn btn-danger delete"><i class="icon-white icon-remove delete"></i>&nbsp;&nbsp;Delete</a>
+              <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    {{/with}}
+  </div>
+</template>

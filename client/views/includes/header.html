@@ -1,0 +1,41 @@
+<template name="header">
+  <header class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+	  <a class="brand" href="/">Gyroscope</a>
+	  <ul class="nav">
+        <li class="{{activeRouteClass 'home' 'newPosts'}}">
+          <a href="{{homePath}}">Dashboard</a>
+        </li>
+        <li class="{{activeRouteClass 'employees'}}">
+          <a href="/employees">Employees</a>
+        </li>
+        <li class="{{activeRouteClass 'groups'}}">
+          <a href="/groups">Groups</a>
+        </li>
+        <li class="{{activeRouteClass 'schedules'}}">
+          <a href="/schedules">Schedules</a>
+        </li>
+        <li class="{{activeRouteClass 'holidays'}}">
+          <a href="/holidays">Holidays</a>
+        </li>
+        <li class="{{activeRouteClass 'reports'}}">
+          <a href="/reports">Reports</a>
+        </li>
+        <li class="{{activeRouteClass 'settings'}}">
+          <a href="/settings">Settings</a>
+        </li>
+	  	{{#if currentUser}}
+	  	  <li class="{{activeRouteClass 'postSubmit'}}">
+            <a href="/submit">Create Month</a>
+          </li>
+        {{/if}}
+ 	  	<li class="dropdown">
+	  	  {{> notifications}}
+	  	</li>
+	  </ul>
+	  <ul class="nav pull-right">
+	  	<li>{{loginButtons}}</li>
+	  </ul>
+    </div>
+  </header>
+</template>

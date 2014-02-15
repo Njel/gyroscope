@@ -1,0 +1,179 @@
+.e-procent{
+    color: #FFFFFF;
+    font-size: 11px;
+    margin: 0 0 -18px 4px;
+    text-align: right;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+#legend {
+    /*position: absolute;*/
+    /*margin: 630px 0 0 510px;*/
+}
+
+#legend-null {
+    color: #656565;
+}
+
+#legend-full {
+    color: #656565;
+    /*margin: -18px 0 0 627px;*/
+}
+
+#legend-img {
+    background: transparent url(../images/images/calendar-report-legend.png) no-repeat;
+    width: 648px;
+    height: 7px;
+    margin-top: 10px;
+}
+
+#legend-info {
+    color: #656565;
+}
+
+#calendar-info {
+    color: #656565;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.table-progress {
+    margin-bottom: -8px !important;
+    margin-top: 3px;
+}
+
+.progress-jan{
+    color: #444444;
+    margin: -48px 0 40px 505px;
+}
+
+.progress-dec{
+    color: #444444;
+    margin: -57px 0 40px 1145px;
+}
+
+.progress-now{
+    color: #444444;
+    *margin-bottom: -10px;
+    margin-top: -40px;
+}
+
+.progress-year {
+    *border-radius: 0 0 0 0 !important;
+    box-shadow: none !important;
+    height: 7px !important;
+    margin: -53px 0 0 513px;
+}
+
+#date {
+	*border: 1px solid black;
+	width: 460px;
+}
+
+#year-date {
+    width: 460px;
+    display: none;
+}
+
+.year-bar {
+	margin-top: -10px;
+}
+
+#details {
+	*border: 1px solid black;
+	width: 460px;
+}
+
+#pie-chart {
+	*border: 1px solid #eee; 
+	width: 460px; 
+	height: 300px;
+}
+
+#report {
+	*display: none;
+    height: 800px;
+}
+
+#employee-calendar {
+	border: 0px solid; 
+	width:670px; 
+	height:700px;
+}
+
+#calendar {
+	margin-top: 10px;
+}
+
+#year {
+	position: relative;
+	width: 70px;
+	margin: auto;
+    font-size: 19px;
+    height: 25px;
+    margin: 33px 0 0 -372px;
+    padding-top: 5px;
+    border: 0px solid black;
+    text-align: center;
+}
+
+#prev, #prev:hover {
+    position: relative;
+    border: 0px solid black;
+    width: 21px;
+    height: 34px;
+    margin: -5px 0 -61px -660px;
+    background: transparent url(../images/images/prev2.png) no-repeat;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#prev {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#prev:hover {
+    opacity:1;
+    filter:alpha(opacity=100);
+}
+
+#next, #next:hover {
+    position: absolute;
+    border: 0px solid black;
+    width: 21px;
+    height: 34px;
+    margin: 27px 0 0 -30px;
+    background: transparent url(../images/images/next2.png) no-repeat;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+#next {
+    opacity:0.2;
+    filter:alpha(opacity=20)
+}
+
+#next:hover {
+    opacity:1;
+    filter:alpha(opacity=100)
+}
+
+#buttons-wrapper {
+	margin: 22px 0 20px 400px;
+    position: absolute;
+}
+
+#chart {
+	width: 460px;
+	height: 300px;
+    margin-bottom: 500px;
+    margin-top: -715px;
+	display: none;
+}
+
+#company {
+    overflow: hidden;
+}

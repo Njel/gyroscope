@@ -1,0 +1,50 @@
+<template name="postDialog">
+  <div id="postDialog" class="modal">
+    {{#with post}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        {{#if selectedPost}}
+        	<h3>Update Month</h3>
+        {{else}}
+          <h3>Add an Month</h3>
+        {{/if}}
+      </div>
+      <div class="modal-body">
+        <label for="empId">Employee <span style="color: red">*</span></label>
+        <select type="text" name="empId" id="empId" value="{{empId}}" style="width: 220px;">
+          {{#each employees}}
+            <option value='{{_id}}'{{selectedValue _id post.userId}}>{{fname}} {{lname}}</option>
+          {{/each}}
+        </select>
+        <label for="year">Year <span style="color: red">*</span></label>
+        <input type="text" name="year" value="{{year}}" id="yearTxt" placeholder="Year" style="width: 40px;">
+        <label for="month">Month <span style="color: red">*</span></label>
+        <select type="text" name="month" id="month" value="{{month}}" style="width: 120px;">
+          {{#each months}}
+            <option value='{{v}}'{{selectedValue v post.month}}>{{m}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="modal-footer">
+        {{#if selectedPost}}
+          <table>
+            <tr>
+              <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">
+                Created at {{dateTimeFormat created}} by {{createdBy}}<br />
+                Last modified at {{dateTimeFormat modified}} by {{modifiedBy}}
+              </td>
+              <td style="width: 160px;">
+                <!-- <a href="" class="btn btn-danger delete">Delete</a> -->
+                <a href="" class="btn btn-success save">Save</a>
+                <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+              </td>
+            </tr>
+          </table>
+        {{else}}
+          <a href="" class="btn btn-success add">Add</a>
+          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+        {{/if}}
+      </div>
+    {{/with}}
+  </div>
+</template>

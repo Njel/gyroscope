@@ -1,0 +1,21 @@
+<template name="empDelConfDialog">
+  <div id="empDelConfDialog" class="modal">
+    {{#with emp}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+       	<h3>Delete Employee Confirmation</h3>
+      </div>
+      <div class="modal-body">
+        <table>
+          <tr><td style="width: 120px;"><b>First Name:</b></td><td>{{fname}}</td></tr>
+          <tr><td><b>Last Name:</b></td><td>{{lname}}</td></tr>
+          <tr><td><b>Email:</b></td><td>{{email}}</td></tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <a href="" class="btn btn-danger delete"><i class="icon-white icon-remove delete"></i>&nbsp;&nbsp;Delete</a>
+        <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+      </div>
+    {{/with}}
+  </div>
+</template>

@@ -1,0 +1,22 @@
+<template name="period">
+    <div >
+   	  <div class="post-content">
+   	  	<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px;" class="author">
+   	  	<tr>
+   	  	<td style="width: 34px;"><b>{{dayTxt this}}</b></td>
+	    <td style="text-align: center; width: 10px;">|</td>
+	    <td style="text-align: center; width: 72px;">{{period this}}</td>
+	    <td style="text-align: center; width: 10px;">|</td>
+	    <td style="text-align: right; width: 70px;">{{hours}} hour(s)</td>
+	    <td style="width: 16px;"></td>
+	    <td style="width: 130px;">
+	      <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
+	    </td>
+	    <td>
+  	    <a href="{{postPagePath this}}" class="delete btn btn-danger btn-mini">x</a>
+  	    </td>
+	    </tr>
+	    </table>
+	  </div>
+    </div>
+</template>

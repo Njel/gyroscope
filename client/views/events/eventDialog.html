@@ -1,0 +1,41 @@
+<template name="eventDialog">
+  <div id="eventDialog" class="modal">
+    {{#with evt}}
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">x</a>
+        {{#if selectedCalEvent}}
+        	<h3>Update Event</h3>
+        {{else}}
+          <h3>Add Event</h3>
+        {{/if}}
+      </div>
+      <div class="modal-body">
+          <label for="title">Title <span style="color: red">*</span></label>
+          <input type="text" name="title" value="{{title}}" id="title">
+          <label for="title">From <span style="color: red">*</span></label>
+          <input type="text" name="from" value="{{dateTimeFormat start}}" id="from">
+          <label for="title">To <span style="color: red">*</span></label>
+          <input type="text" name="to" value="{{dateTimeFormat end}}" id="to">
+      </div>
+      <div class="modal-footer">
+        {{#if selectedCalEvent}}
+            <table>
+              <tr>
+                <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">
+                  Created at {{dateTimeFormat created}} by {{userName createdBy}}<br />
+                  Last modified at {{dateTimeFormat modified}} by {{userName modifiedBy}}
+                </td>
+                <td style="width: 160px;">
+                  <a href="" class="btn btn-success save">Save</a>
+                  <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+                </td>
+              </tr>
+            </table>
+        {{else}}
+          <a href="" class="btn btn-success add">Add</a>
+          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+        {{/if}}
+      </div>
+    {{/with}}
+  </div>
+</template>

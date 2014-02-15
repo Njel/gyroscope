@@ -1,0 +1,37 @@
+<template name="newPosts">
+  <div class="pull-right">
+    All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="" class="btn btn-mini add-group">+ Add group</a>
+  </div>
+  <form class="form-inline">
+    <a href="" class="btn btn-success add">+ Add month</a>
+<!--       <input type="search" placeholder="Name/Email" class="src-emp span4" name="q" value="">
+    <button class="btn"><i class="icon-search"></i> Search</button> -->
+  </form>
+  {{#if showDialogPost}}
+    {{> postDialog}}
+  {{/if}}
+  {{#if showDialogPostDelConf}}
+    {{> postDelConfDialog}}
+  {{/if}}
+  {{#if showDialogGroup}}
+    {{> groupDialog}}
+  {{/if}}
+  {{> postsList options}}
+</template>
+
+<template name="postsList">
+  <div class="posts">
+    {{#each postsWithRank}}
+      {{> postsListItem}}
+    {{/each}}
+
+    {{#if postsReady}}
+      {{#unless allPostsLoaded}}
+        <a class="load-more" href="#">Load more</a>
+      {{/unless}}
+    {{else}}
+      <div>{{> spinner}}</div>
+    {{/if}}
+  </div>
+</template>
