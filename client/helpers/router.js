@@ -24,7 +24,7 @@ Meteor.Router.add({
 
   '/schedules/:_id': {
     to: 'schedulePage',
-    and: function(id) { Session.set('currentEmpId', id); }
+    and: function(id) { Session.set('currentScheduleId', id); }
   },
 
   '/holidays': 'holidays',

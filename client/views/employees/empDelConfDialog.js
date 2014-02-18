@@ -53,6 +53,10 @@ Template.empDelConfDialog.events({
     Session.set('selectedEmployee', null);
     Session.set('showDialogEmpDelConf', false);
   },
+  'click .close': function(evt, tmpl) {
+    Session.set('selectedEmployee', null);
+    Session.set('showDialogEmpDelConf', false);
+  },
   'click .delete': function(evt, tmpl) {
     var e = {
       id: Session.get('selectedEmployee')

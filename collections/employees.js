@@ -34,7 +34,7 @@ Meteor.methods({
 
     var d = new Date().toISOString();
 
-    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'userId', 'group', 'AL', 'SL'), {
+    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'userId', 'group', 'AL', 'SL'), {
       createdBy: user._id,
       created: d,
       modifiedBy: user._id,
@@ -46,6 +46,9 @@ Meteor.methods({
 
     // now create a notification, informing the user that there's been a new employee
     // createEventNotification(grp);
+
+    var s = Settings.findOne({name: 'lastEmpMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
 
     return e._id;
   },
@@ -75,6 +78,7 @@ Meteor.methods({
             fname: empAttributes.fname,
             lname: empAttributes.lname,
             email: empAttributes.email,
+            roleId: empAttributes.roleId,
             userId: empAttributes.userId,
             group: empAttributes.group,
             AL: empAttributes.AL,
@@ -94,6 +98,10 @@ Meteor.methods({
     } else {
       throw new Meteor.Error(404, "Employee not found!");
     }
+
+    var s = Settings.findOne({name: 'lastEmpMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
+
     return true;
   },
   employeeRemove: function(empAttributes) {
@@ -114,6 +122,9 @@ Meteor.methods({
 
       }
     });
+
+    var s = Settings.findOne({name: 'lastEmpMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
 
     return true;
   }

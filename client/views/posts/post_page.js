@@ -4,7 +4,10 @@
 
 Template.postPage.helpers({
   currentPost: function() {
-  	return Posts.findOne(Session.get('currentPostId'));
+  	var p = Posts.findOne(Session.get('currentPostId'));
+  	if (p)
+  	  Session.set('calStartDate', new Date(p.year, p.month - 1, 1));
+  	return p;
   },
   events: function() {
   	return Events.find({postId: this._id});

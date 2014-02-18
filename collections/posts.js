@@ -33,16 +33,14 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Please select a month');
 
   	// check that there are no previous posts with the same link
-    var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, userId: user._id});
+    var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, empId: postAttributes.empId});
   	if (postForSameMonth)
   	  throw new Meteor.Error(302, 'This month has already been posted', postForSameMonth._id);
 
     var d = new Date().toISOString();
 
   	// pick out the whitelisted keys
-  	var post = _.extend(_.pick(postAttributes, 'title', 'year', 'month'), {
-  	  userId: user._id,
-  	  author: user.username,
+  	var post = _.extend(_.pick(postAttributes, 'empId', 'title', 'year', 'month'), {
   	  submitted: new Date().getTime(),
       daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
       eventsCount: 0,
@@ -73,7 +71,7 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Please select a month');
 
     // check that there are no previous posts with the same link
-    var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, userId: user._id});
+    var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, userId: postAttributes.empId});
     if (postForSameMonth && postAttributes.id != postForSameMonth._id) {
       throw new Meteor.Error(302, 'This month has already been posted', postForSameMonth._id);
     }
@@ -84,9 +82,10 @@ Meteor.methods({
       Posts.update(
         p._id, {
           $set: {
+            empId: postAttributes.empId,
+            title: postAttributes.title,
             year: postAttributes.year,
             month: postAttributes.month,
-            title: postAttributes.title,
             daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
             modifiedBy: user._id,
             modified: new Date().toISOString()

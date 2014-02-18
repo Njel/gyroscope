@@ -38,8 +38,6 @@ Meteor.methods({
       // end: moment(new Date(eventAttributes.end)),
       // start: new Date(eventAttributes.start).toISOString(),
       // end: new Date(eventAttributes.end).toISOString(),
-      userId: user._id,
-      author: user.username,
       approved: null,
       approver: null,
       reviewed: null,

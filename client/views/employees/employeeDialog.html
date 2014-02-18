@@ -27,6 +27,18 @@
               <input type="text" name="email" value="{{email}}" id="email" style="width: 428px;">
             </td>
           </tr>
+          {{#if isAdmin}}
+          <tr>
+            <td colspan="2">
+              <label for="role">Role <span style="color: red">*</span></label>
+              <select type="text" name="role" id="role" value="{{roleId}}">
+                <option value="">(None)</option>
+                {{#each roles}}
+                  <option value='{{_id}}'{{selectedValue _id emp.roleId}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </td>
+          </tr>
           <tr>
             <td>
               <label for="userId">Username</label>
@@ -57,6 +69,43 @@
               <input type="text" name="sl" value="{{SL}}" id="sl">
             </td>
           </tr>
+          {{else}}
+          <tr>
+            <td colspan="2">
+              <label for="role">Role <span style="color: red">*</span></label>
+              <select type="text" name="role" id="role" value="{{roleId}}" disabled>
+                <option value='{{roleId}}' selected='selected'>{{roleName roleId}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="userId">Username</label>
+              <select type="text" name="userId" id="userId" value="{{userId}}" disabled>
+                  <option value='{{userId}}' selected='selected'>{{userName userId}}</option>
+              </select>
+            </td>
+            <td>
+              <label for="group">Group</label>
+              <select type="text" name="group" id="group" value="{{group}}">
+                <option value="">(None)</option>
+                {{#each groups}}
+                  <option value='{{_id}}'{{selectedValue name emp.group}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="al">Annual Leave Days</label>
+              <input type="text" name="al" value="{{AL}}" id="al" disabled>
+            </td>
+            <td>
+              <label for="sl">Sick Leave Days</label>
+              <input type="text" name="sl" value="{{SL}}" id="sl" disabled>
+            </td>
+          </tr>
+          {{/if}}
         </table>
       </div>
       <div class="modal-footer">

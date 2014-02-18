@@ -1,17 +1,15 @@
-<template name="postDelConfDialog">
-  <div id="postDelConfDialog" class="modal">
-    {{#with post}}
+<template name="schDelConfDialog">
+  <div id="schDelConfDialog" class="modal">
+    {{#with sch}}
       <div class="modal-header">
         <a class="close" data-dismiss="modal">x</a>
-       	<h3>Delete Month Confirmation</h3>
+       	<h3>Delete Schedule Confirmation</h3>
       </div>
       <div class="modal-body">
         <table>
-          <tr><td style="width: 120px;"><b>Employee:</b></td><td>{{empFullName empId}}</td></tr>
-          <tr><td style="width: 120px;"><b>Title:</b></td><td>{{title}}</td></tr>
-          <tr><td><b>Year:</b></td><td>{{year}}</td></tr>
-          <tr><td><b>Month:</b></td><td>{{month}}</td></tr>
-          <tr><td><b># Events:</b></td><td>{{nbEvts}}</td></tr>
+          <tr><td style="width: 120px;"><b>Employee Name:</b></td><td>{{empFullName empId}}</td></tr>
+          <tr><td><b>Start Date:</b></td><td>{{validS}}</td></tr>
+          <tr><td><b>End Date:</b></td><td>{{validE}}</td></tr>
         </table>
       </div>
       <div class="modal-footer" style="text-align: left;">
@@ -19,7 +17,7 @@
           <tr>
             <td>
               <span style="valign: bottom; font-size: 12px;">
-                <input type="CheckBox" name="delEvts" value="off">&nbsp;&nbsp;<b>Delete associated events?</b>&nbsp;&nbsp;</span>
+                <input type="CheckBox" name="delEvts" value="off">&nbsp;&nbsp;<b>Delete associated periods?</b>&nbsp;&nbsp;</span>
             </td>
             <td>
               <a href="" class="btn btn-danger delete"><i class="icon-white icon-remove delete"></i>&nbsp;&nbsp;Delete</a>

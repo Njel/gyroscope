@@ -9,25 +9,38 @@ if (Posts.find().count() === 0) {
   
   // create users
   var adminId = Meteor.users.insert({
+    username: 'Admin',
     profile: { name: 'Admin' }
   });
+  Accounts.setPassword(adminId, 'password');
   
   var user01Id = Meteor.users.insert({
+    username: 'User01',
     profile: { name: 'User 01' }
   });
-  var user01 = Meteor.users.findOne(user01Id);
+  Accounts.setPassword(user01Id, 'password');
   
   var user02Id = Meteor.users.insert({
+    username: 'User02',
     profile: { name: 'User 02' }
   });
-  var user02 = Meteor.users.findOne(user02Id);
+  Accounts.setPassword(user02Id, 'password');
 
   var user03Id = Meteor.users.insert({
+    username: 'User03',
     profile: { name: 'User 03' }
   });
-  var user03 = Meteor.users.findOne(user03Id);
+  Accounts.setPassword(user03Id, 'password');
 
   // create Roles
+  var adminRole = Roles.insert({
+    name: 'Admin',
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
   Roles.insert({
     name: 'Reviewer',
     createdBy: adminId,
@@ -38,6 +51,14 @@ if (Posts.find().count() === 0) {
 
   Roles.insert({
     name: 'Approver',
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
+  var userRole = Roles.insert({
+    name: 'User',
     createdBy: adminId,
     created: new Date().toISOString(),
     modifiedBy: adminId,
@@ -58,6 +79,8 @@ if (Posts.find().count() === 0) {
     fname: 'empl01',
     lname: 'name',
     email: 'empl01@gyroscope.com',
+    roleId: userRole,
+    userId: '',
     group: grp,
     status: 'EA',
     AL: 10,
@@ -73,6 +96,8 @@ if (Posts.find().count() === 0) {
     fname: 'empl02',
     lname: 'name',
     email: 'empl02@gyroscope.com',
+    roleId: userRole,
+    userId: '',
     group: grp,
     status: 'EA',
     AL: 10,
@@ -88,6 +113,7 @@ if (Posts.find().count() === 0) {
   var scheduleId = Schedules.insert({
     empId: emp01Id,
     periodsCount: 10,
+    hoursCount: 37.5,
     validS: '2014-01-01',
     validE: '2014-12-31',
     status: 'approved',
@@ -232,7 +258,7 @@ if (Posts.find().count() === 0) {
     title: 'January 2014',
     year: 2014,
     month: 1,
-    userId: emp01Id,
+    empId: emp01Id,
     status: 'pending',
     submitted: now,
     approved: null,
@@ -249,7 +275,7 @@ if (Posts.find().count() === 0) {
 
   Events.insert({
     postId: firstPostId,
-    userId: emp01Id,
+    empId: emp01Id,
     // start: moment(new Date(2014, 0, 1, 8, 0)),
     // end: moment(new Date(2014, 0, 1, 12, 0)),
     start: '2014-01-01T13:00:00.000Z',
@@ -301,7 +327,7 @@ if (Posts.find().count() === 0) {
     title: 'January 2014',
     year: 2014,
     month: 1,
-    userId: emp02Id,
+    empId: emp02Id,
     status: 'pending',
     submitted: now,
     approved: null,
@@ -320,7 +346,7 @@ if (Posts.find().count() === 0) {
     title: 'February 2014',
     year: 2014,
     month: 2,
-    userId: emp01Id,
+    empId: emp01Id,
     status: 'pending',
     submitted: now,
     approved: null,
@@ -339,6 +365,26 @@ if (Posts.find().count() === 0) {
     userId: 'All',
     name: 'admin',
     value: adminId,
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
+  Settings.insert({
+    userId: 'All',
+    name: 'lastEmpMod',
+    value: new Date(),
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
+  Settings.insert({
+    userId: 'All',
+    name: 'lastSchMod',
+    value: new Date(),
     createdBy: adminId,
     created: new Date().toISOString(),
     modifiedBy: adminId,

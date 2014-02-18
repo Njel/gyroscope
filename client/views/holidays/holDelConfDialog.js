@@ -27,6 +27,10 @@ Template.holDelConfDialog.events({
     Session.set('selectedHoliday', null);
     Session.set('showDialogHolDelConf', false);
   },
+  'click .close': function(evt, tmpl) {
+    Session.set('selectedHoliday', null);
+    Session.set('showDialogHolDelConf', false);
+  },
   'click .delete': function(evt, tmpl) {
     var h = {
       id: Session.get('selectedHoliday')

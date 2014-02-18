@@ -9,6 +9,7 @@ Template.postDelConfDialog.post = function() {
     var p = Posts.findOne(postId);
     if (p) {
       var post = {
+        empId: p.empId,
         year: p.year,
         month: p.month,
         title: p.title,
@@ -17,6 +18,7 @@ Template.postDelConfDialog.post = function() {
     }
   } else {
     var post = {
+      empId: '',
       year: '',
       month: '',
       title: '',
@@ -36,8 +38,6 @@ Template.postDelConfDialog.events({
       id: Session.get('selectedPost'),
       delEvts: tmpl.find('[name=delEvts]').checked
     }
-
-    console.log(e);
 
     Meteor.call('postRemove', e, function(error, eventId) {
       if (error) {

@@ -1,4 +1,4 @@
-Template.employeesListItem.helpers({
+Template.schedulesListItem.helpers({
   hasAccess: function() {
     var currUser = Meteor.user();
     if (!currUser)
@@ -36,20 +36,6 @@ Template.employeesListItem.helpers({
   ownPost: function() {
     return (this.userId == Meteor.userId()) || (this.createdBy == Meteor.userId());
   },
-  activeScheduleId: function() {
-    var d = moment(new Date()).format('YYYY-MM-DD');
-    var s = Schedules.findOne({empId: this._id, validS: {$lte: d}, validE: {$gte: d}});
-    if (s)
-      return s._id;
-    return '';
-  },
-  hasActiveSchedule: function() {
-    var d = moment(new Date()).format('YYYY-MM-DD');
-    var s = Schedules.findOne({empId: this._id, validS: {$lte: d}, validE: {$gte: d}});
-    if (s)
-      return true;
-    return false;
-  },
   domain: function() {
     var a = document.createElement('a');
     a.href = this.url;
@@ -57,7 +43,7 @@ Template.employeesListItem.helpers({
   }
 });
 
-Template.employeesListItem.rendered = function() {
+Template.schedulesListItem.rendered = function() {
   // animate post from previous position to new position
   var instance = this;
   var rank = instance.data._rank;
@@ -84,22 +70,21 @@ Template.employeesListItem.rendered = function() {
   });
 };
 
-Template.employeesListItem.events({
+Template.schedulesListItem.events({
   'click .edit': function(event) {
-    // console.log('Edit Employee click (' + this._id + ')');
+    // console.log('Edit Schedule click (' + this._id + ')');
   	event.preventDefault();
-    Session.set('selectedEmployee', this._id);
-    Session.set('showDialogEmployee', true);
+    Session.set('selectedSchedule', this._id);
+    Session.set('showDialogSchedule', true);
   	// Meteor.call('edit', this._id);
   },
   'click .details': function(event) {
-    // console.log('Employee Name click (' + this._id + ')');
-    // Session.set('selectedEmployee', this._id);
+    // Session.set('selectedSchedule', this._id);
   },
   'click .delete': function(event) {
     // console.log('Employee Delete click (' + this._id + ')');
     event.preventDefault();
-    Session.set('selectedEmployee', this._id);
-    Session.set('showDialogEmpDelConf', true);
+    Session.set('selectedSchedule', this._id);
+    Session.set('showDialogSchDelConf', true);
   }
 });

@@ -1,4 +1,38 @@
 Template.postsListItem.helpers({
+  hasAccess: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if ((this.empId == currUser._id) || (this.createdBy == currUser._id))
+      return true;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var currEmp = Employees.findOne({userId: currUser._id});
+      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+        return true;
+      }
+    }
+    return false;
+  },
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser) {
+      return false;
+    } else {
+      if(currUser.username == 'Admin')
+        return true;
+      var adminRole = Roles.findOne({name: 'Admin'});
+      if (adminRole) {
+        var currEmp = Employees.findOne({userId: currUser._id});
+        if (currEmp && currEmp.roleId == adminRole._id) {
+          return true;
+        }
+      }
+      return false;
+    }
+  },
   ownPost: function() {
     return (this.userId == Meteor.userId()) || (this.createdBy == Meteor.userId());
   },
@@ -61,7 +95,7 @@ Template.postsListItem.events({
     // Meteor.call('postSubmit', this._id);
   },
   'click .delete': function(event) {
-    console.log('Delete Month click (' + this._id + ')');
+    // console.log('Delete Month click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedPost', this._id);
     Session.set('showDialogPostDelConf', true);

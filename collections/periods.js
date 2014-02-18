@@ -2,11 +2,17 @@ Periods = new Meteor.Collection('periods');
 
 Periods.allow({
   insert: function(userId, doc) {
-   // only allow posting if you are logged in
+   // only allow insert if you are logged in
    return !! userId;
   },
-  update: ownsDocument,
-  remove: ownsDocument
+  update: function(userId, doc) {
+   // only allow update if you are logged in
+   return !! userId;
+  },
+  remove: function(userId, doc) {
+   // only allow remove if you are logged in
+   return !! userId;
+  }
 });
 
 // Periods.deny({
@@ -47,7 +53,7 @@ Meteor.methods({
     });
 
     // update the schedule with the number of periods
-    Schedules.update(p.schId, {$inc: {periodsCount: 1}});
+    Schedules.update(p.schId, {$inc: {periodsCount: 1, hoursCount: p.hours}});
 
     // create the period, save the id
     // console.log(p.start);
@@ -173,7 +179,7 @@ Meteor.methods({
     });
 
     // update the schedule with the number of periods
-    Schedules.update(p.schId, {$inc: {periodsCount: -1}});
+    Schedules.update(p.schId, {$inc: {periodsCount: -1, hoursCount: -p.hours}});
 
     var s = Settings.findOne({name: 'lastCalPeriodMod'});
     Settings.update(s._id, {$set: {value: new Date()}});

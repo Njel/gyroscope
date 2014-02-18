@@ -1,7 +1,21 @@
 <template name="holidays">
-  <form class="form-inline">
-    <a href="" class="btn btn-success add">+ Add holiday</a>
-  </form>
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 200px; vertical-align: bottom; padding: 0 0 21px;">
+        {{#if hasAccess}}
+          <a href="" class="btn btn-success add">+ Add holiday</a>
+        {{/if}}
+      </td>
+      <td>
+        <form class="form-inline">
+          <input type="search" placeholder="Name/Email" class="src-emp span4" name="q" value="">
+          <button class="btn"><i class="icon-search"></i> Search</button>
+        </form>
+      </td>
+      <td style="text-align: right; padding: 0 0 21px;">
+      </td>
+    </tr>
+  </table>
   {{#if showDialogHoliday}}
     {{> holidayDialog}}
   {{/if}}
@@ -20,8 +34,8 @@
           <td>Date</td>
           <td width="320">Title</td>
           <td width="240">&nbsp;</td>
-          <td width="60"></td>
-          <td width="80"></td>
+          <td width="44"></td>
+          <td width="20"></td>
         </tr>
   	    {{#each holidays}}
   	      {{> holidaysListItem}}

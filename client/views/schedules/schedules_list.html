@@ -1,4 +1,53 @@
+<template name="schedules">
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 200px; vertical-align: bottom; padding: 0 0 21px;">
+        {{#if hasAccess}}
+          <a href="" class="btn btn-success add">+ Add schedule</a>
+        {{/if}}
+      </td>
+      <td>
+        <form class="form-inline">
+          <input type="search" placeholder="Name/Email" class="src-emp span4" name="q" value="">
+          <button class="btn"><i class="icon-search"></i> Search</button>
+        </form>
+      </td>
+      <td style="text-align: right; padding: 0 0 21px;">
+      </td>
+    </tr>
+  </table>
+  {{#if showDialogSchedule}}
+    {{> scheduleDialog}}
+  {{/if}}
+  {{#if showDialogSchDelConf}}
+    {{> schDelConfDialog}}
+  {{/if}}
+  {{> schedulesList}}
+  <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">
+    <i><u>Last updated:</u> {{lastSchMod}}</i>
+  </div>
+</template>
+
 <template name="schedulesList">
   <div class="schedules">
+    <table class="table table-striped table-middle">
+      <tbody>
+        <tr>
+          <td width="30">#</td>
+          <td width="260">Employee</td>
+          <td width="100"># Periods</td>
+          <td width="100"># Hours</td>
+          <td width="100">Start Date</td>
+          <td width="100">End Date</td>
+          <td width="140">Status</td>
+          <td width="52"></td>
+          <td width="38"></td>
+          <td width="20"></td>
+        </tr>
+        {{#each schedules}}
+          {{> schedulesListItem}}
+        {{/each}}
+      </tbody>
+    </table>
   </div>
 </template>

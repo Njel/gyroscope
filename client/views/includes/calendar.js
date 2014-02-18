@@ -38,7 +38,7 @@ Template.calendar.rendered = function() {
     // events: function(start, end, timezone, callback) {
     events: function(start, end, callback) {
       var events = [];
-      currEvents = Events.find();
+      currEvents = Events.find({postId: Session.get('currentPostId')});
       currEvents.forEach(function(e) {
         var start = new Date(e.start);
         var end = new Date(e.end);

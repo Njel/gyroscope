@@ -1,4 +1,19 @@
 Template.postDialog.helpers({
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var currEmp = Employees.findOne({userId: currUser._id});
+      if (currEmp && currEmp.roleId == adminRole._id) {
+        return true;
+      }
+    }
+    return false;
+  },
   months: function() {
     return Months.find();
   },
@@ -32,6 +47,7 @@ Template.postDialog.post = function() {
         modifiedBy = '<System Account>';
 
       var post = {
+        empId: p.empId,
         year: p.year,
         month: p.month - 1,
         title: p.title,
@@ -44,7 +60,9 @@ Template.postDialog.post = function() {
     }
   } else {
     var d = new Date();
+    var currEmp = Employees.findOne({userId: Meteor.userId()});
     var post = {
+      empId: currEmp._id,
       year: d.getFullYear(),
       month: d.getMonth(),
       title: '',
@@ -64,10 +82,12 @@ Template.postDialog.events({
     Session.set('showDialogPost', false);
   },
   'click .add': function(evt, tmpl) {
+    var empId = tmpl.find('[name=empId]').value;
     var year = parseInt(tmpl.find('[name=year]').value);
     var month = parseInt(tmpl.find('[name=month]').value);
     var title = moment(new Date(year, month, 1)).format('MMMM YYYY');
     var post = {
+      empId: empId,
       title: title,
       year: year,
       month: (month + 1)
@@ -94,11 +114,13 @@ Template.postDialog.events({
     });
   },
   'click .save': function(evt, tmpl) {
+    var empId = tmpl.find('[name=empId]').value;
     var year = parseInt(tmpl.find('[name=year]').value);
     var month = parseInt(tmpl.find('[name=month]').value);
     var title = moment(new Date(year, month, 1)).format('MMMM YYYY');
     var post = {
       id: Session.get('selectedPost'),
+      empId: empId,
       title: title,
       year: year,
       month: (month + 1)

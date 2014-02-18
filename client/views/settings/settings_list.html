@@ -1,4 +1,30 @@
 <template name="settingsList">
-  <div class="posts">
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 200px; vertical-align: bottom; padding: 0 0 21px;">
+        {{#if hasAccess}}
+          <a href="" class="btn btn-success add">+ Add setting</a>
+        {{/if}}
+      </td>
+      <td>
+        <form class="form-inline">
+          <input type="search" placeholder="Name/Email" class="src-emp span4" name="q" value="">
+          <button class="btn"><i class="icon-search"></i> Search</button>
+        </form>
+      </td>
+      <td style="text-align: right; padding: 0 0 21px;">
+        All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Current User</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      </td>
+    </tr>
+  </table>
+  {{#if showDialogSetting}}
+    {{> settingDialog}}
+  {{/if}}
+  {{#if showDialogSetDelConf}}
+    {{> setDelConfDialog}}
+  {{/if}}
+  {{> settingsList}} 
+  <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">
+    <i><u>Last updated:</u> {{lastSetMod}}</i>
   </div>
 </template>

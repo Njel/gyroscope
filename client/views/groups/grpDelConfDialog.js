@@ -27,6 +27,10 @@ Template.grpDelConfDialog.events({
     Session.set('selectedGroup', null);
     Session.set('showDialogGrpDelConf', false);
   },
+  'click .close': function(evt, tmpl) {
+    Session.set('selectedGroup', null);
+    Session.set('showDialogGrpDelConf', false);
+  },
   'click .delete': function(evt, tmpl) {
     var g = {
       id: Session.get('selectedGroup')

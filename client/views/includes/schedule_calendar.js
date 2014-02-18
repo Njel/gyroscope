@@ -3,6 +3,8 @@ Template.scheduleCalendar.lastCalPeriodMod = function() {
 };
 
 Template.scheduleCalendar.rendered = function() {
+  // console.log('currentSchId=' + Session.get('currentSchId'));
+
   /* initialize the external events
   -----------------------------------------------------------------*/
   $('#external-events div.external-event').each(function() {
@@ -31,7 +33,7 @@ Template.scheduleCalendar.rendered = function() {
       var sd = moment(new Date(2014, 0, 5));
 
       var events = [];
-      currEvents = Periods.find();
+      currEvents = Periods.find({schId: Session.get('currentScheduleId')});
       currEvents.forEach(function(e) {
         var start = new Date('2010-01-0' + (3 + e.day).toString() + 'T' + e.start + ':00.000Z');
         var end = new Date('2010-01-0' + (3 + e.day).toString() + 'T' + e.end + ':00.000Z');

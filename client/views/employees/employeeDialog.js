@@ -1,11 +1,31 @@
 Template.employeeDialog.helpers({
-  users: function() {
-    return Meteor.users.find();
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var currEmp = Employees.findOne({userId: currUser._id});
+      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+        return true;
+      }
+    }
+    return false;
   }
 });
 
+Template.employeeDialog.users = function() {
+  return Meteor.users.find();
+};
+
 Template.employeeDialog.selectedEmployee = function() {
   return Session.get('selectedEmployee');
+};
+
+Template.employeeDialog.roles = function() {
+  return Roles.find({}, {sort: {name: 1}});
 };
 
 Template.employeeDialog.groups = function() {
@@ -38,6 +58,7 @@ Template.employeeDialog.emp = function() {
         fname: e.fname,
         lname: e.lname,
         email: e.email,
+        roleId: e.roleId,
         userId: e.userId,
         group: groupName,
         status: e.status,
@@ -55,6 +76,7 @@ Template.employeeDialog.emp = function() {
       fname: '',
       lname: '',
       email: '',
+      roleId: '',
       userId: '',
       group: null,
       status: '',
@@ -80,6 +102,7 @@ Template.employeeDialog.events({
       fname: tmpl.find('[name=fname]').value,
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
+      roleId: tmpl.find('[name=role]').value,
       userId: tmpl.find('[name=userId]').value,
       group: tmpl.find('[name=group]').value,
       AL: tmpl.find('[name=al]').value,
@@ -104,11 +127,14 @@ Template.employeeDialog.events({
       fname: tmpl.find('[name=fname]').value,
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
+      roleId: tmpl.find('[name=role]').value,
       userId: tmpl.find('[name=userId]').value,
       group: tmpl.find('[name=group]').value,
       AL: tmpl.find('[name=al]').value,
       SL: tmpl.find('[name=sl]').value
     };
+
+    console.log(e);
 
     Meteor.call('employeeUpd', e, function(error, eventId) {
       if (error) {
