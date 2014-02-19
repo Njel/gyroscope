@@ -3,6 +3,10 @@ Template.calendar.lastCalEventMod = function() {
 };
 
 Template.calendar.selectedEventType = function(t) {
+  if (!Session.get('selectedEventType')) {
+    Session.set('selectedEventType', t);
+    return 'border-bottom: 8px solid gray;';
+  }
   if (t == Session.get('selectedEventType'))
     return 'border-bottom: 8px solid gray;';
   else
@@ -32,7 +36,7 @@ Template.calendar.rendered = function() {
       title: $.trim($(this).text()), // use the element's text as the event title
       id: $(this)[0].id
     };
-    
+
     // store the Event Object in the DOM element so we can get to it later
     $(this).data('eventObject', eventObject);
     
