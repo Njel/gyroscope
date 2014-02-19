@@ -25,8 +25,11 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to create events");
 
-    if (!eventAttributes.title)
-      throw new Meteor.Error(422, 'Please write some content');
+    if (!eventAttributes.type)
+      throw new Meteor.Error(422, 'Please select a type of event');
+
+    // if (!eventAttributes.title)
+    //   throw new Meteor.Error(422, 'Please write some content');
 
     if (!eventAttributes.postId)
       throw new Meteor.Error(422, 'You must select a month to create a event');
@@ -71,8 +74,11 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to update events");
 
-    if (!eventAttributes.title)
-      throw new Meteor.Error(422, 'Please write some content');
+    if (!eventAttributes.type)
+      throw new Meteor.Error(422, 'Please select a type of event');
+
+    // if (!eventAttributes.title)
+    //   throw new Meteor.Error(422, 'Please write some content');
 
     var ev = Events.findOne(eventAttributes.eventId);
 
@@ -80,6 +86,7 @@ Meteor.methods({
       Events.update(
         ev._id, {
           $set: {
+            type: eventAttributes.type,
             title: eventAttributes.title,
             // start: moment(eventAttributes.start, 'MM/DD/YYYY HH:mm'),
             // end: moment(eventAttributes.end, 'MM/DD/YYYY HH:mm')

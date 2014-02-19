@@ -2,14 +2,35 @@ Template.calendar.lastCalEventMod = function() {
   return Settings.findOne({name: 'lastCalEventMod'}).value;
 };
 
+Template.calendar.selectedEventType = function(t) {
+  if (t == Session.get('selectedEventType'))
+    return 'border-bottom: 8px solid gray;';
+  else
+    return 'border-bottom: 8px;';
+};
+
+Template.calendar.eventTypes = function() {
+  return EventTypes.find({active: true});
+};
+
+Template.calendar.events({
+  'click .eventType': function(evt, tmpl) {
+    // console.log(evt.toElement.id);
+    evt.preventDefault();
+    Session.set('selectedEventType', evt.toElement.id);
+  }
+});
+
 Template.calendar.rendered = function() {
   /* initialize the external events
   -----------------------------------------------------------------*/
-  $('#external-events div.external-event').each(function() {
+  // $('#external-events div.external-event').each(function() {
+  $('#external-events div.eventType').each(function() {
     // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
     // it doesn't need to have a start or end
     var eventObject = {
-      title: $.trim($(this).text()) // use the element's text as the event title
+      title: $.trim($(this).text()), // use the element's text as the event title
+      id: $(this)[0].id
     };
     
     // store the Event Object in the DOM element so we can get to it later
@@ -43,6 +64,7 @@ Template.calendar.rendered = function() {
         var start = new Date(e.start);
         var end = new Date(e.end);
         var h = (end - start) / 1000 / 60 / 60;
+        var eType = EventTypes.findOne(e.type);
         events.push({
           id: e._id,
           // start: e.start._d,
@@ -51,11 +73,107 @@ Template.calendar.rendered = function() {
           end: end,
           // start: e.start,
           // end: e.end,
-          title: e.title + ' - ' + h + ' hr(s)',
+          title: eType.code + ' - ' + h + ' h',
+          textColor: eType.textColor,
+          borderColor: eType.borderColor,
+          backgroundColor: eType.backgroundColor,
           allDay: e.allDay
           // backgroundColor: e.backgroundColor,
           // className: 'sick-day'
         });
+
+        // switch (e.type) {
+        //   case 'T':
+        //     events.push({
+        //       id: e._id,
+        //       // start: e.start._d,
+        //       // end: e.end._d,
+        //       start: start,
+        //       end: end,
+        //       // start: e.start,
+        //       // end: e.end,
+        //       title: e.title + ' - ' + h + ' h',
+        //       textColor: '#fff',
+        //       borderColor: '#000',
+        //       backgroundColor: '#468847',
+        //       allDay: e.allDay
+        //       // backgroundColor: e.backgroundColor,
+        //       // className: 'sick-day'
+        //     });
+        //     break;
+        //   case 'C':
+        //     events.push({
+        //       id: e._id,
+        //       // start: e.start._d,
+        //       // end: e.end._d,
+        //       start: start,
+        //       end: end,
+        //       // start: e.start,
+        //       // end: e.end,
+        //       title: e.title + ' - ' + h + ' h',
+        //       textColor: '#fff',
+        //       borderColor: '#000',
+        //       backgroundColor: '#5CC65E',
+        //       allDay: e.allDay
+        //       // backgroundColor: e.backgroundColor,
+        //       // className: 'sick-day'
+        //     });
+        //     break;
+        //   case 'S':
+        //     events.push({
+        //       id: e._id,
+        //       // start: e.start._d,
+        //       // end: e.end._d,
+        //       start: start,
+        //       end: end,
+        //       // start: e.start,
+        //       // end: e.end,
+        //       title: e.title + ' - ' + h + ' h',
+        //       textColor: '#fff',
+        //       borderColor: '#000',
+        //       backgroundColor: '#aaa',
+        //       allDay: e.allDay
+        //       // backgroundColor: e.backgroundColor,
+        //       // className: 'sick-day'
+        //     });
+        //     break;
+        //   case 'R':
+        //     events.push({
+        //       id: e._id,
+        //       // start: e.start._d,
+        //       // end: e.end._d,
+        //       start: start,
+        //       end: end,
+        //       // start: e.start,
+        //       // end: e.end,
+        //       title: e.title + ' - ' + h + ' h',
+        //       textColor: '#fff',
+        //       borderColor: '#000',
+        //       backgroundColor: '#3366CC',
+        //       allDay: e.allDay
+        //       // backgroundColor: e.backgroundColor,
+        //       // className: 'sick-day'
+        //     });
+        //     break;
+        //   case 'M':
+        //     events.push({
+        //       id: e._id,
+        //       // start: e.start._d,
+        //       // end: e.end._d,
+        //       start: start,
+        //       end: end,
+        //       // start: e.start,
+        //       // end: e.end,
+        //       title: e.title + ' - ' + h + ' h',
+        //       textColor: '#fff',
+        //       borderColor: '#000',
+        //       backgroundColor: '#b00',
+        //       allDay: e.allDay
+        //       // backgroundColor: e.backgroundColor,
+        //       // className: 'sick-day'
+        //     });
+        //     break;
+        // }
       });
       currHolidays = Holidays.find();
       currHolidays.forEach(function(h) {
@@ -65,6 +183,9 @@ Template.calendar.rendered = function() {
           // start: new Date(h.date),
           end: null,
           title: h.title,
+          textColor: '#000',
+          // borderColor: '#000',
+          // backgroundColor: '#aaa',
           allday: true,
           className: 'holiday',
           editable: false,
@@ -184,7 +305,7 @@ Template.calendar.rendered = function() {
         start: date.toISOString(),
         end: moment(date).add('hour', 2).toISOString(),
         hours: 2,
-        type: copiedEventObject.title,
+        type: copiedEventObject.id,
         title: copiedEventObject.title,
         status: 'new',
         allDay: allDay,

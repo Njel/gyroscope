@@ -134,7 +134,7 @@ Template.employeeDialog.events({
       SL: tmpl.find('[name=sl]').value
     };
 
-    console.log(e);
+    // console.log(e);
 
     Meteor.call('employeeUpd', e, function(error, eventId) {
       if (error) {

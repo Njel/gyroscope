@@ -7,6 +7,14 @@ Handlebars.registerHelper('pluralize', function(n, thing) {
   }
 });
 
+Handlebars.registerHelper('eventTypeCode', function(t) {
+  var eT = EventTypes.findOne(t);
+  if (eT)
+    return eT.code;
+  else
+    return '?';
+});
+
 Handlebars.registerHelper('userName', function(u) {
   var usr = Meteor.users.findOne(u);
   if (usr)

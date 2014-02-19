@@ -73,4 +73,7 @@ Meteor.subscribe('holidays');
 Meteor.subscribe('schedules');
 Meteor.subscribe('periods');
 Meteor.subscribe('roles');
+Meteor.subscribe('eventTypes');
 Meteor.subscribe('notifications');
+
+Session.setDefault('selectedEventType', null);

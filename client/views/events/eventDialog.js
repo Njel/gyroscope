@@ -2,6 +2,10 @@ Template.eventDialog.selectedCalEvent = function() {
   return Session.get('selectedCalEvent');
 };
 
+Template.eventDialog.eventTypes = function() {
+  return EventTypes.find({active: true});
+};
+
 Template.eventDialog.evt = function() {
   var eventId = Session.get('selectedCalEvent');
 
@@ -36,8 +40,8 @@ Template.eventDialog.evt = function() {
       // start: moment(new Date(start)).format('MM/DD/YYYY HH:mm'),
       end: end,
       // end: moment(new Date(end)).format('MM/DD/YYYY HH:mm'),
-      type: 'T',
-      title: '',
+      type: Session.get('selectedEventType'),
+      title: EventTypes.findOne(Session.get('selectedEventType')).code,
       status: 'new',
       allDay: false
     }
@@ -72,7 +76,7 @@ Template.eventDialog.events({
       // start: moment(new Date(tmpl.find('[name=from]').value)),
       // end: moment(new Date(tmpl.find('[name=to]').value)),
       hours: hours,
-      type: 'T',
+      type: tmpl.find('[name=type]').value,
       title: tmpl.find('[name=title]').value,
       status: 'new',
       allDay: false
@@ -110,7 +114,7 @@ Template.eventDialog.events({
       start: sD.toISOString(),
       end: eD.toISOString(),
       hours: hours,
-      type: 'T',
+      type: tmpl.find('[name=type]').value,
       title: tmpl.find('[name=title]').value,
       status: 'new',
       allDay: false

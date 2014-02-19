@@ -24,15 +24,22 @@
   <table>
     <tr>
       <td>
-	    <div id='external-events'>
+	    <div id='external-events' style='line-height: 14px;'>
 	  	  <!-- <h4>Events</h4> -->
 		  <table>
-		    <tr>
-	    	  <td><div class='external-event paid-day'>T</div></td>
-			  <td><div class='external-event unpaid-day'>C</div></td>
-			  <td><div class='external-event legal-day'>S</div></td>
-			  <td><div class='external-event'>R</div></td>
-			  <td><div class='external-event sick-day'>M</div></td>
+		    <tr style='vertical-align: top;'>
+		      {{#each eventTypes}}
+  	    	    <td>
+  	    	      <div class='external-event eventType' 
+  	    	      	   style='color: {{textColor}}; background: {{backgroundColor}}; {{selectedEventType _id}}'
+  	    	      	   id='{{_id}}'>{{code}}</div>
+  	    	    </td>
+			  {{/each}}
+  	    	    <!-- <td><div class='external-event paid-day' style='{{selectedEventType 'T'}}' name=''>T</div></td> -->
+			    <!-- <td><div class='external-event unpaid-day' style='{{selectedEventType 'C'}}' name=''>C</div></td> -->
+			    <!-- <td><div class='external-event legal-day' style='{{selectedEventType 'S'}}'>S</div></td> -->
+			    <!-- <td><div class='external-event recup-day' style='{{selectedEventType 'R'}}'>R</div></td> -->
+			    <!-- <td><div class='external-event sick-day' style='{{selectedEventType 'M'}}'>M</div></td> -->
 		    </tr>
 		  </table>
 	      <!-- <p>

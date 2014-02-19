@@ -253,6 +253,57 @@ if (Posts.find().count() === 0) {
     modified: new Date().toISOString()
   });
 
+  // create Event Types
+  var W = EventTypes.insert({
+    title: 'Work',
+    code: 'W',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#468847',
+    defaultDuration: 4,
+    active: true
+  });
+
+  var A = EventTypes.insert({
+    title: 'Annual Leave',
+    code: 'A',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#5CC65E',
+    defaultDuration: 4,
+    active: true
+  });
+
+  var X = EventTypes.insert({
+    title: 'Extra',
+    code: 'X',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#aaa',
+    defaultDuration: 1,
+    active: true
+  });
+
+  var R = EventTypes.insert({
+    title: 'Recup',
+    code: 'R',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#3366CC',
+    defaultDuration: 1,
+    active: true
+  });
+
+  var S = EventTypes.insert({
+    title: 'Sick Leave',
+    code: 'S',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#b00',
+    defaultDuration: 4,
+    active: true
+  });
+
   // create Posts and Events
   var firstPostId = Posts.insert({
     title: 'January 2014',
@@ -284,7 +335,7 @@ if (Posts.find().count() === 0) {
     // end: new Date(2014, 0, 1, 12, 0),
     hours: 4,
     allDay: false,
-    type: 'C',
+    type: A,
     title: '1st DoY (AM)',
     status: 'pending',
     submitted: now,
@@ -309,7 +360,7 @@ if (Posts.find().count() === 0) {
     // end: new Date(2014, 0, 1, 16, 30),
     hours: 3.5,
     allDay: false,
-    type: 'C',
+    type: A,
     title: '1st DoY (PM)',
     status: 'pending',
     submitted: now,

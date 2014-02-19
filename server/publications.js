@@ -40,6 +40,10 @@ Meteor.publish('events', function() {
   return Events.find();
 });
 
+Meteor.publish('eventTypes', function() {
+  return EventTypes.find();
+});
+
 // Meteor.publish('notifications', function() {
 //   return Notifications.find({userId: this.userId});
 // });
