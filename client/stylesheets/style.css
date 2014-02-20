@@ -172,6 +172,17 @@ body {
   display: inline-block;
 }
 
+.event-type {
+  margin: 0px 0;
+  padding: 2px 4px;
+  width: 20px;
+  text-align: center;
+  background: #3366CC;
+  color: #fff;
+  font-size: .85em;
+  display: inline-block;
+}
+
 #external-events p {
   margin: 0 0;
   font-size: 11px;

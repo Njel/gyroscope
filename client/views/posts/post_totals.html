@@ -2,31 +2,25 @@
   {{#with totals}}
 	<table>
 	<tbody>
-    {{#with evts}}
 	  <tr>
-	    <td><div class='external-event label-day' style='width: 60px;'>Events:</div></td>
-	    <td><div class='external-event paid-day totals' style='width: 40px;'>T: {{T}}</div></td>
-		<td><div class='external-event unpaid-day totals' style='width: 40px;'>C: {{C}}</div></td>
-		<td><div class='external-event legal-day totals' style='width: 40px;'>S: {{S}}</div></td>
-		<td><div class='external-event totals' style='width: 40px;'>R: {{R}}</div></td>
-		<td><div class='external-event sick-day totals' style='width: 40px;'>M: {{M}}</div></td>
-		<td><div class='external-event separator' style='width: 0px;'></div></td>
-		<td><div class='external-event total-day' style='width: 60px;'>Tot.: {{Tot}}</div></td>
+	    <td><div class='event-type label-day' style='width: 50px;'>&nbsp;</div></td>
+		{{#each results}}
+	      <td><div class='event-type label-day' style='width: {{width}}; color: {{txtColor}}; background: {{bgColor}};'>{{code}}</div></td>
+	    {{/each}}
 	  </tr>
-	{{/with}}
-    {{#with hours}}
+	  <tr>
+	    <td><div class='event-type label-day' style='width: 50px;'>Events:</div></td>
+		{{#each results}}
+	      <td><div class='event-type' style='width: {{width}}; color: {{txtColor}}; background: {{bgColor}}; text-align: right;'>{{E}}</div></td>
+	    {{/each}}
+	  </tr>
 	  <tr style="padding: 0px; margin: 0px;">
-	    <td><div class='external-event label-day' style='width: 60px;'>Hours:</div></td>
-	    <td><div class='external-event paid-day totals' style='width: 40px;'>T: {{T}}</div></td>
-		<td><div class='external-event unpaid-day totals' style='width: 40px;'>C: {{C}}</div></td>
-		<td><div class='external-event legal-day totals' style='width: 40px;'>S: {{S}}</div></td>
-		<td><div class='external-event totals' style='width: 40px;'>R: {{R}}</div></td>
-		<td><div class='external-event sick-day totals' style='width: 40px;'>M: {{M}}</div></td>
-		<td><div class='external-event separator' style='width: 0px;'></div></td>
-		<td><div class='external-event total-day' style='width: 60px;'>Tot.: {{Tot}}</div></td>
+	    <td><div class='event-type label-day' style='width: 50px;'>Hours:</div></td>
+		{{#each results}}
+	      <td><div class='event-type' style='width: {{width}}; color: {{txtColor}}; background: {{bgColor}}; text-align: right;'>{{H}}</div></td>
+	    {{/each}}
 	  </tr>
 	  <tr><td colspan="8" style="height: 4px;"></td></tr>
-	{{/with}}
 	</tbody>
 	</table>
   {{/with}}
