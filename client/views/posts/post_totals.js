@@ -32,7 +32,7 @@ Template.postTotals.helpers({
   	  e['Tot'] += 1;
 
   	  if(e[i.type].code == 'W' || e[i.type].code == 'T') {
-  	  	var cH = calcHours(i.start, i.end, i.allDay, 12, 00);
+  	  	var cH = calcHours(i.start, i.end, i.allDay, 17, 00);
   	  	h[i.type] += cH['hrs'];
         h['N'] += cH['N'];
         h['X100'] += cH['X100'];
@@ -80,54 +80,54 @@ Template.postTotals.helpers({
   }
 });
 
-function calcHours(start, end, allDay, supHH, supMM) {
-  var T = 0.0;
-  var N = 0.0;
-  var X100 = 0.0;
-  var X125 = 0.0;
-  var X150 = 0.0;
-  var X200 = 0.0;
+// function calcHours(start, end, allDay, supHH, supMM) {
+//   var T = 0.0;
+//   var N = 0.0;
+//   var X100 = 0.0;
+//   var X125 = 0.0;
+//   var X150 = 0.0;
+//   var X200 = 0.0;
 
-  var sd = new Date(start);
+//   var sd = new Date(start);
 
-  if(allDay) {
-    T = 7.5;
-    N = 7.5;
-    if(sd.getDay() == 0 || sd.getDay() == 6) {
-      X200 = N;
-    }
-  } else {
-	var ed = new Date(end);
+//   if(allDay) {
+//     T = 7.5;
+//     N = 7.5;
+//     if(sd.getDay() == 0 || sd.getDay() == 6) {
+//       X200 = N;
+//     }
+//   } else {
+// 	var ed = new Date(end);
 
-    T = (ed - sd) / 1000 / 60 / 60;
+//     T = (ed - sd) / 1000 / 60 / 60;
 
-    if(sd.getDay() == 0 || sd.getDay() == 6) {
-      X200 = T;
-    } else {
-	  var y = sd.getFullYear();
-	  var m = sd.getMonth();
-	  var d = sd.getDate();
+//     if(sd.getDay() == 0 || sd.getDay() == 6) {
+//       X200 = T;
+//     } else {
+// 	  var y = sd.getFullYear();
+// 	  var m = sd.getMonth();
+// 	  var d = sd.getDate();
 
-	  var T100 = new Date(y, m, d, supHH, supMM, 0);
-	  var T125 = new Date(y, m, d, 18, 0, 0);
-	  var T150 = new Date(y, m, d, 21, 0, 0);
+// 	  var T100 = new Date(y, m, d, supHH, supMM, 0);
+// 	  var T125 = new Date(y, m, d, 18, 0, 0);
+// 	  var T150 = new Date(y, m, d, 21, 0, 0);
 
-	  // console.log('sd   ' + sd);
-	  // console.log('ed   ' + ed);
-	  // console.log('T100 ' + T100);
-	  // console.log('T125 ' + T125);
-	  // console.log('T150 ' + T150);
+// 	  // console.log('sd   ' + sd);
+// 	  // console.log('ed   ' + ed);
+// 	  // console.log('T100 ' + T100);
+// 	  // console.log('T125 ' + T125);
+// 	  // console.log('T150 ' + T150);
 
-	  if(sd < T100)
-	  	N = (Math.min(ed, T100) - sd) / 1000 / 60 / 60;
-	  if(sd < T125 && ed > T100)
-	   	X100 = (Math.min(ed, T125) - Math.max(sd, T100)) / 1000 / 60 / 60;
-	  if(sd < T150 && ed > T125)
-	   	X125 = (Math.min(ed, T150) - Math.max(sd, T125)) / 1000 / 60 / 60;
-	  if(ed > T150)
-	    X150 = (ed - Math.max(sd, T150)) / 1000 / 60 / 60;
-	}
-  }
+// 	  if(sd < T100)
+// 	  	N = (Math.min(ed, T100) - sd) / 1000 / 60 / 60;
+// 	  if(sd < T125 && ed > T100)
+// 	   	X100 = (Math.min(ed, T125) - Math.max(sd, T100)) / 1000 / 60 / 60;
+// 	  if(sd < T150 && ed > T125)
+// 	   	X125 = (Math.min(ed, T150) - Math.max(sd, T125)) / 1000 / 60 / 60;
+// 	  if(ed > T150)
+// 	    X150 = (ed - Math.max(sd, T150)) / 1000 / 60 / 60;
+// 	}
+//   }
 
-  return {hrs: T, N: N, X100: X100, X125: X125, X150: X150, X200: X200};
-}
+//   return {hrs: T, N: N, X100: X100, X125: X125, X150: X150, X200: X200};
+// }

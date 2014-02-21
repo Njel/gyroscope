@@ -22,6 +22,73 @@ Template.calendar.events({
     // console.log(evt.toElement.id);
     evt.preventDefault();
     Session.set('selectedEventType', evt.toElement.id);
+  },
+  'click #resetCal': function(evt, tmpl) {
+    evt.preventDefault();
+    console.log('Reset Calendar');
+
+    currEvents = Events.find({postId: Session.get('currentPostId')});
+    currEvents.forEach(function(e) {
+      var ev = {eventId: e._id};
+      Meteor.call('eventDel', ev, function(error, eventId) {
+        error && throwError(error.reason);
+      });
+    });
+    var s = Settings.findOne({name: 'lastCalEventMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
+    Session.set('lastCalEventMod', new Date());
+  },
+  'click #genWDays': function(evt, tmpl) {
+    // console.log(evt.toElement.id);
+    evt.preventDefault();
+    var post = Posts.findOne(Session.get('currentPostId'));
+    var type = EventTypes.findOne({code: 'W'});
+
+    if (post) {
+      // console.log(post.empId);
+      var nbDays = new Date(post.year, post.month, 0).getDate();
+      // console.log('Nb Days: ' + nbDays);
+      var d0 = moment(new Date(post.year, post.month-1, 1));
+      var D = d0.toISOString().substring(0,10);
+      // console.log(D);
+
+      var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
+      if (s) {
+        // console.log(s);
+        for (var i = 1; i <= nbDays; i++) {
+          var d = d0.day();
+          if (d != 0 && d != 6) {
+            D = d0.toISOString().substring(0,10);
+            var H = Holidays.findOne({date: D});
+            if (!H) {
+              var periods = Periods.find({schId: s._id, day: d});
+              periods.forEach(function(p) {
+                var ev = {
+                  postId: post._id,
+                  start: D + 'T' + p.start + ':00.000Z',
+                  end: D + 'T' + p.end + ':00.000Z',
+                  hours: p.hours,
+                  type: type._id,
+                  title: type.code,
+                  status: 'new',
+                  allDay: false,
+                  textColor: type.textColor,
+                  borderColor: type.borderColor,
+                  backgroundColor: type.backgroundColor
+                };
+                Meteor.call('eventNew', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              });
+            }
+          }
+          d0 = moment(new Date(post.year, post.month-1, i));
+        };
+        var s = Settings.findOne({name: 'lastCalEventMod'});
+        Settings.update(s._id, {$set: {value: new Date()}});
+        Session.set('lastCalEventMod', new Date());
+      }
+    }
   }
 });
 
@@ -82,102 +149,7 @@ Template.calendar.rendered = function() {
           borderColor: eType.borderColor,
           backgroundColor: eType.backgroundColor,
           allDay: e.allDay
-          // backgroundColor: e.backgroundColor,
-          // className: 'sick-day'
         });
-
-        // switch (e.type) {
-        //   case 'T':
-        //     events.push({
-        //       id: e._id,
-        //       // start: e.start._d,
-        //       // end: e.end._d,
-        //       start: start,
-        //       end: end,
-        //       // start: e.start,
-        //       // end: e.end,
-        //       title: e.title + ' - ' + h + ' h',
-        //       textColor: '#fff',
-        //       borderColor: '#000',
-        //       backgroundColor: '#468847',
-        //       allDay: e.allDay
-        //       // backgroundColor: e.backgroundColor,
-        //       // className: 'sick-day'
-        //     });
-        //     break;
-        //   case 'C':
-        //     events.push({
-        //       id: e._id,
-        //       // start: e.start._d,
-        //       // end: e.end._d,
-        //       start: start,
-        //       end: end,
-        //       // start: e.start,
-        //       // end: e.end,
-        //       title: e.title + ' - ' + h + ' h',
-        //       textColor: '#fff',
-        //       borderColor: '#000',
-        //       backgroundColor: '#5CC65E',
-        //       allDay: e.allDay
-        //       // backgroundColor: e.backgroundColor,
-        //       // className: 'sick-day'
-        //     });
-        //     break;
-        //   case 'S':
-        //     events.push({
-        //       id: e._id,
-        //       // start: e.start._d,
-        //       // end: e.end._d,
-        //       start: start,
-        //       end: end,
-        //       // start: e.start,
-        //       // end: e.end,
-        //       title: e.title + ' - ' + h + ' h',
-        //       textColor: '#fff',
-        //       borderColor: '#000',
-        //       backgroundColor: '#aaa',
-        //       allDay: e.allDay
-        //       // backgroundColor: e.backgroundColor,
-        //       // className: 'sick-day'
-        //     });
-        //     break;
-        //   case 'R':
-        //     events.push({
-        //       id: e._id,
-        //       // start: e.start._d,
-        //       // end: e.end._d,
-        //       start: start,
-        //       end: end,
-        //       // start: e.start,
-        //       // end: e.end,
-        //       title: e.title + ' - ' + h + ' h',
-        //       textColor: '#fff',
-        //       borderColor: '#000',
-        //       backgroundColor: '#3366CC',
-        //       allDay: e.allDay
-        //       // backgroundColor: e.backgroundColor,
-        //       // className: 'sick-day'
-        //     });
-        //     break;
-        //   case 'M':
-        //     events.push({
-        //       id: e._id,
-        //       // start: e.start._d,
-        //       // end: e.end._d,
-        //       start: start,
-        //       end: end,
-        //       // start: e.start,
-        //       // end: e.end,
-        //       title: e.title + ' - ' + h + ' h',
-        //       textColor: '#fff',
-        //       borderColor: '#000',
-        //       backgroundColor: '#b00',
-        //       allDay: e.allDay
-        //       // backgroundColor: e.backgroundColor,
-        //       // className: 'sick-day'
-        //     });
-        //     break;
-        // }
       });
       currHolidays = Holidays.find();
       currHolidays.forEach(function(h) {
@@ -301,7 +273,7 @@ Template.calendar.rendered = function() {
       copiedEventObject.start = date;
 
      
-      var currUser = Meteor.user();
+      // var currUser = Meteor.user();
       var ev = {
         postId: Session.get('currentPostId'),
         // userId: currUser._id,
@@ -313,8 +285,7 @@ Template.calendar.rendered = function() {
         title: copiedEventObject.title,
         status: 'new',
         allDay: allDay,
-        backgroundColor: copiedEventObject.background,
-        className: 'sick-day'
+        backgroundColor: copiedEventObject.background
       };
 
       Meteor.call('eventNew', ev, function(error, eventId) {

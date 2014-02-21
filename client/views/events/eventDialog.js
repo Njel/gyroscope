@@ -67,6 +67,10 @@ Template.eventDialog.events({
     var sD = new Date(tmpl.find('[name=from]').value);
     var eD = new Date(tmpl.find('[name=to]').value);
     var hours = (eD - sD) / 1000 / 60 / 60;
+    if (tmpl.find('[name=type]').value == EventTypes.findOne({code: 'X'})._id) {
+      var xHrs = calcHours(tmpl.find('[name=from]').value, tmpl.find('[name=to]').value, false, 17, 00);
+      console.log(xHrs);
+    }
     var ev = {
       postId: Session.get('currentPostId'),
       // userId: currUser._id,

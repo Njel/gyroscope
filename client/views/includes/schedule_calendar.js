@@ -37,10 +37,10 @@ Template.scheduleCalendar.rendered = function() {
       currEvents.forEach(function(e) {
         var start = new Date('2010-01-0' + (3 + e.day).toString() + 'T' + e.start + ':00.000Z');
         var end = new Date('2010-01-0' + (3 + e.day).toString() + 'T' + e.end + ':00.000Z');
-        if (end < start) 
-          var h = (moment(end).add('d', 1) - moment(start)) / 1000 / 60 / 60;
-        else
-          var h = (end - start) / 1000 / 60 / 60;
+        // if (end < start) 
+        //   var h = (moment(end).add('d', 1) - moment(start)) / 1000 / 60 / 60;
+        // else
+        //   var h = (end - start) / 1000 / 60 / 60;
         events.push({
           id: e._id,
           // start: e.start._d,
@@ -49,7 +49,8 @@ Template.scheduleCalendar.rendered = function() {
           end: end,
           // start: e.start,
           // end: e.end,
-          title: h + ' hour(s)',
+          // title: h + ' hour(s)',
+          title: e.hours + ' hour(s)',
           allDay: false,
           // backgroundColor: e.backgroundColor,
           // className: 'sick-day'

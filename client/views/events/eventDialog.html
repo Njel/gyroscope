@@ -13,7 +13,7 @@
         <label for="type">Type <span style="color: red">*</span></label>
         <select type="text" name="type" value="{{type}}" id="type">
           {{#each eventTypes}}
-            <option value='{{_id}}'{{selectedValue evt.type _id}}>{{code}} - {{title}}</option>
+            <option value='{{_id}}'text='{{code}}'{{selectedValue evt.type _id}}>{{code}} - {{title}}</option>
           {{/each}}
         </select>
         <label for="title">Title</label>

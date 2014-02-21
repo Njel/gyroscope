@@ -301,6 +301,7 @@ a.fc-event,
 .fc-event-time,
 .fc-event-title {
 	padding: 0 1px;
+	font-size: 10px;
 	}
 	
 .fc .ui-resizable-handle {
@@ -427,6 +428,7 @@ table.fc-border-separate {
 	
 .fc-grid .fc-event-time {
 	font-weight: bold;
+	font-size: 9px;
 	}
 	
 /* right-to-left */
@@ -556,7 +558,8 @@ table.fc-border-separate {
 	
 .fc-event-vert .fc-event-time {
 	white-space: nowrap;
-	font-size: 10px;
+	/*font-size: 10px;*/
+	font-size: 9px;
 	}
 
 .fc-event-vert .fc-event-inner {
