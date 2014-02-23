@@ -79,14 +79,14 @@ Template.postsListItem.rendered = function() {
 };
 
 Template.postsListItem.events({
-  'click .edit': function(event) {
+  'click .editBtn': function(event) {
     // console.log('Edit Month click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedPost', this._id);
     Session.set('showDialogPost', true);
     // Meteor.call('edit', this._id);
   },
-  'click .details': function(event) {
+  'click .detailsBtn': function(event) {
     console.log('Details click (' + this._id + ')');
   },
   'click .submitBtn': function(event) {
@@ -94,7 +94,7 @@ Template.postsListItem.events({
     // event.preventDefault();
     // Meteor.call('postSubmit', this._id);
   },
-  'click .delete': function(event) {
+  'click .deleteBtn': function(event) {
     // console.log('Delete Month click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedPost', this._id);

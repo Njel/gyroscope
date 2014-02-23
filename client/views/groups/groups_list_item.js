@@ -54,17 +54,17 @@ Template.groupsListItem.rendered = function() {
 };
 
 Template.groupsListItem.events({
-  'click .edit': function(event) {
+  'click .editBtn': function(event) {
     // console.log('Edit Group click (' + this._id + ')');
   	event.preventDefault();
     Session.set('selectedGroup', this._id);
     Session.set('showDialogGroup', true);
   	// Meteor.call('edit', this._id);
   },
-  'click .details': function(event) {
+  'click .detailsBtn': function(event) {
     console.log('Group Name click (' + this._id + ')');
   },
-  'click .delete': function(event) {
+  'click .deleteBtn': function(event) {
     // console.log('Group Delete click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedGroup', this._id);

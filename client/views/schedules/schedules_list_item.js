@@ -71,17 +71,17 @@ Template.schedulesListItem.rendered = function() {
 };
 
 Template.schedulesListItem.events({
-  'click .edit': function(event) {
+  'click .editBtn': function(event) {
     // console.log('Edit Schedule click (' + this._id + ')');
   	event.preventDefault();
     Session.set('selectedSchedule', this._id);
     Session.set('showDialogSchedule', true);
   	// Meteor.call('edit', this._id);
   },
-  'click .details': function(event) {
+  'click .detailsBtn': function(event) {
     // Session.set('selectedSchedule', this._id);
   },
-  'click .delete': function(event) {
+  'click .deleteBtn': function(event) {
     // console.log('Employee Delete click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedSchedule', this._id);

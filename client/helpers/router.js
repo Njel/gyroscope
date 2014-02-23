@@ -18,6 +18,12 @@ Meteor.Router.add({
 
   '/employees': 'employees',
 
+  '/folder/:_id': {
+    to: 'folderPage',
+    name: 'Employee Folder',
+    and: function(id) { Session.set('currentEmpId', id); }
+  },
+
   '/groups': 'groups',
 
   '/schedules': 'schedules',

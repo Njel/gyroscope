@@ -6,6 +6,8 @@ Template.legend.helpers({
   	  return 'Reports';
   	if (location.pathname === '/employees')
   	  return 'Employees';
+    if (location.pathname.substring(0, 7) === '/folder')
+      return 'Employee Folder';
     if (location.pathname === '/groups')
       return 'Groups';
     if (location.pathname === '/schedules')

@@ -66,10 +66,14 @@ Template.eventDialog.events({
     var currUser = Meteor.user();
     var sD = new Date(tmpl.find('[name=from]').value);
     var eD = new Date(tmpl.find('[name=to]').value);
-    var hours = (eD - sD) / 1000 / 60 / 60;
-    if (tmpl.find('[name=type]').value == EventTypes.findOne({code: 'X'})._id) {
+    var eT = EventTypes.findOne(tmpl.find('[name=type]').value);
+    if (eT.unit == 'h')
+      var duration = (eD - sD) / 1000 / 60 / 60;
+    else
+      var duration = 1.0;
+    if (eT.code == 'X') {
       var xHrs = calcHours(tmpl.find('[name=from]').value, tmpl.find('[name=to]').value, false, 17, 00);
-      console.log(xHrs);
+      // console.log(xHrs);
     }
     var ev = {
       postId: Session.get('currentPostId'),
@@ -79,11 +83,12 @@ Template.eventDialog.events({
       end: eD.toISOString(),
       // start: moment(new Date(tmpl.find('[name=from]').value)),
       // end: moment(new Date(tmpl.find('[name=to]').value)),
-      hours: hours,
+      duration: duration,
+      unit: eT.unit,
       type: tmpl.find('[name=type]').value,
       title: tmpl.find('[name=title]').value,
       status: 'new',
-      allDay: false
+      allDay: eT.allDay
     };
 
     // Events.insert({
@@ -110,18 +115,20 @@ Template.eventDialog.events({
     var currUser = Meteor.user();
     var sD = new Date(tmpl.find('[name=from]').value);
     var eD = new Date(tmpl.find('[name=to]').value);
-    var hours = (eD - sD) / 1000 / 60 / 60;
+    var duration = (eD - sD) / 1000 / 60 / 60;
+    var eT = EventTypes.findOne(tmpl.find('[name=type]').value);
     var ev = {
       eventId: Session.get('selectedCalEvent'),
       // start: tmpl.find('[name=from]').value,
       // end: tmpl.find('[name=to]').value,
       start: sD.toISOString(),
       end: eD.toISOString(),
-      hours: hours,
+      duration: duration,
+      unit: eT.unit,
       type: tmpl.find('[name=type]').value,
       title: tmpl.find('[name=title]').value,
       status: 'new',
-      allDay: false
+      allDay: eT.allDay
     };
 
     Meteor.call('eventUpd', ev, function(error, eventId) {

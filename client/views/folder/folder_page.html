@@ -1,0 +1,40 @@
+<template name="folderPage">
+  {{#with currentEmployee}}
+    <table>
+      <tr>
+      	<td style="width: 120px; font-weight: bold;">Id</td>
+        <td>{{_id}}</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;">First Name</td>
+        <td>{{fname}}</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;">Last Name</td>
+  	    <td>{{lname}}</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;"># work Days</td>
+      	<td>0.0</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;"># Leave Days</td>
+      	<td>0.0</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;"># Extra Hours</td>
+      	<td>0.0</td>
+      </tr>
+      <tr>
+      	<td style="font-weight: bold;"># Recup Hours</td>
+      	<td>0.0</td>
+      </tr>
+      {{#each totals}}
+      <tr>
+      	<td style="font-weight: bold;">{{year}}-{{month}} {{eventTypeCode type}}</td>
+      	<td>{{value}} {{unit}}</td>
+      </tr>
+      {{/each}}
+    </table>
+  {{/with}}
+</template>

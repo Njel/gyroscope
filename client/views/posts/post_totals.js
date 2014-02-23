@@ -59,6 +59,7 @@ Template.postTotals.helpers({
     types.forEach(function(t) {
       results.insert({
         code: t.code,
+        title: t.title,
         txtColor: t.textColor,
         bgColor: t.backgroundColor,
         E: e[t._id],
@@ -69,6 +70,7 @@ Template.postTotals.helpers({
 
     results.insert({
       code: 'Tot',
+      title: 'Total',
       txtColor: '#fff',
       bgColor: '#000',
       E: e['Tot'],

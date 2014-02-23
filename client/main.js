@@ -71,6 +71,7 @@ Meteor.subscribe('employees');
 Meteor.subscribe('groups');
 Meteor.subscribe('holidays');
 Meteor.subscribe('schedules');
+Meteor.subscribe('totals');
 Meteor.subscribe('periods');
 Meteor.subscribe('roles');
 Meteor.subscribe('eventTypes');

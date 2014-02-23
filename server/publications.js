@@ -24,6 +24,10 @@ Meteor.publish('schedules', function() {
   return Schedules.find();
 });
 
+Meteor.publish('totals', function() {
+  return Totals.find();
+});
+
 Meteor.publish('periods', function() {
   return Periods.find();
 });

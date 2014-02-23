@@ -24,7 +24,7 @@
   <table>
     <tr>
       <td>
-	    <div id='external-events' style='line-height: 14px;'>
+	    <div id='external-events' style='line-height: 14px; width: 670px;'>
 	  	  <!-- <h4>Events</h4> -->
 		  <table>
 		    <tr style='vertical-align: top;'>
@@ -32,15 +32,15 @@
   	    	    <td>
   	    	      <div class='external-event eventType' 
   	    	      	   style='color: {{textColor}}; background: {{backgroundColor}}; {{selectedEventType _id}}'
-  	    	      	   id='{{_id}}'>{{code}}</div>
+  	    	      	   id='{{_id}}' title='{{title}}'>{{code}}</div>
   	    	    </td>
 			  {{/each}}
-			  <td>&nbsp;</td>
+			  <td style='width: 99%;'>&nbsp;</td>
   	    	  <td>
-  	    	  	<div class='external-event label-day' id='genWDays'>...</div>
+  	    	  	<div class='external-event label-day' id='genWDays' style='width: 14px;' title="Generate work events"><i class="icon-play-circle"></i></div>
   	    	  </td>
   	    	  <td>
-  	    	  	<div class='external-event label-day' id='resetCal'>x</div>
+  	    	  	<div class='external-event label-day' id='resetCal' style='width: 14px;' title="Delete all events"><i class="icon-trash"></i></div>
   	    	  </td>
 		    </tr>
 		  </table>

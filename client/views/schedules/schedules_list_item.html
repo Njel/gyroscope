@@ -2,26 +2,26 @@
   <tr height="24">
     {{#if hasAccess }}
       <td>{{id}}</td>
-      <td><a href="/schedules/{{_id}}" class="details"><b>{{empFullName empId}}</b></a></td>
+      <td><a href="/schedules/{{_id}}" class="detailsBtn"><b>{{empFullName empId}}</b></a></td>
       <td>{{periodsCount}}</td>
       <td>{{hoursCount}}</td>
       <td>{{validS}}</td>
-      <td>{{validE}}
-      <td>{{status}}
+      <td>{{validE}}</td>
+      <td>{{status}}</td>
+      <td></td>
       <td style="padding: 8px 2px 8px 2px;">
+        <!-- <a href="/schedules/{{_id}}"><button class="btn btn-mini btn-primary"><i class="icon-white icon-edit"></i>&nbsp;&nbsp;Details</button></a> -->
         <a href="/schedules/{{_id}}">
-          <button class="btn btn-mini btn-primary"><i class="icon-white icon-edit"></i>&nbsp;&nbsp;Details</button>
+          <button class="btn btn-mini detailsBtn" title="Details"><i class="icon-calendar"></i></button>
         </a>
       </td>
       <td style="padding: 8px 2px 8px 2px;">
-        <a href="">
-          <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button>
-        </a>
+        <!-- <a href=""><button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button></a> -->
+        <a href=""><button class="btn btn-mini editBtn" title="Edit"><i class="icon-edit"></i></button></a>
       </td>
       <td style="padding: 8px 2px 8px 2px;">
-        <a href="">
-          <button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button>
-        </a>
+        <!-- <a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button></a> -->
+        <a href=""><button class="btn btn-mini deleteBtn" title="Delete"><i class="icon-trash"></i></button></a>
       </td>
     {{else}}
       <td>{{id}}</td>

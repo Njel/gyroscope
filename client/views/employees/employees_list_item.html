@@ -15,21 +15,32 @@
     <!-- <td>{{AL}}</td> -->
     <!-- <td>{{SL}}</td> -->
     {{#if hasAccess }}
+      <!-- <td style="padding: 8px 2px 8px 2px; width: 72px;"> -->
+      <td style="padding: 8px 2px 8px 2px;">
+        <a href="/folder/{{_id}}">
+          <button class="btn btn-mini folder" title='Folder'><i class="icon-folder-open"></i></button>
+        </a>
+      </td>
       <td style="padding: 8px 2px 8px 2px;">
         {{#if hasActiveSchedule}}
         <a href="/schedules/{{activeScheduleId}}">
-          <button class="btn btn-mini btn-primary" {{hasActiveSchedule}}><i class="icon-white icon-edit"></i>&nbsp;&nbsp;Schedule</button>
+          <!-- <button class="btn btn-mini btn-primary" {{hasActiveSchedule}}><i class="icon-white icon-calendar"></i>&nbsp;&nbsp;Schedule</button> -->
+          <!-- <button class="btn btn-mini btn-primary" title='Schedule' {{hasActiveSchedule}}><i class="icon-white icon-calendar"></i></button> -->
+          <button class="btn btn-mini schedule" title='Schedule' {{hasActiveSchedule}}><i class="icon-calendar"></i></button>
         </a>
         {{/if}}
       </td>
+      <!-- <td style="padding: 8px 2px 8px 2px; width: 51px;"> -->
       <td style="padding: 8px 2px 8px 2px;">
         <a href="">
-          <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button>
+          <!-- <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button> -->
+          <button class="btn btn-mini edit" title='Edit'><i class="icon-edit edit"></i></button>
         </a>
       </td>
       <td style="padding: 8px 2px 8px 2px;">
         <a href="">
-          <button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button>
+          <!-- <button class="btn btn-mini btn-danger delete" title='Delete'><i class="icon-white icon-remove delete"></i></button> -->
+          <button class="btn btn-mini delete" title='Delete'><i class="icon-trash delete"></i></button>
         </a>
       </td>
     {{else}}

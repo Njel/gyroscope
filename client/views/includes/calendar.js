@@ -67,7 +67,8 @@ Template.calendar.events({
                   postId: post._id,
                   start: D + 'T' + p.start + ':00.000Z',
                   end: D + 'T' + p.end + ':00.000Z',
-                  hours: p.hours,
+                  duration: p.hours,
+                  unit: 'h',
                   type: type._id,
                   title: type.code,
                   status: 'new',
@@ -134,7 +135,7 @@ Template.calendar.rendered = function() {
       currEvents.forEach(function(e) {
         var start = new Date(e.start);
         var end = new Date(e.end);
-        var h = (end - start) / 1000 / 60 / 60;
+        // var h = (end - start) / 1000 / 60 / 60;
         var eType = EventTypes.findOne(e.type);
         events.push({
           id: e._id,
@@ -144,7 +145,7 @@ Template.calendar.rendered = function() {
           end: end,
           // start: e.start,
           // end: e.end,
-          title: eType.code + ' - ' + h + ' h',
+          title: eType.code + ' - ' + e.duration + ' ' + e.unit,
           textColor: eType.textColor,
           borderColor: eType.borderColor,
           backgroundColor: eType.backgroundColor,
@@ -272,15 +273,20 @@ Template.calendar.rendered = function() {
       // assign it the date that was reported
       copiedEventObject.start = date;
 
-     
+      var eType = EventTypes.findOne(copiedEventObject.id);
+      var d = 4.0;
+      if (eType.unit =='d')
+        d = 0.5;
+
       // var currUser = Meteor.user();
       var ev = {
         postId: Session.get('currentPostId'),
         // userId: currUser._id,
         // author: currUser.username,
         start: date.toISOString(),
-        end: moment(date).add('hour', 2).toISOString(),
-        hours: 2,
+        end: moment(date).add('h', d).toISOString(),
+        hours: d,
+        unit: eType.unit,
         type: copiedEventObject.id,
         title: copiedEventObject.title,
         status: 'new',

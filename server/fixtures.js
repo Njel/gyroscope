@@ -257,50 +257,60 @@ if (Posts.find().count() === 0) {
   var W = EventTypes.insert({
     title: 'Work',
     code: 'W',
+    unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#468847',
-    defaultDuration: 4,
+    defaultDuration: 1,
+    allDay: false,
     active: true
   });
 
   var A = EventTypes.insert({
     title: 'Annual Leave',
     code: 'A',
+    unit: 'd',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#5CC65E',
-    defaultDuration: 4,
+    defaultDuration: 1.0,
+    allDay: true,
     active: true
   });
 
   var X = EventTypes.insert({
     title: 'Extra',
     code: 'X',
+    unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#aaa',
     defaultDuration: 1,
+    allDay: false,
     active: true
   });
 
   var R = EventTypes.insert({
     title: 'Recup',
     code: 'R',
+    unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#3366CC',
     defaultDuration: 1,
+    allDay: false,
     active: true
   });
 
   var S = EventTypes.insert({
     title: 'Sick Leave',
     code: 'S',
+    unit: 'd',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#b00',
-    defaultDuration: 4,
+    defaultDuration: 1.0,
+    allDay: true,
     active: true
   });
 
@@ -317,7 +327,7 @@ if (Posts.find().count() === 0) {
     reviewed: null,
     reviewer: null,
     daysCount: daysInMonth(2014, 1),
-    eventsCount: 2,
+    eventsCount: 1,
     createdBy: adminId,
     created: new Date().toISOString(),
     modifiedBy: adminId,
@@ -330,14 +340,15 @@ if (Posts.find().count() === 0) {
     // start: moment(new Date(2014, 0, 1, 8, 0)),
     // end: moment(new Date(2014, 0, 1, 12, 0)),
     start: '2014-01-01T13:00:00.000Z',
-    end: '2014-01-01T17:00:00.000Z',
+    end: '2014-01-01T21:30:00.000Z',
     // start: new Date(2014, 0, 1, 8, 0),
     // end: new Date(2014, 0, 1, 12, 0),
-    hours: 4,
-    allDay: false,
+    duration: 1.0,
+    unit: 'd',
     type: A,
     title: '1st DoY (AM)',
     status: 'pending',
+    allDay: true,
     submitted: now,
     approved: null,
     approver: null,
@@ -349,29 +360,13 @@ if (Posts.find().count() === 0) {
     modified: new Date().toISOString()
   });
 
-  Events.insert({
-    postId: firstPostId,
-    userId: emp01Id,
-    // start: moment(new Date(2014, 0, 1, 13, 0)),
-    // end: moment(new Date(2014, 0, 1, 16, 30)),
-    start: '2014-01-01T18:00:00.000Z',
-    end: '2014-01-01T21:30:00.000Z',
-    // start: new Date(2014, 0, 1, 13, 0),
-    // end: new Date(2014, 0, 1, 16, 30),
-    hours: 3.5,
-    allDay: false,
+  Totals.insert({
+    empId: emp01Id,
+    year: 2014,
+    month: 1,
     type: A,
-    title: '1st DoY (PM)',
-    status: 'pending',
-    submitted: now,
-    approved: null,
-    approver: null,
-    reviewed: null,
-    reviewer: null,
-    createdBy: adminId,
-    created: new Date().toISOString(),
-    modifiedBy: adminId,
-    modified: new Date().toISOString()
+    unit: 'd',
+    value: 1.0
   });
 
   Posts.insert({

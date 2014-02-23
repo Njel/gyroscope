@@ -36,7 +36,7 @@ Meteor.methods({
 
     var d = new Date().toISOString();
 
-    ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'hours', 'type', 'title', 'status', 'allDay'), {
+    ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'duration', 'unit', 'type', 'title', 'status', 'allDay'), {
       // start: moment(new Date(eventAttributes.start)),
       // end: moment(new Date(eventAttributes.end)),
       // start: new Date(eventAttributes.start).toISOString(),
@@ -62,6 +62,25 @@ Meteor.methods({
     // now create a notification, informing the user that there's been a event
     // createEventNotification(ev);
 
+    post = Posts.findOne(eventAttributes.postId);
+    tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+    if (tot)
+      Totals.update(tot._id, {$inc: {value: eventAttributes.duration}, $set: {modifiedBy: user._id, modified: d}});
+    else
+      Totals.insert({
+        empId: post.empId,
+        year: post.year,
+        month: post.month,
+        type: eventAttributes.type,
+        unit: eventAttributes.unit,
+        value: eventAttributes.duration,
+        createdBy: user._id,
+        created: d,
+        modifiedBy: user._id,
+        modified: d
+      });
+
+
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
 
@@ -83,6 +102,7 @@ Meteor.methods({
     var ev = Events.findOne(eventAttributes.eventId);
 
     if (ev) {
+      prevDuration = ev.duration;
       Events.update(
         ev._id, {
           $set: {
@@ -92,7 +112,7 @@ Meteor.methods({
             // end: moment(eventAttributes.end, 'MM/DD/YYYY HH:mm')
             start: eventAttributes.start,
             end: eventAttributes.end,
-            hours: eventAttributes.hours,
+            duration: eventAttributes.duration,
             modifiedBy: user._id,
             modified: new Date().toISOString()
           }
@@ -105,6 +125,10 @@ Meteor.methods({
           }
         }
       );
+      post = Posts.findOne(ev.postId);
+      tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+      if (tot)
+        Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -121,6 +145,7 @@ Meteor.methods({
     var ev = Events.findOne(eventAttributes.eventId);
 
     if (ev) {
+      prevDuration = ev.duration;
       Events.update(
         ev._id, {
           $set: {
@@ -128,7 +153,7 @@ Meteor.methods({
             // end: moment(eventAttributes.end, 'MM/DD/YYYY HH:mm')
             start: eventAttributes.start,
             end: eventAttributes.end,
-            hours: eventAttributes.hours,
+            duration: eventAttributes.duration,
             modifiedBy: user._id,
             modified: new Date().toISOString()
           }
@@ -141,6 +166,12 @@ Meteor.methods({
           }
         }
       );
+      if (prevDuration != eventAttributes.duration) {
+        post = Posts.findOne(ev.postId);
+        tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
+        if (tot)
+          Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
+      }
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -164,6 +195,11 @@ Meteor.methods({
 
       }
     });
+
+    post = Posts.findOne(ev.postId);
+    tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+    if (tot)
+      Totals.update(tot._id, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
 
     // update the post with the number of events
     Posts.update(ev.postId, {$inc: {eventsCount: -1}});

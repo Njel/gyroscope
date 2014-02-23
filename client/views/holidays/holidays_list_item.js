@@ -37,17 +37,17 @@ Template.holidaysListItem.rendered = function() {
 };
 
 Template.holidaysListItem.events({
-  'click .edit': function(event) {
+  'click .editBtn': function(event) {
     // console.log('Edit Holiday click (' + this._id + ')');
   	event.preventDefault();
     Session.set('selectedHoliday', this._id);
     Session.set('showDialogHoliday', true);
   	// Meteor.call('edit', this._id);
   },
-  'click .details': function(event) {
+  'click .detailsBtn': function(event) {
     console.log('Holiday Date click (' + this._id + ')');
   },
-  'click .delete': function(event) {
+  'click .deleteBtn': function(event) {
     // console.log('Holiday Delete click (' + this._id + ')');
     event.preventDefault();
     Session.set('selectedHoliday', this._id);

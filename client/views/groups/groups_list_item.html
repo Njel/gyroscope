@@ -1,19 +1,17 @@
 <template name="groupsListItem">
       <tr height="24">
         <td>{{id}}</td>
-        <td><a href="" class="details"><b>{{name}}</b></a></td>
+        <td><a href="" class="editBtn"><b>{{name}}</b></a></td>
         <td>{{nbEmpInGroup _id}}</td>
         <td></td>
         {{#if hasAccess}}
           <td style="padding: 8px 2px 8px 2px;">
-            <a href="">
-              <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button>
-            </a>
+            <!-- <a href=""><button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button></a> -->
+            <a href=""><button class="btn btn-mini editBtn" title="Edit"><i class="icon-edit"></i></button></a>
           </td>
           <td style="padding: 8px 2px 8px 2px;">
-            <a href="">
-              <button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button>
-            </a>
+            <!-- <a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button></a> -->
+            <a href=""><button class="btn btn-mini deleteBtn" title="Delete"><i class="icon-trash"></i></button></a>
           </td>
         {{else}}
           <td colspan="2">&nbsp;</td>
