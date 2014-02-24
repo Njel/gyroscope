@@ -201,7 +201,7 @@ if (Posts.find().count() === 0) {
     modified: new Date().toISOString()
   });
 
-  Periods.insert({
+  var ThursdayAM = Periods.insert({
     schId: scheduleId,
     day: 4,               // Thursday
     start: '13:00',       // From: 8:00
@@ -257,11 +257,11 @@ if (Posts.find().count() === 0) {
   var W = EventTypes.insert({
     title: 'Work',
     code: 'W',
-    unit: 'h',
+    unit: 'p',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#468847',
-    defaultDuration: 1,
+    defaultDuration: 0,
     allDay: false,
     active: true
   });
@@ -269,12 +269,12 @@ if (Posts.find().count() === 0) {
   var A = EventTypes.insert({
     title: 'Annual Leave',
     code: 'A',
-    unit: 'd',
+    unit: 'p',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#5CC65E',
-    defaultDuration: 1.0,
-    allDay: true,
+    defaultDuration: 0,
+    allDay: false,
     active: true
   });
 
@@ -305,12 +305,12 @@ if (Posts.find().count() === 0) {
   var S = EventTypes.insert({
     title: 'Sick Leave',
     code: 'S',
-    unit: 'd',
+    unit: 'p',
     textColor: '#fff',
     borderColor: '#000',
     backgroundColor: '#b00',
-    defaultDuration: 1.0,
-    allDay: true,
+    defaultDuration: 0,
+    allDay: false,
     active: true
   });
 
@@ -339,16 +339,17 @@ if (Posts.find().count() === 0) {
     empId: emp01Id,
     // start: moment(new Date(2014, 0, 1, 8, 0)),
     // end: moment(new Date(2014, 0, 1, 12, 0)),
-    start: '2014-01-01T13:00:00.000Z',
-    end: '2014-01-01T21:30:00.000Z',
+    start: '2014-01-02T13:00:00.000Z',
+    end: '2014-01-02T17:00:00.000Z',
     // start: new Date(2014, 0, 1, 8, 0),
     // end: new Date(2014, 0, 1, 12, 0),
-    duration: 1.0,
-    unit: 'd',
+    duration: 4.0,
+    unit: 'h',
+    period: ThursdayAM,
     type: A,
-    title: '1st DoY (AM)',
+    title: 'A',
     status: 'pending',
-    allDay: true,
+    allDay: false,
     submitted: now,
     approved: null,
     approver: null,
@@ -365,8 +366,8 @@ if (Posts.find().count() === 0) {
     year: 2014,
     month: 1,
     type: A,
-    unit: 'd',
-    value: 1.0
+    unit: 'h',
+    value: 4.0
   });
 
   Posts.insert({

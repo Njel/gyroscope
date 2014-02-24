@@ -29,6 +29,7 @@ Session.setDefault('showDialogCalPeriod', false);
 
 Session.setDefault('lastCalEventMod', null);
 Session.setDefault('selectedCalEvent', null);
+Session.setDefault('selectedCalEventType', null);
 Session.setDefault('selectedCalDateStart', null);
 Session.setDefault('selectedCalDateEnd', null);
 Session.setDefault('showDialogCalEvent', false);

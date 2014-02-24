@@ -6,17 +6,15 @@ Template.event.helpers({
 	  	return moment(new Date(e.start)).format('HH:mm') + ' - ' + moment(new Date(e.end)).format('HH:mm');
 	  }
 	},
-  calcHours: function(e) {
-    var start = new Date(e.start);
-    var end = new Date(e.end);
-    return ((end - start) / 1000 / 60 / 60) + ' hour(s)';
+  eventType: function(t) {
+    return EventTypes.findOne(t);
   }
 });
 
 Template.event.events({
   'click .delete': function(event) {
     event.preventDefault();
-    var ev = {eventId: this._id};
+    var ev = {eventId: this._id, type: this.type};
 
     //Meteor.call('eventDel', this._id);
     Meteor.call('eventDel', ev, function(error, eventId) {

@@ -36,7 +36,7 @@ Meteor.methods({
 
     var d = new Date().toISOString();
 
-    ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'duration', 'unit', 'type', 'title', 'status', 'allDay'), {
+    ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'duration', 'unit', 'period', 'type', 'title', 'status', 'allDay'), {
       // start: moment(new Date(eventAttributes.start)),
       // end: moment(new Date(eventAttributes.end)),
       // start: new Date(eventAttributes.start).toISOString(),
@@ -62,10 +62,10 @@ Meteor.methods({
     // now create a notification, informing the user that there's been a event
     // createEventNotification(ev);
 
-    post = Posts.findOne(eventAttributes.postId);
-    tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+    var post = Posts.findOne(eventAttributes.postId);
+    var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
     if (tot)
-      Totals.update(tot._id, {$inc: {value: eventAttributes.duration}, $set: {modifiedBy: user._id, modified: d}});
+      Totals.update(tot._id, {$inc: {value: parseFloat(eventAttributes.duration)}, $set: {modifiedBy: user._id, modified: d}});
     else
       Totals.insert({
         empId: post.empId,
@@ -99,6 +99,8 @@ Meteor.methods({
     // if (!eventAttributes.title)
     //   throw new Meteor.Error(422, 'Please write some content');
 
+    var d = new Date().toISOString();
+
     var ev = Events.findOne(eventAttributes.eventId);
 
     if (ev) {
@@ -106,6 +108,7 @@ Meteor.methods({
       Events.update(
         ev._id, {
           $set: {
+            period: eventAttributes.period,
             type: eventAttributes.type,
             title: eventAttributes.title,
             // start: moment(eventAttributes.start, 'MM/DD/YYYY HH:mm'),
@@ -114,7 +117,7 @@ Meteor.methods({
             end: eventAttributes.end,
             duration: eventAttributes.duration,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
+            modified: d
           }
         }, function(error) {
           if (error) {
@@ -125,8 +128,8 @@ Meteor.methods({
           }
         }
       );
-      post = Posts.findOne(ev.postId);
-      tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+      var post = Posts.findOne(ev.postId);
+      var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
       if (tot)
         Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
     }
@@ -141,6 +144,8 @@ Meteor.methods({
     // ensure the user is logged in
     if (!user)
       throw new Meteor.Error(401, "You need to login to move events");
+
+    var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
 
@@ -167,8 +172,8 @@ Meteor.methods({
         }
       );
       if (prevDuration != eventAttributes.duration) {
-        post = Posts.findOne(ev.postId);
-        tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
+        var post = Posts.findOne(ev.postId);
+        var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
         if (tot)
           Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
       }
@@ -185,6 +190,8 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to delete events");
 
+    var d = new Date().toISOString();
+
     var ev = Events.findOne(eventAttributes.eventId);
 
     Events.remove(ev._id, function(error) {
@@ -196,8 +203,8 @@ Meteor.methods({
       }
     });
 
-    post = Posts.findOne(ev.postId);
-    tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+    var post = Posts.findOne(ev.postId);
+    var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
     if (tot)
       Totals.update(tot._id, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
 

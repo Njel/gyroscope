@@ -2,26 +2,61 @@
   <div id="eventDialog" class="modal">
     {{#with evt}}
       <div class="modal-header">
-        <a class="close" data-dismiss="modal">x</a>
+        <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
+          <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
+        </a>
         {{#if selectedCalEvent}}
         	<h3>Update Event</h3>
+          <a style="float: right; margin-right: 320px; margin-top: -26px;" href="">
+            <button class="btn btn-mini btn-danger deleteBtn" syle="width: 12px; padding: 0px 0px 0px 0px;" title="Delete">
+              <i class="icon-white icon-trash"></i>
+            </button>
+          </a>
         {{else}}
           <h3>Add Event</h3>
         {{/if}}
       </div>
       <div class="modal-body">
         <label for="type">Type <span style="color: red">*</span></label>
-        <select type="text" name="type" value="{{type}}" id="type">
+        <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb">
           {{#each eventTypes}}
-            <option value='{{_id}}'text='{{code}}'{{selectedValue evt.type _id}}>{{code}} - {{title}}</option>
+            <option value='{{_id}}' text='{{code}}'{{selectedValue _id evt.type}}>{{code}} - {{title}}</option>
           {{/each}}
         </select>
         <label for="title">Title</label>
-        <input type="text" name="title" value="{{title}}" id="title">
-        <label for="title">From <span style="color: red">*</span></label>
-        <input type="text" name="from" value="{{dateTimeFormat start}}" id="from">
-        <label for="title">To <span style="color: red">*</span></label>
-        <input type="text" name="to" value="{{dateTimeFormat end}}" id="to">
+        <input style="width: 360px;" type="text" name="title" value="{{title}}" id="title">
+        <table>
+          <tr>
+            <td style="padding-right: 8px;">
+              <label for="date">Date <span style="color: red">*</span></label>
+              <input style="width: 80px;" type="text" name="date" value="{{dateFormat start}}" id="date">
+            </td>
+            {{#if byPeriod}}
+              <td style="padding-right: 8px;">
+                <label for="duration">Duration <span style="color: red">*</span></label>
+                <select style="width: 128px;" type="text" name="period" value="" id="period">
+                  <option value='allDay' text='All Day'>All Day</option>
+                  {{#each periods this}}
+                    <option value='{{_id}}' text='{{start}} - {{end}}'{{selectedValue _id evt.period}}>{{start}} - {{end}}</option>
+                  {{/each}}
+                </select>
+              </td>
+            {{else}}
+              <td style="padding-right: 8px;">
+                <label for="from">From <span style="color: red">*</span></label>
+                <input style="width: 40px;" type="text" name="from" value="{{timeFormat start}}" id="from" class="from">
+              </td>
+              <td style="padding-right: 8px;">
+                <label for="to">To <span style="color: red">*</span></label>
+                <input style="width: 40px;" type="text" name="to" value="{{timeFormat end}}" id="to" class="to">
+              </td>
+              <td style="padding-right: 8px;">
+                <label for="duration">Duration</label>
+                <input style="width: 32px; text-align: right;" type="text" name="duration" value="{{duration}}" id="duration" class="duration"><span> {{unit}}</span>
+              </td>
+            {{/if}}
+          </tr>
+        </table>
       </div>
       <div class="modal-footer">
         {{#if selectedCalEvent}}
@@ -31,7 +66,7 @@
                   Created at {{dateTimeFormat created}} by {{userName createdBy}}<br />
                   Last modified at {{dateTimeFormat modified}} by {{userName modifiedBy}}
                 </td>
-                <td style="width: 160px;">
+                <td style="width: 200px;">
                   <a href="" class="btn btn-success save">Save</a>
                   <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
                 </td>

@@ -1,24 +1,22 @@
 <template name="event">
-    <div >
-   	  <div class="post-content">
-   	  	<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px;" class="author">
+  <div>
+    <div class="post-content">
+      <table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px;" class="author">
    	  	<tr>
-   	  	<td style="width: 64px;"><b>{{dateFormat start}}</b></td>
-	    <td style="text-align: center; width: 10px;">|</td>
-	    <td style="text-align: center; width: 16px;">{{eventTypeCode type}}</td>
-	    <td style="text-align: center; width: 10px;">|</td>
-	    <td style="text-align: center; width: 72px;">{{period this}}</td>
-	    <td style="text-align: center; width: 10px;">|</td>
-	    <td style="text-align: right; width: 70px;">{{duration}} {{unit}}</td>
-	    <td style="width: 6px;"></td>
-	    <td style="width: 68px;">
-	      <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
-	    </td>
-	    <td>
-  	    <a href="{{postPagePath this}}" class="delete btn btn-danger btn-mini">x</a>
-  	    </td>
+		  {{#with eventType type}}
+	        <td style="text-align: center; width: 18px; background-color: {{backgroundColor}}; color: {{textColor}};">{{code}}</td>
+		  {{/with}}
+   	  	  <td style="width: 64px; padding: 0px 4px 0px 8px;"><a href="" class="editEventBtn"><b>{{dateFormat start}}</b></a></td>
+	      <td style="text-align: center; width: 74px; border-left: 1px solid black; padding: 0px 4px 0px 4px;">{{period this}}</td>
+	      <td style="text-align: right; width: 48px; border-left: 1px solid black; padding: 0px 4px 0px 0px;">{{duration}} {{unit}}</td>
+	      <td style="width: 112px; border-left: 1px solid black; padding: 0px 0px 0px 4px;">
+	        <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
+	      </td>
+	      <td style="padding: 0px 0px 0px 0px;">
+  	        <a href="{{postPagePath this}}"><button class="btn btn-danger btn-mini delete" style="padding: 0px 3px 0px 2px;"><i class="icon-white icon-trash" title="Delete"></i></button></a>
+  	      </td>
 	    </tr>
-	    </table>
-	  </div>
-    </div>
+	  </table>
+	</div>
+  </div>
 </template>
