@@ -24,9 +24,8 @@ Template.calendar.events({
     Session.set('selectedEventType', evt.toElement.id);
   },
   'click #resetCal': function(evt, tmpl) {
+    // console.log('Reset Calendar');
     evt.preventDefault();
-    console.log('Reset Calendar');
-
     currEvents = Events.find({postId: Session.get('currentPostId')});
     currEvents.forEach(function(e) {
       var ev = {eventId: e._id};
@@ -192,44 +191,244 @@ Template.calendar.rendered = function() {
     // timezone: 'America/New_York',
 	  // contentHeight: 600,
     select: function(start, end, allDay, jsEvent, view) {
+      // console.log('select');
+
       calendar.fullCalendar('unselect');
-      Session.set('calStartDate', start);
-      Session.set('calMonthView', view.name);
-      Session.set('selectedCalDateStart', start);
-      Session.set('selectedCalDateEnd', end);
-      Session.set('selectedCalEventType', Session.get('selectedEventType'));
-      Session.set('showDialogCalEvent', true);
+
+      var type = EventTypes.findOne(Session.get('selectedEventType'));
+      if (type.unit == 'h') {
+        var sD = moment(start);
+        var D = sD.toISOString().substring(0,10);
+        var H = sD.toISOString().substring(11,16); // 2014-01-02T17:00:00.000Z
+        var post = Posts.findOne(Session.get('currentPostId'));
+        var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
+        if (s) {
+          if (allDay) {
+            var pId = 'allDay';
+            var date = sD;
+            var d = type.defaultDuration;
+          } else {
+            var pId = '';
+            var date = sD;
+            var eD = moment(end);
+            var d = (eD - sD) / 1000 / 60 / 60;
+          }
+
+          var calEvent = {
+            postId: post._id,
+            start: date.toISOString(),
+            end: moment(date).add('h', d).toISOString(),
+            duration: d,
+            unit: 'h',
+            period: pId,
+            type: type._id,
+            title: type.code,
+            status: 'new',
+            allDay: type.allDay,
+            textColor: type.textColor,
+            borderColor: type.borderColor,
+            backgroundColor: type.backgroundColor,
+            typeUnit: type.unit
+          };
+        } else {
+          return false;
+        }
+      } else {
+        var d0 = moment(start);
+        var D = d0.toISOString().substring(0,10);
+        var H = d0.toISOString().substring(11,16); // 2014-01-02T17:00:00.000Z
+        var post = Posts.findOne(Session.get('currentPostId'));
+        var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
+        if (s) {
+          if (allDay) {
+            var d = type.defaultDuration;
+            var calEvent = {
+              postId: post._id,
+              start: d0.toISOString(),
+              end: moment(d0).add('h', d).toISOString(),
+              duration: d,
+              unit: 'h',
+              period: 'allDay',
+              type: type._id,
+              title: type.code,
+              status: 'new',
+              allDay: type.allDay,
+              textColor: type.textColor,
+              borderColor: type.borderColor,
+              backgroundColor: type.backgroundColor,
+              typeUnit: type.unit
+            };
+          } else {
+            var p = Periods.findOne({schId: s._id, day: d0.day(), start: {$lte: H}, end: {$gt: H}});
+            if (p) {
+              var date = new Date(D + 'T' + p.start + ':00.000Z');
+              var d = p.hours;
+              var calEvent = {
+                postId: Session.get('currentPostId'),
+                start: date.toISOString(),
+                end: moment(date).add('h', d).toISOString(),
+                duration: d,
+                unit: 'h',
+                period: p._id,
+                type: type._id,
+                title: type.code,
+                status: 'new',
+                allDay: type.allDay,
+                textColor: type.textColor,
+                borderColor: type.borderColor,
+                backgroundColor: type.backgroundColor,
+                typeUnit: type.unit
+              };
+            } else {
+              // var calEvent = null;
+              return false;
+            }
+          }
+        } else {
+          // var calEvent = null;
+          return false;
+        }
+      }
+      if (calEvent) {
+        // console.log(calEvent);
+        // Session.set('calStartDate', new Date(date));
+        Session.set('calEvent', calEvent);
+        Session.set('calOperation', 'Add');
+        Session.set('calEventUnit', calEvent.typeUnit);
+
+        Session.set('calStartDate', start);
+        Session.set('calMonthView', view.name);
+        // Session.set('selectedCalAllDay', allDay);
+        // Session.set('selectedCalDateStart', start);
+        // Session.set('selectedCalDateEnd', end);
+        // Session.set('selectedCalEventType', Session.get('selectedEventType'));
+        Session.set('showDialogCalEvent', true);
+      }
     },
-    dayClick: function(date, allDay, jsEvent, view) {
-    // dayClick: function(date, jsEvent, view) {
-      // Session.set('calStartDate', new Date(date));
-      Session.set('calStartDate', date);
-      Session.set('calMonthView', view.name);
-      Session.set('selectedCalDateStart', date);
-      Session.set('selectedCalDateEnd', date);
-      Session.set('selectedCalEventType', Session.get('selectedEventType'));
-      Session.set('showDialogCalEvent', true);
-  	},
+   //  dayClick: function(date, allDay, jsEvent, view) {
+   //  // dayClick: function(date, jsEvent, view) {
+   //    console.log('dayClick');
+
+   //    var type = EventTypes.findOne(Session.get('selectedEventType'));
+   //    var d0 = moment(date);
+   //    var D = d0.toISOString().substring(0,10);
+   //    var H = d0.toISOString().substring(11,16); // 2014-01-02T17:00:00.000Z
+   //    var post = Posts.findOne(Session.get('currentPostId'));
+   //    var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
+   //    if (s) {
+   //      if (allDay) {
+   //        var d = type.defaultDuration;
+   //        var calEvent = {
+   //          postId: Session.get('currentPostId'),
+   //          start: d0.toISOString(),
+   //          end: moment(d0).add('h', d).toISOString(),
+   //          duration: d,
+   //          unit: 'h',
+   //          period: 'allDay',
+   //          type: type._id,
+   //          title: type.code,
+   //          status: 'new',
+   //          allDay: type.allDay,
+   //          textColor: type.textColor,
+   //          borderColor: type.borderColor,
+   //          backgroundColor: type.backgroundColor
+   //        };
+   //      } else {
+   //        var p = Periods.findOne({schId: s._id, day: d0.day(), start: {$lte: H}, end: {$gte: H}});
+   //        if (p) {
+   //          var date = new Date(D + 'T' + p.start + ':00.000Z');
+   //          var d = p.hours;
+   //          var calEvent = {
+   //            postId: Session.get('currentPostId'),
+   //            start: date.toISOString(),
+   //            end: moment(date).add('h', d).toISOString(),
+   //            duration: d,
+   //            unit: 'h',
+   //            period: p._id,
+   //            type: type._id,
+   //            title: type.code,
+   //            status: 'new',
+   //            allDay: type.allDay,
+   //            textColor: type.textColor,
+   //            borderColor: type.borderColor,
+   //            backgroundColor: type.backgroundColor
+   //          };
+   //        } else {
+   //          var calEvent = null;
+   //        }
+   //      }
+   //    } else {
+   //      var calEvent = null;
+   //    }
+   //    if (calEvent) {
+   //      // console.log(calEvent);
+   //      // Session.set('calStartDate', new Date(date));
+   //      Session.set('calEvent', calEvent);
+   //      Session.set('calOperation', 'Add');
+   //
+   //      Session.set('calStartDate', date);
+   //      Session.set('calMonthView', view.name);
+   //      Session.set('selectedCalAllDay', allDay);
+   //      Session.set('selectedCalDateStart', date);
+   //      Session.set('selectedCalDateEnd', date);
+   //      Session.set('selectedCalEventType', Session.get('selectedEventType'));
+   //      Session.set('showDialogCalEvent', true);
+   //    }
+  	// },
   	eventClick: function(evt, jsEvent, view) {
       // console.log(evt);
       if (evt.url)
         return false;
-      Session.set('calStartDate', evt.start);
-      Session.set('calMonthView', view.name);
-      Session.set('selectedCalEvent', evt.id);
-      Session.set('selectedCalEventType', evt.type);
-      Session.set('showDialogCalEvent', true);
+
+      var e = Events.findOne(evt.id);
+      if (e) {
+        var dateTimeFormat = Settings.findOne({name: 'DateTimeFormat'}).value;
+        var type = EventTypes.findOne(e.type);
+        var calEvent = {
+          _id: e._id,
+          postId: e.postId,
+          start: moment(new Date(e.start)).format(dateTimeFormat),
+          end: moment(new Date(e.end)).format(dateTimeFormat),
+          duration: e.duration,
+          unit: e.unit,
+          period: e.period,
+          type: e.type,
+          title: e.title,
+          status: e.status,
+          allDay: e.allDay,
+          createdBy: e.createdBy,
+          created: new Date(e.created),
+          modifiedBy: e.modifiedBy,
+          modified: new Date(e.modified),
+          textColor: type.textColor,
+          borderColor: type.borderColor,
+          backgroundColor: type.backgroundColor,
+          typeUnit: type.unit
+        }
+
+        Session.set('calEvent', calEvent);
+        Session.set('calOperation', 'Update');
+        Session.set('calEventUnit', calEvent.typeUnit);
+
+        Session.set('calStartDate', evt.start);
+        Session.set('calMonthView', view.name);
+        // Session.set('selectedCalEvent', evt.id);
+        // Session.set('selectedCalEventType', evt.type);
+        Session.set('showDialogCalEvent', true);
+      } else {
+        return false;
+      }
   	},
     // eventDrop: function(evt, revertFunc, jsEvent, ui, view) {
     eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
       var currUser = Meteor.user();
       var start = new Date(evt.start);
       var end = new Date(evt.end);
-      var hours = (end - start) / 1000 / 60 / 60;
+      var d = (end - start) / 1000 / 60 / 60;
       var ev = {
         eventId: evt.id,
         start: start.toISOString(),
-        hours: hours,
+        duration: d,
         end: end.toISOString()
       };
 
@@ -252,7 +451,7 @@ Template.calendar.rendered = function() {
         eventId: evt.id,
         start: start.toISOString(),
         end: end.toISOString(),
-        hours: hours
+        duration: hours
       };
 
       Meteor.call('eventMove', ev, function(error, eventId) {
@@ -279,97 +478,215 @@ Template.calendar.rendered = function() {
       copiedEventObject.start = date;
 
       var type = EventTypes.findOne(copiedEventObject.id);
-      if (type.unit =='p') {
+      if (type.unit == 'p') {
         if (allDay) {
           var d0 = moment(date);
-          var D = d0.toISOString().substring(0,10);
+          var D = d0.toISOString().substring(0, 10);
           var post = Posts.findOne(Session.get('currentPostId'));
           var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
           if (s) {
             var periods = Periods.find({schId: s._id, day: d0.day()});
             periods.forEach(function(p) {
-              var ev = {
-                postId: post._id,
-                start: D + 'T' + p.start + ':00.000Z',
-                end: D + 'T' + p.end + ':00.000Z',
-                duration: p.hours,
-                unit: 'h',
-                period: p._id,
-                type: type._id,
-                title: type.code,
-                status: 'new',
-                allDay: false,
-                textColor: type.textColor,
-                borderColor: type.borderColor,
-                backgroundColor: type.backgroundColor
-              };
-              Meteor.call('eventNew', ev, function(error, eventId) {
-                error && throwError(error.reason);
-              });
+              var where = "this.start.substring(0, 10) == '" + D + "'";
+              var e = Events.findOne({postId: Session.get('currentPostId'), period: p._id, $where: where});
+              if (e) {
+                var ev = {
+                  eventId: e._id,
+                  type: type._id
+                };
+
+                Meteor.call('eventRpl', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              } else {
+                var ev = {
+                  postId: post._id,
+                  start: D + 'T' + p.start + ':00.000Z',
+                  end: D + 'T' + p.end + ':00.000Z',
+                  duration: p.hours,
+                  unit: 'h',
+                  period: p._id,
+                  type: type._id,
+                  title: type.code,
+                  status: 'new',
+                  allDay: false,
+                  textColor: type.textColor,
+                  borderColor: type.borderColor,
+                  backgroundColor: type.backgroundColor,
+                  typeUnit: type.unit
+                };
+
+                Meteor.call('eventNew', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              }
             });
           }
         } else {
           var d0 = moment(date);
-          var D = d0.toISOString().substring(0,10);
-          var H = d0.toISOString().substring(11,16); // 2014-01-02T17:00:00.000Z
+          var D = d0.toISOString().substring(0, 10);
+          var H = d0.toISOString().substring(11, 16); // 2014-01-02T17:00:00.000Z
           var post = Posts.findOne(Session.get('currentPostId'));
           var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
           if (s) {
-            var p = Periods.findOne({schId: s._id, day: d0.day(), start: {$lte: H}, end: {$gte: H}});
+            var p = Periods.findOne({schId: s._id, day: d0.day(), start: {$lte: H}, end: {$gt: H}});
             if (p) {
-              var pId = p._id;
-              date = new Date(D + 'T' + p.start + ':00.000Z');
-              var d = p.hours;
+              var where = "this.start.substring(0, 10) == '" + D + "'";
+              var e = Events.findOne({postId: Session.get('currentPostId'), period: p._id, $where: where});
+              if (e) {
+                var ev = {
+                  eventId: e._id,
+                  type: type._id
+                };
 
+                Meteor.call('eventRpl', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              } else {
+                var pId = p._id;
+                date = new Date(D + 'T' + p.start + ':00.000Z');
+                var d = p.hours;
+
+                var ev = {
+                  postId: Session.get('currentPostId'),
+                  // userId: currUser._id,
+                  // author: currUser.username,
+                  start: date.toISOString(),
+                  end: moment(date).add('h', d).toISOString(),
+                  duration: d,
+                  unit: 'h',
+                  period: pId,
+                  type: type._id,
+                  title: type.code,
+                  status: 'new',
+                  allDay: allDay,
+                  textColor: type.textColor,
+                  borderColor: type.borderColor,
+                  backgroundColor: type.backgroundColor,
+                  typeUnit: type.unit
+                };
+
+                Meteor.call('eventNew', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              }
+            }
+          }
+        }
+      } else {
+        var d0 = moment(date);
+        var D = d0.toISOString().substring(0, 10);
+        var H = d0.toISOString().substring(11, 16);
+
+        var where = "this.start.substring(0, 10) == '" + D + "' && this.start.substring(11, 16) <= '" + H + "' && this.end.substring(11, 16) >= '" + H + "'";
+        var e = Events.findOne({postId: Session.get('currentPostId'), $where: where});
+        if (e) {
+          var pEnd = e.end;
+          var start = new Date(e.start);
+          var end = new Date(date);
+          var d = (end - start) / 1000 / 60 / 60;
+          if (d > 0) {
+            var ev = {
+              eventId: e._id,
+              start: e.start,
+              end: date.toISOString(),
+              duration: d,
+              period: null
+            };
+
+            Meteor.call('eventMove', ev, function(error, eventId) {
+              error && throwError(error.reason);
+            });
+          } else {
+            var ev = {
+              eventId: e._id
+            };
+
+            Meteor.call('eventDel', ev, function(error, eventId) {
+              error && throwError(error.reason);
+            });
+          }
+
+          var pId = null;
+          var d = type.defaultDuration;
+          if (pEnd < moment(date).add('h', d).toISOString()) {
+            var end = pEnd;
+            var d = (new Date(end) - date) / 1000 / 60 / 60;
+          } else {
+            if (pEnd > moment(date).add('h', d).toISOString()) {
+              var start = moment(date).add('h', d);
+              var d = (new Date(pEnd) - start) / 1000 / 60 / 60;
               var ev = {
                 postId: Session.get('currentPostId'),
-                // userId: currUser._id,
-                // author: currUser.username,
-                start: date.toISOString(),
-                end: moment(date).add('h', d).toISOString(),
+                start: start.toISOString(),
+                end: pEnd,
                 duration: d,
                 unit: 'h',
-                period: pId,
-                type: type._id,
-                title: type.code,
+                period: e.period,
+                type: e.type,
+                title: e.title,
                 status: 'new',
-                allDay: allDay,
-                textColor: type.textColor,
-                borderColor: type.borderColor,
-                backgroundColor: type.backgroundColor
+                allDay: e.allDay,
+                textColor: e.textColor,
+                borderColor: e.borderColor,
+                backgroundColor: e.backgroundColor,
+                typeUnit: e.unit
               };
 
               Meteor.call('eventNew', ev, function(error, eventId) {
                 error && throwError(error.reason);
               });
+              var d = type.defaultDuration;
             }
           }
+
+          var ev = {
+            postId: Session.get('currentPostId'),
+            start: date.toISOString(),
+            end: moment(date).add('h', d).toISOString(),
+            duration: d,
+            unit: 'h',
+            period: pId,
+            type: type._id,
+            title: type.code,
+            status: 'new',
+            allDay: allDay,
+            textColor: type.textColor,
+            borderColor: type.borderColor,
+            backgroundColor: type.backgroundColor,
+            typeUnit: type.unit
+          };
+
+          Meteor.call('eventNew', ev, function(error, eventId) {
+            error && throwError(error.reason);
+          });
+        } else {
+          var pId = null;
+          var d = type.defaultDuration;
+
+          var ev = {
+            postId: Session.get('currentPostId'),
+            // userId: currUser._id,
+            // author: currUser.username,
+            start: date.toISOString(),
+            end: moment(date).add('h', d).toISOString(),
+            duration: d,
+            unit: 'h',
+            period: pId,
+            type: type._id,
+            title: type.code,
+            status: 'new',
+            allDay: allDay,
+            textColor: type.textColor,
+            borderColor: type.borderColor,
+            backgroundColor: type.backgroundColor,
+            typeUnit: type.unit
+          };
+
+          Meteor.call('eventNew', ev, function(error, eventId) {
+            error && throwError(error.reason);
+          });
         }
-      } else {
-        var pId = null;
-        var d = type.defaultDuration;
-
-        var ev = {
-          postId: Session.get('currentPostId'),
-          // userId: currUser._id,
-          // author: currUser.username,
-          start: date.toISOString(),
-          end: moment(date).add('h', d).toISOString(),
-          duration: d,
-          unit: 'h',
-          period: pId,
-          type: type._id,
-          title: type.code,
-          status: 'new',
-          allDay: allDay,
-          textColor: type.textColor,
-          borderColor: type.borderColor,
-          backgroundColor: type.backgroundColor
-        };
-
-        Meteor.call('eventNew', ev, function(error, eventId) {
-          error && throwError(error.reason);
-        });
       }
 
       // // var currUser = Meteor.user();

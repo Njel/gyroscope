@@ -5,7 +5,7 @@
         <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
           <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
         </a>
-        {{#if selectedCalEvent}}
+        {{#if isUpdate}}
         	<h3>Update Event</h3>
           <a style="float: right; margin-right: 320px; margin-top: -26px;" href="">
             <button class="btn btn-mini btn-danger deleteBtn" syle="width: 12px; padding: 0px 0px 0px 0px;" title="Delete">
@@ -18,7 +18,7 @@
       </div>
       <div class="modal-body">
         <label for="type">Type <span style="color: red">*</span></label>
-        <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb">
+        <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb" {{#if isUpdate}}disabled="disabled"{{/if}}>
           {{#each eventTypes}}
             <option value='{{_id}}' text='{{code}}'{{selectedValue _id evt.type}}>{{code}} - {{title}}</option>
           {{/each}}
@@ -35,7 +35,9 @@
               <td style="padding-right: 8px;">
                 <label for="duration">Duration <span style="color: red">*</span></label>
                 <select style="width: 128px;" type="text" name="period" value="" id="period">
-                  <option value='allDay' text='All Day'>All Day</option>
+                  {{#unless selectedCalEvent}}
+                    <option value='allDay' text='All Day'>All Day</option>
+                  {{/unless}}
                   {{#each periods this}}
                     <option value='{{_id}}' text='{{start}} - {{end}}'{{selectedValue _id evt.period}}>{{start}} - {{end}}</option>
                   {{/each}}
@@ -59,7 +61,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        {{#if selectedCalEvent}}
+        {{#if isUpdate}}
             <table>
               <tr>
                 <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">

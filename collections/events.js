@@ -86,6 +86,52 @@ Meteor.methods({
 
     return ev._id;
   },
+  eventRpl: function(eventAttributes) {
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to update events");
+
+    if (!eventAttributes.type)
+      throw new Meteor.Error(422, 'Please select a type of event');
+
+    // if (!eventAttributes.title)
+    //   throw new Meteor.Error(422, 'Please write some content');
+
+    var d = new Date().toISOString();
+
+    var ev = Events.findOne(eventAttributes.eventId);
+    var type = EventTypes.findOne(eventAttributes.type);
+
+    if (ev && type) {
+      Events.update(
+        ev._id, {
+          $set: {
+            type: type._id,
+            title: type.code,
+            textColor: type.textColor,
+            borderColor: type.borderColor,
+            backgroundColor: type.backgroundColor,
+            typeUnit: type.unit,
+            modifiedBy: user._id,
+            modified: d
+          }
+        }, function(error) {
+          if (error) {
+            // display the error to the user
+            alert(error.reason);
+          } else {
+
+          }
+        }
+      );
+    }
+    var s = Settings.findOne({name: 'lastCalEventMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
+
+    return true;
+  },
   eventUpd: function(eventAttributes) {
     var user = Meteor.user();
 
