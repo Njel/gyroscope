@@ -16,6 +16,20 @@ Template.postItem.helpers({
     }
     return false;
   },
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var currEmp = Employees.findOne({userId: currUser._id});
+      if (currEmp && currEmp.roleId == adminRole._id)
+        return true;
+    }
+    return false;
+  },
   ownPost: function() {
     return this.userId == Meteor.userId();
   },
@@ -65,5 +79,25 @@ Template.postItem.events({
   'click .upvoteable': function(event) {
   	event.preventDefault();
   	Meteor.call('upvote', this._id);
+  },
+  'click .lockBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('postLock', this._id);
+  },
+  'click .unlockBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('postUnlock', this._id);
+  },
+  'click .approveBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('postApprove', this._id);
+  },
+  'click .rejectBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('postReject', this._id);
+  },
+  'click .submitBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('postSubmit', this._id);
   }
 });

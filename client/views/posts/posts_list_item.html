@@ -1,43 +1,80 @@
 <template name="postsListItem">
-  <div class="post" style="padding: 8px 10px 4px 10px;">
+  <div class="post" style="padding: 8px 10px 4px 10px; background-color: {{postColor}};">
     <!-- <a href="#" class="upvote btn {{upvotedClass}}">⬆</a> -->
     {{#if hasAccess}}
-      <div class="post-content">
-        <h3><a href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a></h3>
-        <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a></p>
-      </div>
-      <table class="buttons">
-        <tr>
-          <!-- <td style="width: 52px;"> -->
-          <td>
-            <!-- <a href="{{postPagePath this}}"><button class="btn btn-mini btn-primary">Details</button></a> -->
-            <a href="{{postPagePath this}}">
-              <button class="btn btn-mini detailsBtn" title="Details"><i class="icon-calendar"></i></button>
-            </a>
-          </td>
-          <!-- <td style="width: 56px;"> -->
-          <td>
-            <!-- <a href=""><button class="btn btn-mini edit"><i class="icon-edit"></i>&nbsp;&nbsp;Edit</button></a> -->
-            <a href="">
-              <button class="btn btn-mini editBtn" title="Edit"><i class="icon-edit"></i></button>
-            </a>
-          </td>
-          <!-- <td style="width: 70px;"> -->
-          <td>
-            <!-- <a href=""><button class="btn btn-mini btn-success submitBtn"><i class="icon-white icon-upload"></i>&nbsp;&nbsp;Submit</button></a> -->
-            <a href="">
-              <button class="btn btn-mini submitBtn" title="Submit"><i class="icon-upload"></i></button>
-            </a>
-          </td>
-          <!-- <td style="width: 20px;"> -->
-          <td>
-            <!-- <a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove"></i></button></a> -->
-            <a href="">
-              <button class="btn btn-mini deleteBtn" title="Delete"><i class="icon-trash"></i></button>
-            </a>
-          </td>
-        </tr>
-      </table>
+      {{#unless isLocked}}
+        <div class="post-content">
+          {{#if isRejected}}
+            <h3>
+              <a style="color: red;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+            </h3>
+            <p>
+              <i>created at {{dateTimeFormat created}} by </i>
+              <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+            </p>
+          {{else}}
+            {{#if isApproved}}
+              <h3>
+                <a style="color: green;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+              </h3>
+              <p>
+                <i>created at {{dateTimeFormat created}} by </i>
+                <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+              </p>
+            {{else}}
+              <h3>
+                <a href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+              </h3>
+              <p>
+                <i>created at {{dateTimeFormat created}} by </i>
+                <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+              </p>
+            {{/if}}
+          {{/if}}
+        </div>
+        <table class="buttons">
+          <tr>
+            <!-- <td style="width: 52px;"> -->
+            <td>
+              <!-- <a href="{{postPagePath this}}"><button class="btn btn-mini btn-primary">Details</button></a> -->
+              <a href="{{postPagePath this}}">
+                <button class="btn btn-mini detailsBtn" title="Details"><i class="icon-calendar"></i></button>
+              </a>
+            </td>
+            <!-- <td style="width: 56px;"> -->
+            <td>
+              <!-- <a href=""><button class="btn btn-mini edit"><i class="icon-edit"></i>&nbsp;&nbsp;Edit</button></a> -->
+              <a href="">
+                <button class="btn btn-mini editBtn" title="Edit"><i class="icon-edit"></i></button>
+              </a>
+            </td>
+            <!-- <td style="width: 70px;"> -->
+            <td>
+              <!-- <a href=""><button class="btn btn-mini btn-success submitBtn"><i class="icon-white icon-upload"></i>&nbsp;&nbsp;Submit</button></a> -->
+              <a href="">
+                <button class="btn btn-mini submitBtn" title="Submit"><i class="icon-upload"></i></button>
+              </a>
+            </td>
+            <!-- <td style="width: 20px;"> -->
+            <td>
+              <!-- <a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove"></i></button></a> -->
+              <a href="">
+                <button class="btn btn-mini deleteBtn" title="Delete"><i class="icon-trash"></i></button>
+              </a>
+            </td>
+          </tr>
+        </table>
+      {{else}}
+        <div class="post-content">
+          {{#if isApproved}}
+            <h3 style="color: green;">{{empFullName empId}} - {{title}}</h3>
+            <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
+          {{else}}
+            <h3>{{empFullName empId}} - {{title}}</h3>
+            <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
+          {{/if}}
+        </div>
+      {{/unless}}
     {{else}}
       <div class="post-content">
         <h3>{{empFullName empId}} - {{title}}</h3>

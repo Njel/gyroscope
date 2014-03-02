@@ -10,25 +10,29 @@ if (Posts.find().count() === 0) {
   // create users
   var adminId = Meteor.users.insert({
     username: 'Admin',
-    profile: { name: 'Admin' }
+    profile: { name: 'Admin' },
+    isAdmin: true
   });
   Accounts.setPassword(adminId, 'password');
   
   var user01Id = Meteor.users.insert({
     username: 'User01',
-    profile: { name: 'User 01' }
+    profile: { name: 'User 01' },
+    isAdmin: false
   });
   Accounts.setPassword(user01Id, 'password');
   
   var user02Id = Meteor.users.insert({
     username: 'User02',
-    profile: { name: 'User 02' }
+    profile: { name: 'User 02' },
+    isAdmin: false
   });
   Accounts.setPassword(user02Id, 'password');
 
   var user03Id = Meteor.users.insert({
     username: 'User03',
-    profile: { name: 'User 03' }
+    profile: { name: 'User 03' },
+    isAdmin: false
   });
   Accounts.setPassword(user03Id, 'password');
 
@@ -320,12 +324,17 @@ if (Posts.find().count() === 0) {
     year: 2014,
     month: 1,
     empId: emp01Id,
-    status: 'pending',
-    submitted: now,
+    status: 'In progress',
+    lockedBy: null,
+    locked: null,
+    submittedBy: null,
+    submitted: null,
+    approvedBy: null,
     approved: null,
-    approver: null,
+    rejectedBy: null,
+    rejected: null,
+    reviewedBy: null,
     reviewed: null,
-    reviewer: null,
     daysCount: daysInMonth(2014, 1),
     eventsCount: 1,
     createdBy: adminId,
@@ -376,11 +385,16 @@ if (Posts.find().count() === 0) {
     month: 1,
     empId: emp02Id,
     status: 'pending',
-    submitted: now,
+    lockedBy: null,
+    locked: null,
+    submittedBy: null,
+    submitted: null,
+    approvedBy: null,
     approved: null,
-    approver: null,
+    rejectedBy: null,
+    rejected: null,
+    reviewedBy: null,
     reviewed: null,
-    reviewer: null,
     daysCount: daysInMonth(2014, 1),
     eventsCount: 0,
     createdBy: adminId,
@@ -395,11 +409,16 @@ if (Posts.find().count() === 0) {
     month: 2,
     empId: emp01Id,
     status: 'pending',
-    submitted: now,
+    lockedBy: null,
+    locked: null,
+    submittedBy: null,
+    submitted: null,
+    approvedBy: null,
     approved: null,
-    approver: null,
+    rejectedBy: null,
+    rejected: null,
+    reviewedBy: null,
     reviewed: null,
-    reviewer: null,
     daysCount: daysInMonth(2014, 2),
     eventsCount: 0,
     createdBy: adminId,

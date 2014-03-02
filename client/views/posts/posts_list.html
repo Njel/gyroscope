@@ -12,12 +12,12 @@
           <button class="btn"><i class="icon-search"></i> Search</button>
         </form>
       </td>
-      <td style="text-align: right; padding: 0 0 21px;">
-        All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp;
-        {{#if isAdmin}}
-          <a href="" class="btn btn-mini add-group">+ Add group</a>
-        {{/if}}
-      </td>
+      <!-- <td style="text-align: right; padding: 0 0 21px;"> -->
+        <!-- All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
+        <!-- {{#if isAdmin}} -->
+          <!-- <a href="" class="btn btn-mini add-group">+ Add group</a> -->
+        <!-- {{/if}} -->
+      <!-- </td> -->
     </tr>
   </table>
   {{#if showDialogPost}}
@@ -34,7 +34,7 @@
 
 <template name="postsList">
   <div class="posts">
-    {{#each postsWithRank}}
+    {{#each posts}}
       {{> postsListItem}}
     {{/each}}
 

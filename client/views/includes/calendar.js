@@ -54,7 +54,7 @@ Template.calendar.events({
       var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
       if (s) {
         // console.log(s);
-        for (var i = 1; i <= nbDays; i++) {
+        for (var i = 1; i <= nbDays+1; i++) {
           var d = d0.day();
           if (d != 0 && d != 6) {
             D = d0.toISOString().substring(0,10);
@@ -137,21 +137,39 @@ Template.calendar.rendered = function() {
         var end = new Date(e.end);
         // var h = (end - start) / 1000 / 60 / 60;
         var eType = EventTypes.findOne(e.type);
-        events.push({
-          id: e._id,
-          // start: e.start._d,
-          // end: e.end._d,
-          start: start,
-          end: end,
-          // start: e.start,
-          // end: e.end,
-          type: e.type,
-          title: eType.code + ' - ' + e.duration + ' ' + e.unit,
-          textColor: eType.textColor,
-          borderColor: eType.borderColor,
-          backgroundColor: eType.backgroundColor,
-          allDay: e.allDay
-        });
+        if (eType) {
+          events.push({
+            id: e._id,
+            // start: e.start._d,
+            // end: e.end._d,
+            start: start,
+            end: end,
+            // start: e.start,
+            // end: e.end,
+            type: e.type,
+            title: eType.code + ' - ' + e.duration + ' ' + e.unit,
+            textColor: eType.textColor,
+            borderColor: eType.borderColor,
+            backgroundColor: eType.backgroundColor,
+            allDay: e.allDay
+          });
+        } else {
+          events.push({
+            id: e._id,
+            // start: e.start._d,
+            // end: e.end._d,
+            start: start,
+            end: end,
+            // start: e.start,
+            // end: e.end,
+            type: e.type,
+            title: e.duration + ' ' + e.unit,
+            textColor: eType.textColor,
+            borderColor: eType.borderColor,
+            backgroundColor: eType.backgroundColor,
+            allDay: e.allDay
+          });
+        }
       });
       currHolidays = Holidays.find();
       currHolidays.forEach(function(h) {

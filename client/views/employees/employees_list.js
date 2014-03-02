@@ -83,7 +83,7 @@ Template.employees.showDialogGroup = function() {
 
 Template.employeesList.helpers({
   employees: function() {
-    return Employees.find();
+    return Employees.find({}, {sort: this.fname, sort: this.lname});
   }
 });
 

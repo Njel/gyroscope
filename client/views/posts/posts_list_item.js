@@ -16,6 +16,15 @@ Template.postsListItem.helpers({
     }
     return false;
   },
+  postColor: function() {
+    if (this.approved)
+      return 'rgb(240, 248, 239)';
+    if (this.rejected)
+      return 'rgb(248, 239, 239)';
+    if (this.locked)
+      return 'rgb(211, 211, 211)';
+    return '#fff';
+  },
   isAdmin: function() {
     var currUser = Meteor.user();
     if (!currUser) {
@@ -32,6 +41,17 @@ Template.postsListItem.helpers({
       }
       return false;
     }
+  },
+  isLocked: function() {
+    if (isAdmin())
+      return false;
+    return (this.locked ? true : false);
+  },
+  isApproved: function() {
+    return (this.approved ? true : false);
+  },
+  isRejected: function() {
+    return (this.rejected ? true : false);
   },
   ownPost: function() {
     return (this.userId == Meteor.userId()) || (this.createdBy == Meteor.userId());

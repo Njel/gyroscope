@@ -88,8 +88,28 @@ Template.postsList.helpers({
   },
 
   posts: function() {
-    // return Posts.find({}, {sort: {submitted: -1}});
-    return Posts.find({}, {sort: this.sort, limit: this.handle.limit()});
+    var user = Meteor.user();
+    // console.log(user);
+    if (!user)
+      return [];
+    if (isAdmin(user))
+      // return Posts.find({}, {sort: this.sort, limit: this.handle.limit()});
+      return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var emp = Employees.findOne({userId: user._id});
+      if (emp) {
+        if (emp.roleId === adminRole._id) {
+          return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
+        } else {
+          return Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: this.handle.limit()});
+        }
+      }
+    }
+    // var where = "this.empId == '" + emp._id + "'";
+    // var e = Events.findOne({postId: Session.get('currentPostId'), period: p._id, $where: where});
+    // return Posts.find({}, {sort: this.sort, limit: this.handle.limit()});
+    return [];
   },
 
   postsReady: function() {

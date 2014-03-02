@@ -22,7 +22,7 @@ Meteor.methods({
 
   	// ensure the user is logged in
   	if (!user)
-  	  throw new Meteor.Error(401, 'You need to login to post new stories');
+  	  throw new Meteor.Error(401, 'You need to login to post new timesheets');
 
   	// ensure the post has a year
   	if (!postAttributes.year)
@@ -35,7 +35,7 @@ Meteor.methods({
   	// check that there are no previous posts with the same link
     var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, empId: postAttributes.empId});
   	if (postForSameMonth)
-  	  throw new Meteor.Error(302, 'This month has already been posted', postForSameMonth._id);
+  	  throw new Meteor.Error(302, 'This timesheet has already been posted', postForSameMonth._id);
 
     var d = new Date().toISOString();
 
@@ -60,7 +60,7 @@ Meteor.methods({
 
     // ensure the user is logged in
     if (!user)
-      throw new Meteor.Error(401, 'You need to login to post new stories');
+      throw new Meteor.Error(401, 'You need to login to post new timesheets');
 
     // ensure the post has a year
     if (!postAttributes.year)
@@ -73,34 +73,38 @@ Meteor.methods({
     // check that there are no previous posts with the same link
     var postForSameMonth = Posts.findOne({year: postAttributes.year, month: postAttributes.month, userId: postAttributes.empId});
     if (postForSameMonth && postAttributes.id != postForSameMonth._id) {
-      throw new Meteor.Error(302, 'This month has already been posted', postForSameMonth._id);
+      throw new Meteor.Error(302, 'This timesheet has already been posted', postForSameMonth._id);
     }
 
     var p = Posts.findOne(postAttributes.id);
 
     if (p) {
-      Posts.update(
-        p._id, {
-          $set: {
-            empId: postAttributes.empId,
-            title: postAttributes.title,
-            year: postAttributes.year,
-            month: postAttributes.month,
-            daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
-            modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
-        }, function(error) {
-          if (error) {
-            // display the error to the user
-            alert(error.reason);
-          } else {
+      if (p.locked) {
+        throw new Meteor.Error(401, 'Timesheet locked!');
+      } else {
+        Posts.update(
+          p._id, {
+            $set: {
+              empId: postAttributes.empId,
+              title: postAttributes.title,
+              year: postAttributes.year,
+              month: postAttributes.month,
+              daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
+              modifiedBy: user._id,
+              modified: new Date().toISOString()
+            }
+          }, function(error) {
+            if (error) {
+              // display the error to the user
+              alert(error.reason);
+            } else {
 
+            }
           }
-        }
-      );
+        );
+      }
     } else {
-      throw new Meteor.Error(404, "Month not found!");
+      throw new Meteor.Error(404, "Timesheet not found!");
     }
     return true;
   },
@@ -110,13 +114,13 @@ Meteor.methods({
 
     // ensure the user is logged in
     if (!user)
-      throw new Meteor.Error(401, "You need to login to delete months");
+      throw new Meteor.Error(401, "You need to login to delete timesheets");
 
     if (!Events.find({postId: postAttributes.id}).count() == 0) {
       if (postAttributes.delEvts)
         Events.remove({postId: postAttributes.id})
       else
-        throw new Meteor.Error(422, 'This month contains events');
+        throw new Meteor.Error(422, 'This timesheet contains events');
     }
 
     Posts.remove(postAttributes.id, function(error) {
@@ -128,6 +132,150 @@ Meteor.methods({
       }
     });
 
+    return true;
+  },
+
+  postLock: function(postId) {
+    console.log('postLock(' + postId + ')');
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to lock timesheets");
+
+    Posts.update(
+      postId, {
+        $set: {
+          lockedBy: user._id,
+          locked: new Date().toISOString(),
+          status: 'locked'
+        }
+      }, function(error) {
+          if (error) {
+            // display the error to the user
+            alert(error.reason);
+          } else {
+
+          }
+        }
+      );
+    return true;
+  },
+
+  postUnlock: function(postId) {
+    console.log('postUnlock(' + postId + ')');
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to unlock timesheets");
+
+    Posts.update(
+      postId, {
+        $set: {
+          lockedBy: null,
+          locked: null,
+          status: 'unlocked'
+        }
+      }, function(error) {
+          if (error) {
+            // display the error to the user
+            alert(error.reason);
+          } else {
+
+          }
+        }
+      );
+    return true;
+  },
+
+  postApprove: function(postId) {
+    console.log('postApprove(' + postId + ')');
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to approve timesheets");
+
+    Posts.update(
+      postId, {
+        $set: {
+          approvedBy: user._id, 
+          approved: new Date().toISOString(), 
+          status: 'approved'
+        }
+      }, function(error) {
+          if (error) {
+            // display the error to the user
+            alert(error.reason);
+          } else {
+
+          }
+        }
+      );
+    return true;
+  },
+
+  postReject: function(postId) {
+    console.log('postReject(' + postId + ')');
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to reject timesheets");
+
+    Posts.update(
+      postId, {
+        $set: {
+          rejectedBy: user._id, 
+          rejected: new Date().toISOString(), 
+          status: 'rejected'
+        }
+      }, function(error) {
+          if (error) {
+            // display the error to the user
+            alert(error.reason);
+          } else {
+
+          }
+        }
+      );
+    return true;
+  },
+
+  postSubmit: function(postId) {
+    console.log('postSubmit(' + postId + ')');
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to submit timesheets");
+
+    var p = Posts.findOne(postId);
+    if (p) {
+      if (p.locked) {
+        alert('Post locked.');
+        return false;
+      } else {
+        Posts.update(
+          postId, {
+            $set: {
+              submittedBy: user._id, 
+              submitted: new Date().toISOString(), 
+              status: 'submitted'
+            }
+          }, function(error) {
+            if (error) {
+              // display the error to the user
+              alert(error.reason);
+            } else {
+            }
+          }
+        );
+      }
+    } else {
+      throw new Meteor.Error(404, "Timesheet not found!");
+    }
     return true;
   },
 
