@@ -17,6 +17,15 @@ Template.calendar.eventTypes = function() {
   return EventTypes.find({active: true});
 };
 
+Template.calendar.helpers({
+  isLocked: function() {
+    console.log('isLocked()');
+    if (isAdmin())
+      return false;
+    return (this.locked ? true : false);
+  }
+});
+
 Template.calendar.events({
   'click .eventType': function(evt, tmpl) {
     // console.log(evt.toElement.id);
@@ -118,6 +127,16 @@ Template.calendar.rendered = function() {
 
   /* initialize the calendar
   -----------------------------------------------------------------*/
+  if (isAdmin())
+    var editable = true;
+  else {
+    var post = Posts.findOne(Session.get('currentPostId'));
+    if (post && !post.locked)
+      var editable = true;
+    else
+      var editable = false;
+  }
+
   var calendar = $('#calendar').fullCalendar({
     // eventSources: [
     //   // "json-events.cfm",
@@ -200,12 +219,12 @@ Template.calendar.rendered = function() {
 			center: 'title',
 			right: 'month, agendaWeek, agendaDay'
 		},
-    selectable: true,
-    selectHelper: true,
-	  editable: true,
-    droppable: true,
-    eventStartEditable: true,
-    eventDurationEditable: true,
+    selectable: editable,
+    selectHelper: editable,
+	  editable: editable,
+    droppable: editable,
+    eventStartEditable: editable,
+    eventDurationEditable: editable,
     // timezone: 'America/New_York',
 	  // contentHeight: 600,
     select: function(start, end, allDay, jsEvent, view) {
@@ -395,7 +414,7 @@ Template.calendar.rendered = function() {
   	// },
   	eventClick: function(evt, jsEvent, view) {
       // console.log(evt);
-      if (evt.url)
+      if (evt.url || !editable)
         return false;
 
       var e = Events.findOne(evt.id);

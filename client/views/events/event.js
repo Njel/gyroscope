@@ -8,6 +8,14 @@ Template.event.helpers({
 	},
   eventType: function(t) {
     return EventTypes.findOne(t);
+  },
+  locked: function() {
+    if (isAdmin())
+      return false;
+    var p = Posts.findOne(this.postId);
+    if (p)
+      return p.locked;
+    return null;
   }
 });
 

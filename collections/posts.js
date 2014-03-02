@@ -47,7 +47,8 @@ Meteor.methods({
       createdBy: user._id,
       created: d,
       modifiedBy: user._id,
-      modified: d      
+      modified: d,
+      status: 'New'
   	});
 
   	var postId = Posts.insert(post);
@@ -147,8 +148,8 @@ Meteor.methods({
       postId, {
         $set: {
           lockedBy: user._id,
-          locked: new Date().toISOString(),
-          status: 'locked'
+          locked: new Date().toISOString()
+          // status: 'locked'
         }
       }, function(error) {
           if (error) {
@@ -174,8 +175,8 @@ Meteor.methods({
       postId, {
         $set: {
           lockedBy: null,
-          locked: null,
-          status: 'unlocked'
+          locked: null
+          // status: 'unlocked'
         }
       }, function(error) {
           if (error) {
@@ -228,7 +229,11 @@ Meteor.methods({
       postId, {
         $set: {
           rejectedBy: user._id, 
-          rejected: new Date().toISOString(), 
+          rejected: new Date().toISOString(),
+          submittedBy: null,
+          submitted: null,
+          lockedBy: null,
+          locked: null,
           status: 'rejected'
         }
       }, function(error) {
@@ -260,8 +265,14 @@ Meteor.methods({
         Posts.update(
           postId, {
             $set: {
+              rejectedBy: null,
+              rejected: null,
+              approvedBy: null,
+              approved: null,
               submittedBy: user._id, 
               submitted: new Date().toISOString(), 
+              lockedBy: user._id,
+              locked: new Date().toISOString(),
               status: 'submitted'
             }
           }, function(error) {

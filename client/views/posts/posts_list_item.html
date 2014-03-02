@@ -3,35 +3,53 @@
     <!-- <a href="#" class="upvote btn {{upvotedClass}}">⬆</a> -->
     {{#if hasAccess}}
       {{#unless isLocked}}
-        <div class="post-content">
-          {{#if isRejected}}
-            <h3>
-              <a style="color: red;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
-            </h3>
-            <p>
-              <i>created at {{dateTimeFormat created}} by </i>
-              <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
-            </p>
-          {{else}}
-            {{#if isApproved}}
-              <h3>
-                <a style="color: green;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
-              </h3>
-              <p>
-                <i>created at {{dateTimeFormat created}} by </i>
-                <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
-              </p>
-            {{else}}
-              <h3>
-                <a href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
-              </h3>
-              <p>
-                <i>created at {{dateTimeFormat created}} by </i>
-                <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
-              </p>
-            {{/if}}
-          {{/if}}
-        </div>
+        <table class="post-content">
+          <tr>
+            <td style="width: 360px;">
+              <div class="post-content">
+                {{#if isRejected}}
+                  <h3>
+                    <a style="color: red;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+                  </h3>
+                  <p>
+                    <i>created at {{dateTimeFormat created}} by </i>
+                    <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                  </p>
+                {{else}}
+                  {{#if isApproved}}
+                    <h3>
+                      <a style="color: green;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+                    </h3>
+                    <p>
+                      <i>created at {{dateTimeFormat created}} by </i>
+                      <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                    </p>
+                  {{else}}
+                    <h3>
+                      <a href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+                    </h3>
+                    <p>
+                      <i>created at {{dateTimeFormat created}} by </i>
+                      <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                    </p>
+                  {{/if}}
+                {{/if}}
+              </div>
+            </td>
+            <td style="width: 140px; text-align: center;">
+              <div class="post-content">
+                <h3>Status</h3>
+                <p>{{status}}</p>
+              </div>
+            </td>
+            <td style="width: 140px;">
+              <div class="post-content">
+                <h3>Statistics</h3>
+                <p>-</p>
+              </div>
+            </td>
+          </tr>
+        </table>
         <table class="buttons">
           <tr>
             <!-- <td style="width: 52px;"> -->
@@ -65,21 +83,73 @@
           </tr>
         </table>
       {{else}}
-        <div class="post-content">
-          {{#if isApproved}}
-            <h3 style="color: green;">{{empFullName empId}} - {{title}}</h3>
-            <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
-          {{else}}
-            <h3>{{empFullName empId}} - {{title}}</h3>
-            <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
-          {{/if}}
-        </div>
+        <table class="post-content">
+          <tr>
+            <td style="width: 360px;">
+              <div class="post-content">
+                {{#if isApproved}}
+                  <h3>
+                    <a style="color: green;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
+                  </h3>
+                  <p>
+                    <i>created at {{dateTimeFormat created}} by </i>
+                    <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                  </p>
+                {{else}}
+                  <h3>{{empFullName empId}} - {{title}}</h3>
+                  <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
+                {{/if}}
+              </div>
+            </td>
+            <td style="width: 140px; text-align: center;">
+              <div class="post-content">
+                <h3>Status</h3>
+                <p>{{status}}</p>
+              </div>
+            </td>
+            <td style="width: 140px;">
+              <div class="post-content">
+                <h3>Statistics</h3>
+                <p>-</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="buttons">
+          <tr>
+            <td>
+              <!-- <a href="{{postPagePath this}}"><button class="btn btn-mini btn-primary">Details</button></a> -->
+              <a href="{{postPagePath this}}">
+                <button class="btn btn-mini detailsBtn" title="Details"><i class="icon-calendar"></i></button>
+              </a>
+            </td>
+            <td colspan="3" style="width: 88px;">
+          </tr>
+        </table>
       {{/unless}}
     {{else}}
-      <div class="post-content">
-        <h3>{{empFullName empId}} - {{title}}</h3>
-        <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
-      </div>
+      <table class="post-content">
+        <tr>
+          <td style="width: 360px;">
+            <div class="post-content">
+              <h3>{{empFullName empId}} - {{title}}</h3>
+              <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
+            </div>
+          </td>
+          <td style="width: 140px; text-align: center;">
+            <div class="post-content">
+              <h3>Status</h3>
+              <p>{{status}}</p>
+            </div>
+          </td>
+          <td style="width: 140px;">
+            <div class="post-content">
+              <h3>Statistics</h3>
+              <p>-</p>
+            </div>
+          </td>
+        </tr>
+      </table>
       <table class="buttons">
         <tr>
           <td colspan="4" style="width: 198px;">

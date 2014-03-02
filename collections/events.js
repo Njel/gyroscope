@@ -53,7 +53,7 @@ Meteor.methods({
     });
 
     // update the post with the number of events
-    Posts.update(ev.postId, {$inc: {eventsCount: 1}});
+    Posts.update(ev.postId, {$inc: {eventsCount: 1}, $set: {status: 'In progress'}});
 
     // create the event, save the id
     // console.log(ev.start);

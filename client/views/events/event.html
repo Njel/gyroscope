@@ -12,9 +12,14 @@
 	      <td style="width: 112px; border-left: 1px solid black; padding: 0px 0px 0px 4px;">
 	        <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
 	      </td>
-	      <td style="padding: 0px 0px 0px 0px;">
-  	        <a href="{{postPagePath this}}"><button class="btn btn-danger btn-mini delete" style="padding: 0px 3px 0px 2px;"><i class="icon-white icon-trash" title="Delete"></i></button></a>
-  	      </td>
+	      {{#unless locked}}
+	        <td style="width: 24px; padding: 0px 0px 0px 0px;">
+	          <a href="{{postPagePath this}}"><button class="btn btn-danger btn-mini delete" style="padding: 0px 3px 0px 2px;"><i class="icon-white icon-trash" title="Delete"></i></button></a>
+	        </td>
+  	      {{else}}
+	        <td style="width: 24px; padding: 0px 0px 0px 0px;">
+	  	    </td>
+  	      {{/unless}}
 	    </tr>
 	  </table>
 	</div>
