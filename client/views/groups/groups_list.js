@@ -37,7 +37,7 @@ Template.groups.showDialogGrpDelConf = function() {
 
 Template.groupsList.helpers({
   groups: function() {
-    return Groups.find();
+    return Groups.find({}, {sort: {name: 1}});
   }
 });
 

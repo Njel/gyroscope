@@ -14,12 +14,11 @@ Template.calendar.selectedEventType = function(t) {
 };
 
 Template.calendar.eventTypes = function() {
-  return EventTypes.find({active: true});
+  return EventTypes.find({active: true}, {sort: {order: 1}});
 };
 
 Template.calendar.helpers({
   isLocked: function() {
-    console.log('isLocked()');
     if (isAdmin())
       return false;
     return (this.locked ? true : false);
@@ -41,6 +40,11 @@ Template.calendar.events({
       Meteor.call('eventDel', ev, function(error, eventId) {
         error && throwError(error.reason);
       });
+    });
+    post = Posts.findOne(Session.get('currentPostId'));
+    totals = Totals.find({year: post.year, month: post.month, empId: post.empId});
+    totals.forEach(function(t) {
+      Totals.remove(t._id);
     });
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -183,9 +187,9 @@ Template.calendar.rendered = function() {
             // end: e.end,
             type: e.type,
             title: e.duration + ' ' + e.unit,
-            textColor: eType.textColor,
-            borderColor: eType.borderColor,
-            backgroundColor: eType.backgroundColor,
+            // textColor: eType.textColor,
+            // borderColor: eType.borderColor,
+            // backgroundColor: eType.backgroundColor,
             allDay: e.allDay
           });
         }

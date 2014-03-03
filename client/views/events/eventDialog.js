@@ -189,8 +189,18 @@ Template.eventDialog.events({
         type: tmpl.find('[name=type]').value,
         title: tmpl.find('[name=title]').value,
         status: 'new',
-        allDay: eT.allDay
+        allDay: eT.allDay,
+        textColor: eT.textColor,
+        borderColor: eT.borderColor,
+        backgroundColor: eT.backgroundColor,
+        X: null
       };
+
+      if (eT.code == 'X') {
+        var X = calcExtraHours(ev);
+        ev.X = X;
+        // console.log(X);
+      }
 
       Meteor.call('eventNew', ev, function(error, eventId) {
         error && throwError(error.reason);
@@ -218,7 +228,8 @@ Template.eventDialog.events({
               allDay: false,
               textColor: type.textColor,
               borderColor: type.borderColor,
-              backgroundColor: type.backgroundColor
+              backgroundColor: type.backgroundColor,
+              X: null
             };
             Meteor.call('eventNew', ev, function(error, eventId) {
               error && throwError(error.reason);
@@ -248,7 +259,8 @@ Template.eventDialog.events({
           allDay: eT.allDay,
           textColor: type.textColor,
           borderColor: type.borderColor,
-          backgroundColor: type.backgroundColor
+          backgroundColor: type.backgroundColor,
+          X: null
         };
 
         Meteor.call('eventNew', ev, function(error, eventId) {
@@ -257,10 +269,10 @@ Template.eventDialog.events({
       }
     }
 
-    if (eT.code == 'X') {
-      var xHrs = calcHours(tmpl.find('[name=from]').value, tmpl.find('[name=to]').value, false, 17, 00);
-      // console.log(xHrs);
-    }
+    // if (eT.code == 'X') {
+    //   var xHrs = calcHours(tmpl.find('[name=from]').value, tmpl.find('[name=to]').value, false, 17, 00);
+    //   // console.log(xHrs);
+    // }
 
     // Events.insert({
     //   postId: Session.get('currentPostId'), 
@@ -324,7 +336,7 @@ Template.eventDialog.events({
       var duration = (eD - sD) / 1000 / 60 / 60;
 
       var ev = {
-        eventId: Session.get('selectedCalEvent'),
+        eventId: Session.get('calEvent')._id,
         start: sD.toISOString(),
         end: eD.toISOString(),
         duration: duration,
@@ -336,8 +348,15 @@ Template.eventDialog.events({
         allDay: eT.allDay,
         textColor: type.textColor,
         borderColor: type.borderColor,
-        backgroundColor: type.backgroundColor
+        backgroundColor: type.backgroundColor,
+        X: null
       };
+
+      if (eT.code == 'X') {
+        var X = calcExtraHours(ev);
+        ev.X = X;
+        // console.log(X);
+      }
 
       Meteor.call('eventUpd', ev, function(error, eventId) {
         error && throwError(error.reason);
@@ -378,7 +397,7 @@ Template.eventDialog.events({
         var D = d0.toISOString().substring(0,10);
 
         var ev = {
-          eventId: Session.get('selectedCalEvent'),
+          eventId: Session.get('calEvent')._id,
           start: D + 'T' + p.start + ':00.000Z',
           end: D + 'T' + p.end + ':00.000Z',
           duration: p.hours,
@@ -390,7 +409,8 @@ Template.eventDialog.events({
           allDay: eT.allDay,
           textColor: eT.textColor,
           borderColor: eT.borderColor,
-          backgroundColor: eT.backgroundColor
+          backgroundColor: eT.backgroundColor,
+          X: null
         };
 
         Meteor.call('eventUpd', ev, function(error, eventId) {
@@ -412,8 +432,16 @@ Template.eventDialog.events({
     event.preventDefault();
     var e = Session.get('calEvent');
     var ev = {
-      eventId: e._id
+      eventId: e._id,
+      X: null
     };
+
+    var eT = EventTypes.findOne(e.type);
+    if (eT && eT.code == 'X') {
+      var X = calcExtraHours(e);
+      ev.X = X;
+      // console.log(X);
+    }
 
     //Meteor.call('eventDel', this._id);
     Meteor.call('eventDel', ev, function(error, eventId) {

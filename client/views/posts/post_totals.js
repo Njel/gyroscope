@@ -10,7 +10,7 @@ Template.postTotals.helpers({
 
     var e = [];
     var h = [];
-    var types = EventTypes.find({active: true});
+    var types = EventTypes.find({active: true}, {sort: {order: 1}});
     types.forEach(function(t) {
       e[t._id] = 0;
       h[t._id] = 0.0;
@@ -55,7 +55,7 @@ Template.postTotals.helpers({
   	// console.log(calcHours("2014-02-06T22:30:00.000Z","2014-02-07T02:30:00.000Z",false,17,00));
 
     var results = new Meteor.Collection(null);
-    var types = EventTypes.find({active: true});
+    var types = EventTypes.find({active: true}, {sort: {order: 1}});
     types.forEach(function(t) {
       results.insert({
         code: t.code,

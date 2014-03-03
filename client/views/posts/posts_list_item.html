@@ -5,7 +5,7 @@
       {{#unless isLocked}}
         <table class="post-content">
           <tr>
-            <td style="width: 360px;">
+            <td style="width: 400px;">
               <div class="post-content">
                 {{#if isRejected}}
                   <h3>
@@ -36,16 +36,16 @@
                 {{/if}}
               </div>
             </td>
-            <td style="width: 140px; text-align: center;">
+            <td style="width: 140px;">
               <div class="post-content">
                 <h3>Status</h3>
                 <p>{{status}}</p>
               </div>
             </td>
-            <td style="width: 140px;">
+            <td style="width: 240px;">
               <div class="post-content">
                 <h3>Statistics</h3>
-                <p>-</p>
+                <p>{{> stats}}</p>
               </div>
             </td>
           </tr>
@@ -85,7 +85,7 @@
       {{else}}
         <table class="post-content">
           <tr>
-            <td style="width: 360px;">
+            <td style="width: 400px;">
               <div class="post-content">
                 {{#if isApproved}}
                   <h3>
@@ -101,16 +101,16 @@
                 {{/if}}
               </div>
             </td>
-            <td style="width: 140px; text-align: center;">
+            <td style="width: 140px;">
               <div class="post-content">
                 <h3>Status</h3>
                 <p>{{status}}</p>
               </div>
             </td>
-            <td style="width: 140px;">
+            <td style="width: 240px;">
               <div class="post-content">
                 <h3>Statistics</h3>
-                <p>-</p>
+                <p>{{> stats}}</p>
               </div>
             </td>
           </tr>
@@ -130,29 +130,29 @@
     {{else}}
       <table class="post-content">
         <tr>
-          <td style="width: 360px;">
+          <td style="width: 400px;">
             <div class="post-content">
               <h3>{{empFullName empId}} - {{title}}</h3>
               <p><i>created at {{dateTimeFormat created}} by </i><b>{{userName createdBy}}</b>, {{pluralize eventsCount "event"}}</p>
             </div>
           </td>
-          <td style="width: 140px; text-align: center;">
+          <td style="width: 140px;">
             <div class="post-content">
               <h3>Status</h3>
               <p>{{status}}</p>
             </div>
           </td>
-          <td style="width: 140px;">
+          <td style="width: 240px;">
             <div class="post-content">
               <h3>Statistics</h3>
-              <p>-</p>
+              <p>{{> stats}}</p>
             </div>
           </td>
         </tr>
       </table>
       <table class="buttons">
         <tr>
-          <td colspan="4" style="width: 198px;">
+          <td colspan="4">
         </tr>
       </table>
     {{/if}}

@@ -1,0 +1,21 @@
+<Template name="stats">
+  <div>
+  	{{#with stats}}
+  	<table>
+  	  <tr style="font-size: 10px;">
+		{{#each tots}}
+		  {{#if notZero value}}
+			<td style="background-color: {{backColor}}; width: {{width}}; color: {{textColor}}; text-align: right;" title="{{title}}">
+			  {{text}}
+			</td>
+		  {{/if}}
+		{{/each}}
+  	  	<td>&nbsp;</td>
+  	  	{{#if notZero tot}}
+  	  	  <td style="font-size: 11px; font-weight: bold;">{{tot}}</td>
+  	  	{{/if}}
+	  </tr>
+	</table>
+	{{/with}}
+  </div>
+</Template>

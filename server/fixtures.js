@@ -267,7 +267,8 @@ if (Posts.find().count() === 0) {
     backgroundColor: '#468847',
     defaultDuration: 0,
     allDay: false,
-    active: true
+    active: true,
+    order: 10
   });
 
   var A = EventTypes.insert({
@@ -279,7 +280,8 @@ if (Posts.find().count() === 0) {
     backgroundColor: '#5CC65E',
     defaultDuration: 0,
     allDay: false,
-    active: true
+    active: true,
+    order: 20
   });
 
   var X = EventTypes.insert({
@@ -291,7 +293,8 @@ if (Posts.find().count() === 0) {
     backgroundColor: '#aaa',
     defaultDuration: 1,
     allDay: false,
-    active: true
+    active: true,
+    order: 30
   });
 
   var R = EventTypes.insert({
@@ -303,7 +306,8 @@ if (Posts.find().count() === 0) {
     backgroundColor: '#3366CC',
     defaultDuration: 1,
     allDay: false,
-    active: true
+    active: true,
+    order: 40
   });
 
   var S = EventTypes.insert({
@@ -315,7 +319,60 @@ if (Posts.find().count() === 0) {
     backgroundColor: '#b00',
     defaultDuration: 0,
     allDay: false,
-    active: true
+    active: true,
+    order: 50
+  });
+
+  var X100 = EventTypes.insert({
+    title: 'Extra 100 %',
+    code: 'X100',
+    unit: 'h',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#bbb',
+    defaultDuration: 0,
+    allDay: false,
+    active: false,
+    order: 31
+  });
+
+  var X125 = EventTypes.insert({
+    title: 'Extra 125 %',
+    code: 'X125',
+    unit: 'h',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#ccc',
+    defaultDuration: 0,
+    allDay: false,
+    active: false,
+    order: 32
+  });
+
+  var X150 = EventTypes.insert({
+    title: 'Extra 150 %',
+    code: 'X150',
+    unit: 'h',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#ddd',
+    defaultDuration: 0,
+    allDay: false,
+    active: false,
+    order: 33
+  });
+
+  var X200 = EventTypes.insert({
+    title: 'Extra 200 %',
+    code: 'X200',
+    unit: 'h',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#eee',
+    defaultDuration: 0,
+    allDay: false,
+    active: false,
+    order: 34
   });
 
   // create Posts and Events
@@ -371,6 +428,7 @@ if (Posts.find().count() === 0) {
   });
 
   Totals.insert({
+    postId: firstPostId,
     empId: emp01Id,
     year: 2014,
     month: 1,
@@ -384,7 +442,7 @@ if (Posts.find().count() === 0) {
     year: 2014,
     month: 1,
     empId: emp02Id,
-    status: 'pending',
+    status: 'Pending',
     lockedBy: null,
     locked: null,
     submittedBy: null,
@@ -408,7 +466,7 @@ if (Posts.find().count() === 0) {
     year: 2014,
     month: 2,
     empId: emp01Id,
-    status: 'pending',
+    status: 'Pending',
     lockedBy: null,
     locked: null,
     submittedBy: null,

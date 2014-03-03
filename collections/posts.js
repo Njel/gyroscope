@@ -203,7 +203,7 @@ Meteor.methods({
         $set: {
           approvedBy: user._id, 
           approved: new Date().toISOString(), 
-          status: 'approved'
+          status: 'Approved'
         }
       }, function(error) {
           if (error) {
@@ -234,7 +234,7 @@ Meteor.methods({
           submitted: null,
           lockedBy: null,
           locked: null,
-          status: 'rejected'
+          status: 'Rejected'
         }
       }, function(error) {
           if (error) {
@@ -273,7 +273,7 @@ Meteor.methods({
               submitted: new Date().toISOString(), 
               lockedBy: user._id,
               locked: new Date().toISOString(),
-              status: 'submitted'
+              status: 'Submitted'
             }
           }, function(error) {
             if (error) {
