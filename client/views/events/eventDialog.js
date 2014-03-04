@@ -336,6 +336,7 @@ Template.eventDialog.events({
       var duration = (eD - sD) / 1000 / 60 / 60;
 
       var ev = {
+        postId: Session.get('currentPostId'),
         eventId: Session.get('calEvent')._id,
         start: sD.toISOString(),
         end: eD.toISOString(),
@@ -349,13 +350,18 @@ Template.eventDialog.events({
         textColor: type.textColor,
         borderColor: type.borderColor,
         backgroundColor: type.backgroundColor,
-        X: null
+        pX: null,
+        nX: null
       };
 
       if (eT.code == 'X') {
-        var X = calcExtraHours(ev);
-        ev.X = X;
-        // console.log(X);
+        var e = Events.findOne(ev.eventId);
+        var pX = calcExtraHours(e);
+        var nX = calcExtraHours(ev);
+        ev.pX = pX;
+        ev.nX = nX;
+        // console.log(pX);
+        // console.log(nX);
       }
 
       Meteor.call('eventUpd', ev, function(error, eventId) {

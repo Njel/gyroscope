@@ -22,7 +22,19 @@ Template.event.helpers({
 Template.event.events({
   'click .delete': function(event) {
     event.preventDefault();
-    var ev = {eventId: this._id, type: this.type};
+    var ev = {
+      eventId: this._id,
+      type: this.type,
+      X: null
+    };
+
+    var eT = EventTypes.findOne(ev.type);
+    if (eT && eT.code == 'X') {
+      var e = Events.findOne(ev.eventId);
+      var X = calcExtraHours(e);
+      ev.X = X;
+      // console.log(X);
+    }
 
     //Meteor.call('eventDel', this._id);
     Meteor.call('eventDel', ev, function(error, eventId) {

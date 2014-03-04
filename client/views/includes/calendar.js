@@ -466,19 +466,35 @@ Template.calendar.rendered = function() {
       var start = new Date(evt.start);
       var end = new Date(evt.end);
       var d = (end - start) / 1000 / 60 / 60;
+      var e = Events.findOne(evt.id);
       var ev = {
+        postId: e.postId,
         eventId: evt.id,
         start: start.toISOString(),
+        end: end.toISOString(),
         duration: d,
-        end: end.toISOString()
+        type: e.type,
+        allDay: allDay,
+        pX: null,
+        nX: null
       };
+
+      var eT = EventTypes.findOne(e.type);
+      if (eT.code == 'X') {
+        var pX = calcExtraHours(e);
+        var nX = calcExtraHours(ev);
+        ev.pX = pX;
+        ev.nX = nX;
+        // console.log(pX);
+        // console.log(nX);
+      }
 
       Meteor.call('eventMove', ev, function(error, eventId) {
         error && throwError(error.reason);
       });
 
-      var s = Settings.findOne({name: 'lastCalEventMod'});
-      Settings.update(s._id, {$set: {value: new Date()}});
+      // var s = Settings.findOne({name: 'lastCalEventMod'});
+      // Settings.update(s._id, {$set: {value: new Date()}});
     },
     eventResize: function(evt, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
       // alert("The end date of " + evt.title + "has been moved " +
@@ -488,19 +504,35 @@ Template.calendar.rendered = function() {
       var start = new Date(evt.start);
       var end = new Date(evt.end);
       var hours = (end - start) / 1000 / 60 / 60;
+      var e = Events.findOne(evt.id);
       var ev = {
+        postId: e.postId,
         eventId: evt.id,
         start: start.toISOString(),
         end: end.toISOString(),
-        duration: hours
+        duration: hours,
+        type: e.type,
+        allDay: e.allDay,
+        pX: null,
+        nX: null
       };
+
+      var eT = EventTypes.findOne(e.type);
+      if (eT.code == 'X') {
+        var pX = calcExtraHours(e);
+        var nX = calcExtraHours(ev);
+        ev.pX = pX;
+        ev.nX = nX;
+        // console.log(pX);
+        // console.log(nX);
+      }
 
       Meteor.call('eventMove', ev, function(error, eventId) {
         error && throwError(error.reason);
       });
 
-      var s = Settings.findOne({name: 'lastCalEventMod'});
-      Settings.update(s._id, {$set: {value: new Date()}});
+      // var s = Settings.findOne({name: 'lastCalEventMod'});
+      // Settings.update(s._id, {$set: {value: new Date()}});
     },
     drop: function(date, allDay, jsEvent, ui) {
       var view = $('#calendar').fullCalendar('getView');
@@ -751,8 +783,8 @@ Template.calendar.rendered = function() {
       //   error && throwError(error.reason);
       // });
 
-      var s = Settings.findOne({name: 'lastCalEventMod'});
-      Settings.update(s._id, {$set: {value: new Date()}});
+      // var s = Settings.findOne({name: 'lastCalEventMod'});
+      // Settings.update(s._id, {$set: {value: new Date()}});
 
       // render the event on the calendar
       // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)

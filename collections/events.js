@@ -208,7 +208,7 @@ Meteor.methods({
     var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
-    console.log(eventAttributes.eventId);
+    // console.log(eventAttributes.eventId);
     if (ev) {
       prevDuration = ev.duration;
       Events.update(
@@ -239,6 +239,38 @@ Meteor.methods({
       var tot = Totals.findOne({postId: ev.postId, type: eventAttributes.type});
       if (tot)
         Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
+
+      // Calculate Extra hours
+      // if (et.code = 'X') {
+      if (eventAttributes.pX) {
+        // var X = calcExtraHours(ev);
+        eventAttributes.pX.forEach(function(r) {
+          if (r.code.substring(0, 1) == 'X') {
+            var et = EventTypes.findOne({code: r.code});
+            if (et) {
+              var tot = Totals.findOne({postId: ev.postId, type: et._id});
+              if (tot) {
+                Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+              }
+            }
+          }
+        });
+      }
+
+      if (eventAttributes.nX) {
+        // var X = calcExtraHours(ev);
+        eventAttributes.nX.forEach(function(r) {
+          if (r.code.substring(0, 1) == 'X') {
+            var et = EventTypes.findOne({code: r.code});
+            if (et) {
+              var tot = Totals.findOne({postId: ev.postId, type: et._id});
+              if (tot) {
+                Totals.update(tot._id, {$inc: {value: r.value}, $set: {modifiedBy: user._id, modified: d}});
+              }
+            }
+          }
+        });
+      }
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -285,6 +317,38 @@ Meteor.methods({
         if (tot)
           Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
       }
+
+      // Calculate Extra hours
+      // if (et.code = 'X') {
+      if (eventAttributes.pX) {
+        // var X = calcExtraHours(ev);
+        eventAttributes.pX.forEach(function(r) {
+          if (r.code.substring(0, 1) == 'X') {
+            var et = EventTypes.findOne({code: r.code});
+            if (et) {
+              var tot = Totals.findOne({postId: ev.postId, type: et._id});
+              if (tot) {
+                Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+              }
+            }
+          }
+        });
+      }
+
+      if (eventAttributes.nX) {
+        // var X = calcExtraHours(ev);
+        eventAttributes.nX.forEach(function(r) {
+          if (r.code.substring(0, 1) == 'X') {
+            var et = EventTypes.findOne({code: r.code});
+            if (et) {
+              var tot = Totals.findOne({postId: ev.postId, type: et._id});
+              if (tot) {
+                Totals.update(tot._id, {$inc: {value: r.value}, $set: {modifiedBy: user._id, modified: d}});
+              }
+            }
+          }
+        });
+      }
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -316,6 +380,23 @@ Meteor.methods({
     var tot = Totals.findOne({postId: ev.postId, type: ev.type});
     if (tot)
       Totals.update(tot._id, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
+
+    // Calculate Extra hours
+    // if (et.code = 'X') {
+    if (eventAttributes.X) {
+      // var X = calcExtraHours(ev);
+      eventAttributes.X.forEach(function(r) {
+        if (r.code.substring(0, 1) == 'X') {
+          var et = EventTypes.findOne({code: r.code});
+          if (et) {
+            var tot = Totals.findOne({postId: ev.postId, type: et._id});
+            if (tot) {
+              Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+            }
+          }
+        }
+      });
+    }
 
     // update the post with the number of events
     Posts.update(ev.postId, {$inc: {eventsCount: -1}});
