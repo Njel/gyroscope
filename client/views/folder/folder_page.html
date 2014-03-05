@@ -1,17 +1,13 @@
 <template name="folderPage">
   {{#with currentEmployee}}
     <table>
+      <!-- <tr> -->
+      	<!-- <td style="width: 120px; font-weight: bold;">Id</td> -->
+        <!-- <td>{{_id}}</td> -->
+      <!-- </tr> -->
       <tr>
-      	<td style="width: 120px; font-weight: bold;">Id</td>
-        <td>{{_id}}</td>
-      </tr>
-      <tr>
-      	<td style="font-weight: bold;">First Name</td>
-        <td>{{fname}}</td>
-      </tr>
-      <tr>
-      	<td style="font-weight: bold;">Last Name</td>
-  	    <td>{{lname}}</td>
+      	<td style="width: 120px; font-weight: bold;">Name</td>
+        <td>{{fname}} {{lname}}</td>
       </tr>
       <tr>
       	<td style="font-weight: bold;"># work Days</td>
@@ -29,12 +25,30 @@
       	<td style="font-weight: bold;"># Recup Hours</td>
       	<td>0.0</td>
       </tr>
-      {{#each totals}}
+    </table>
+    <br/>
+    <table style="border: 1px solid black; font-size: 12px;">
+      <tr style="border: 1px solid black;">
+        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 40px;" colspan="2">2014</td>
+        {{#each months}}
+          <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px;" title="{{mTxt}}">{{m}}</td>
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 60px;">Total</td>
+      </tr>
+      {{#each eventTypes}}
       <tr>
-      	<td style="font-weight: bold;">{{year}}-{{month}} {{eventTypeCode type}}</td>
-      	<td>{{value}} {{unit}}</td>
+        <td style="text-align: center; background-color: {{backgroundColor}};">
+          <input type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked>
+        </td>
+        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}};" title="{{title}}">{{code}}</td>
+        {{#each totals}}
+        	<td style="border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+        {{/each}}
       </tr>
       {{/each}}
     </table>
+    <div style="margin-top: 8px; margin-left: -8px;">
+      <canvas id="dataChart" width="700" height="280"></canvas>
+    </div>
   {{/with}}
 </template>

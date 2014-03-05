@@ -42,13 +42,17 @@ Template.calendar.events({
       });
     });
     post = Posts.findOne(Session.get('currentPostId'));
+    Meteor.call('postResetCounters', post, function(error, eventId) {
+      error && throwError(error.reason);
+    });
+
     totals = Totals.find({year: post.year, month: post.month, empId: post.empId});
     totals.forEach(function(t) {
       Totals.remove(t._id);
     });
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
-    Session.set('lastCalEventMod', new Date());
+    // Session.set('lastCalEventMod', new Date());
   },
   'click #genWDays': function(evt, tmpl) {
     // console.log(evt.toElement.id);
@@ -100,7 +104,7 @@ Template.calendar.events({
         };
         var s = Settings.findOne({name: 'lastCalEventMod'});
         Settings.update(s._id, {$set: {value: new Date()}});
-        Session.set('lastCalEventMod', new Date());
+        // Session.set('lastCalEventMod', new Date());
       }
     }
   }
@@ -788,13 +792,13 @@ Template.calendar.rendered = function() {
 
       // render the event on the calendar
       // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-      $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+      // $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
       
       // is the "remove after drop" checkbox checked?
-      if ($('#drop-remove').is(':checked')) {
-        // if so, remove the element from the "Draggable Events" list
-        $(this).remove();
-      }
+      // if ($('#drop-remove').is(':checked')) {
+      //   // if so, remove the element from the "Draggable Events" list
+      //   $(this).remove();
+      // }
     }
   });
   $('#calendar').fullCalendar('changeView', Session.get('calMonthView'));

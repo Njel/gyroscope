@@ -136,6 +136,23 @@ Meteor.methods({
     return true;
   },
 
+  postResetCounters: function(post) {
+    Posts.update(
+      post._id, {
+        $set: {
+          eventsCount: 0
+        }
+      }, function(error) {
+        if (error) {
+          // display the error to the user
+          alert(error.reason);
+        } else {
+
+        }
+      }
+    );
+  },
+
   postLock: function(postId) {
     console.log('postLock(' + postId + ')');
     var user = Meteor.user();

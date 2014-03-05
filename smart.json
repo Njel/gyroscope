@@ -5,6 +5,7 @@
     "paginated-subscription": {},
     "spin": {},
     "fullcalendar": {},
-    "moment": {}
+    "moment": {},
+    "chartjs": {}
   }
 }
