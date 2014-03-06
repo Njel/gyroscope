@@ -6,8 +6,30 @@
         <!-- <td>{{_id}}</td> -->
       <!-- </tr> -->
       <tr>
-      	<td style="width: 120px; font-weight: bold;">Name</td>
-        <td>{{fname}} {{lname}}</td>
+      	<!-- <td style="width: 120px; font-weight: bold;">Name</td> -->
+        <!-- <td>{{fname}} {{lname}}</td> -->
+        <td style="width: 120px; font-weight: bold;">
+          <label for="empIdCb" style="font-weight: bold;">Employee Name:</label>
+        </td>
+        <td>
+          <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
+            {{#each employees}}
+              <option value='{{_id}}' text='{{fname}} {{lname}}'{{selectedValue _id currentEmployee._id}}>{{fname}} {{lname}}</option>
+            {{/each}}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold;">
+          <label for="yearCb" style="font-weight: bold;">Year:</label>
+        </td>
+        <td>
+          <select style="width: 70px; margin: 0px;" type="text" name="yearCb" value="{{currentYear}}" id="yearCb" class="yearCb">
+            {{#each years}}
+              <option value='{{year}}' text='{{year}}'{{selectedValue year currentYear}}>{{year}}</option>
+            {{/each}}
+          </select>
+        </td>
       </tr>
       <tr>
       	<td style="font-weight: bold;"># work Days</td>
@@ -29,7 +51,7 @@
     <br/>
     <table style="border: 1px solid black; font-size: 12px;">
       <tr style="border: 1px solid black;">
-        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 40px;" colspan="2">2014</td>
+        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 40px;" colspan="2">{{currentYear}}</td>
         {{#each months}}
           <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px;" title="{{mTxt}}">{{m}}</td>
         {{/each}}
@@ -47,8 +69,8 @@
       </tr>
       {{/each}}
     </table>
-    <div style="margin-top: 8px; margin-left: -8px;">
-      <canvas id="dataChart" width="700" height="280"></canvas>
+    <div style="margin-top: 8px; margin-left: 6px;">
+      <canvas id="dataChart" width="690" height="280" title='{{currentYear}}'></canvas>
     </div>
   {{/with}}
 </template>

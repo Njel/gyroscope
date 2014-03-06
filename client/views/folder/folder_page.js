@@ -1,7 +1,59 @@
 Template.folderPage.helpers({
+  hasAccess: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    // if (this.userId == currUser._id)
+    //   return true;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      var currEmp = Employees.findOne({userId: currUser._id});
+      if (currEmp && currEmp.roleId == adminRole._id) {
+        return true;
+      }
+    }
+    return false;
+  },
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser) {
+      return false;
+    } else {
+      if(currUser.username == 'Admin')
+        return true;
+      var adminRole = Roles.findOne({name: 'Admin'});
+      if (adminRole) {
+        var currEmp = Employees.findOne({userId: currUser._id});
+        if (currEmp && currEmp.roleId == adminRole._id) {
+          return true;
+        }
+      }
+      return false;
+    }
+  },
   currentEmployee: function() {
   	var e = Employees.findOne(Session.get('currentEmpId'));
   	return e;
+  },
+  employees: function() {
+  	return Employees.find({}, {sort: {fname: 1, lname: 1}});
+  },
+  currentYear: function() {
+  	return Session.get('currentYear');
+  },
+  years: function() {
+  	var Y = Posts.find({empId: Session.get('currentEmpId')},{sort: {year: -1}});
+  	var R = [];
+  	var E = {};
+  	Y.forEach(function(y) {
+  	  if (!E[y.year]) {
+  	  	E[y.year] = true;
+  	  	R.push({year: y.year});
+  	  }
+  	});
+  	return R;
   },
   eventTypes: function() {
     return EventTypes.find({active: true}, {sort: {order: 1}});
@@ -27,7 +79,7 @@ Template.folderPage.helpers({
   	var i = 1;
   	var tot = 0.0;
   	var unit = '';
-  	var T = Totals.find({empId: Session.get('currentEmpId'), type: this._id}, {sort: {month: 1}});
+  	var T = Totals.find({empId: Session.get('currentEmpId'), year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
   	T.forEach(function(t) {
 	  while (t.month > i) {
 	  	R.push({
@@ -75,6 +127,16 @@ Template.folderPage.events({
     // ETChart[evt.toElement.id.substring(9,10)] = evt.toElement.checked;
     // Session.set('ETChart', ETChart);
     drawChart();
+  },
+  'change .empIdCb': function(evt, tmpl) {
+    // console.log(tmpl.find('[name=yearCb]').value);
+    Session.set('currentEmpId', tmpl.find('[name=empIdCb]').value);
+    drawChart();
+  },
+  'change .yearCb': function(evt, tmpl) {
+    // console.log(tmpl.find('[name=yearCb]').value);
+    Session.set('currentYear', tmpl.find('[name=yearCb]').value);
+    drawChart();
   }
 });
 
@@ -111,6 +173,9 @@ function drawChart(){
   }
 
   var empId = Session.get('currentEmpId');
+  var year = parseFloat(Session.get('currentYear'));
+  // var year = $('#yearCb').val();
+  // console.log($('#yearCb').val());
   var ET = EventTypes.find({active: true});
   var e = 0;
 
@@ -121,7 +186,7 @@ function drawChart(){
   	  if (chk && chk.checked) {
 	  	  var D1 = [];
 	  	  var i = 1;
-		  var D = Totals.find({empId: empId, year: 2014, type: et._id}, {sort: {month: 1}});
+		  var D = Totals.find({empId: empId, year: year, type: et._id}, {sort: {month: 1}});
 		  D.forEach(function(v) {
 		  	while (v.month > i) {
 		  	  D1.push(0);
@@ -141,6 +206,7 @@ function drawChart(){
   	});
 
 	var obj = $("#dataChart").get(0)
+	// console.log(obj);
 	if (obj) {
 	  var ctx = obj.getContext("2d");
 	  var c = new Chart(ctx).Bar(data, {
@@ -148,15 +214,15 @@ function drawChart(){
 		scaleOverlay : false,
 		
 		//Boolean - If we want to override with a hard coded scale
-		scaleOverride : false,
+		scaleOverride : true,
 		
 		//** Required if scaleOverride is true **
 		//Number - The number of steps in a hard coded scale
-		scaleSteps : null,
+		scaleSteps : 20,
 		//Number - The value jump in the hard coded scale
-		scaleStepWidth : null,
+		scaleStepWidth : 10,
 		//Number - The scale starting value
-		scaleStartValue : null,
+		scaleStartValue : 0,
 
 		//String - Colour of the scale line	
 		scaleLineColor : "rgba(0,0,0,.1)",
@@ -174,7 +240,7 @@ function drawChart(){
 		scaleFontFamily : "'Arial'",
 		
 		//Number - Scale label font size in pixels	
-		scaleFontSize : 12,
+		scaleFontSize : 10,
 		
 		//String - Scale label font weight style	
 		scaleFontStyle : "normal",

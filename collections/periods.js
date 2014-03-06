@@ -133,6 +133,7 @@ Meteor.methods({
     var p = Periods.findOne(periodAttributes.periodId);
 
     if (p) {
+      var pHours = p.hours;
       Periods.update(
         p._id, {
           $set: {
@@ -153,6 +154,10 @@ Meteor.methods({
           }
         }
       );
+
+    // update the schedule with the number of periods
+    Schedules.update(p.schId, {$inc: {hoursCount: p.hours - pHours}});
+
     }
     var s = Settings.findOne({name: 'lastCalPeriodMod'});
     Settings.update(s._id, {$set: {value: new Date()}});

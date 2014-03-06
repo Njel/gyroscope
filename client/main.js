@@ -20,6 +20,7 @@ Session.setDefault('showDialogHoliday', false);
 Session.setDefault('showDialogHolDelConf', false);
 
 Session.setDefault('currentEmpId', null);
+Session.setDefault('currentYear', moment(new Date()).year());
 // Session.setDefault('showDialogSchedule', false);
 // Session.setDefault('showDialogSchDelConf', false);
 
