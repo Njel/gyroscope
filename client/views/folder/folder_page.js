@@ -34,7 +34,13 @@ Template.folderPage.helpers({
     }
   },
   currentEmployee: function() {
-  	var e = Employees.findOne(Session.get('currentEmpId'));
+  	if (Session.get('currentEmpId') == 'All') {
+  	  var e = {
+  	  	_id: 'All'
+  	  };
+  	} else {
+	  var e = Employees.findOne(Session.get('currentEmpId'));
+  	}
   	return e;
   },
   employees: function() {
@@ -44,7 +50,11 @@ Template.folderPage.helpers({
   	return Session.get('currentYear');
   },
   years: function() {
-  	var Y = Posts.find({empId: Session.get('currentEmpId')},{sort: {year: -1}});
+  	if (Session.get('currentEmpId') == 'All') {
+  	  var Y = Posts.find({},{sort: {year: -1}});
+  	} else {
+	  var Y = Posts.find({empId: Session.get('currentEmpId')},{sort: {year: -1}});
+  	}
   	var R = [];
   	var E = {};
   	Y.forEach(function(y) {
@@ -79,29 +89,55 @@ Template.folderPage.helpers({
   	var i = 1;
   	var tot = 0.0;
   	var unit = '';
-  	var T = Totals.find({empId: Session.get('currentEmpId'), year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
+  	if (Session.get('currentEmpId') == 'All') {
+  	  var T = Totals.find({year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
+  	} else {
+  	  var T = Totals.find({empId: Session.get('currentEmpId'), year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
+  	}
+  	var E = {};
+  	var V = {};
+  	var U = {};
   	T.forEach(function(t) {
 	  while (t.month > i) {
-	  	R.push({
-	  	  value: 0,
-	  	  unit: ''
-	  	});
+	  	E[i] = true;
+	  	V[i] = 0;
+	  	U[i] = '';
+	  	// R.push({
+	  	//   value: 0,
+	  	//   unit: ''
+	  	// });
 	  	i++;
 	  };
-	  R.push({
-	  	value: t.value,
-	  	unit: t.unit
-	  });
+  	  if (!E[t.month]) {
+  	  	E[t.month] = true;
+  	  	V[t.month] = t.value;
+  	  	U[t.month] = t.unit;
+		// R.push({
+		//   value: t.value,
+		//   unit: t.unit
+		// });
+  	  } else {
+  	  	V[t.month] = V[t.month] + t.value;
+  	  }
 	  tot += t.value;
 	  unit = t.unit;
 	  i++;
   	});
   	while (i < 13) {
-	  R.push({
-  	    value: 0,
-  	    unit: ''
-  	  });
+  	  E[i] = true;
+  	  V[i] = 0;
+  	  U[i] = '';
+      // R.push({
+  	  //   value: 0,
+  	  //   unit: ''
+  	  // });
   	  i++;
+    };
+    for (var i = 1; i < 13; i++) {
+    	R.push({
+    	  value: V[i],
+    	  unit: U[i]
+    	});
     };
     R.push({
       value: tot,
@@ -178,6 +214,7 @@ function drawChart(){
   // console.log($('#yearCb').val());
   var ET = EventTypes.find({active: true});
   var e = 0;
+  var max = 0;
 
   if (ET) {
   	ET.forEach(function(et) {
@@ -186,15 +223,34 @@ function drawChart(){
   	  if (chk && chk.checked) {
 	  	  var D1 = [];
 	  	  var i = 1;
-		  var D = Totals.find({empId: empId, year: year, type: et._id}, {sort: {month: 1}});
+	  	  if (Session.get('currentEmpId') == 'All') {
+	  	  	var D = Totals.find({year: year, type: et._id}, {sort: {month: 1}});
+	  	  } else {
+	  	  	var D = Totals.find({empId: empId, year: year, type: et._id}, {sort: {month: 1}});
+	  	  }
+		  var E = {};
+		  var V = {};
 		  D.forEach(function(v) {
 		  	while (v.month > i) {
-		  	  D1.push(0);
+		  	  E[i] = true;
+	  	  	  V[i] = 0;
+		  	  // D1.push(0);
 		  	  i++;
 		  	};
-	  	    D1.push(v.value);
+	  	    if (!E[v.month]) {
+	  	  	  E[v.month] = true;
+	  	  	  V[v.month] = v.value;
+	  	  	} else {
+	  	  	  V[v.month] = V[v.month] + v.value;
+	  	  	}
+	  	    // D1.push(v.value);
 	  	    i++;
 		  });
+
+	      for (var j = 1; j < i; j++) {
+	      	if (V[j] > max) max = V[j];
+	    	D1.push(V[j]);
+	      };
 
 		  data.datasets.push({
 		    fillColor: et.backgroundColor,
@@ -207,6 +263,8 @@ function drawChart(){
 
 	var obj = $("#dataChart").get(0)
 	// console.log(obj);
+	var m = 5;
+	while (m * 10 < max) m += 5;
 	if (obj) {
 	  var ctx = obj.getContext("2d");
 	  var c = new Chart(ctx).Bar(data, {
@@ -218,9 +276,9 @@ function drawChart(){
 		
 		//** Required if scaleOverride is true **
 		//Number - The number of steps in a hard coded scale
-		scaleSteps : 20,
+		scaleSteps : 10,
 		//Number - The value jump in the hard coded scale
-		scaleStepWidth : 10,
+		scaleStepWidth : m,
 		//Number - The scale starting value
 		scaleStartValue : 0,
 
@@ -243,7 +301,7 @@ function drawChart(){
 		scaleFontSize : 10,
 		
 		//String - Scale label font weight style	
-		scaleFontStyle : "normal",
+		scaleFontStyle : "bold",
 		
 		//String - Scale label font colour	
 		scaleFontColor : "#666",	

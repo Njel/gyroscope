@@ -13,6 +13,9 @@
         </td>
         <td>
           <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
+            {{#if isAdmin}}
+              <option value='All' text='All Employees'{{selectedValue 'All' currentEmployee._id}}>All Employees</option>
+            {{/if}}
             {{#each employees}}
               <option value='{{_id}}' text='{{fname}} {{lname}}'{{selectedValue _id currentEmployee._id}}>{{fname}} {{lname}}</option>
             {{/each}}
