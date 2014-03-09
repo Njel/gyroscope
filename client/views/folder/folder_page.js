@@ -66,6 +66,7 @@ Template.folderPage.helpers({
   	return R;
   },
   eventTypes: function() {
+    // return EventTypes.find({active: true, parent: null}, {sort: {order: 1}});
     return EventTypes.find({active: true}, {sort: {order: 1}});
   },
   months: function() {
@@ -136,14 +137,31 @@ Template.folderPage.helpers({
     for (var i = 1; i < 13; i++) {
     	R.push({
     	  value: V[i],
-    	  unit: U[i]
+    	  unit: U[i],
+        tot: false
     	});
     };
     R.push({
       value: tot,
-      unit: unit
+      unit: unit,
+      tot: true
     });
     return R;
+  },
+  hasSubTypes: function(et) {
+    var n = EventTypes.find({parent: et}).count();
+    if (n > 0) return true;
+    return false;
+  },
+  isSubType: function(et) {
+    return (et.parent ? true : false);
+  },
+  isExpand: function(et) {
+    if (!et.parent) return true;
+    var parent = EventTypes.findOne(et.parent);
+    var lnk = $('#lnk' + parent.code).get(0);
+    if (lnk && lnk.text == '+') return false;
+    return true;
   }
 });
 
@@ -154,6 +172,17 @@ Template.folderPage.rendered = function() {
 };
 
 Template.folderPage.events({
+  'click .lnkBtn': function(evt, tmpl) {
+    evt.preventDefault();
+    // console.log(evt.toElement.name);
+    if (evt.toElement.text == '+') {
+      $('#' + evt.toElement.name).text('-');
+      $('.' + evt.toElement.name).show();
+    } else {
+      $('#' + evt.toElement.name).text('+');
+      $('.' + evt.toElement.name).hide();
+    }
+  },
   'click .eventTypeChk': function(evt, tmpl) {
     // console.log(evt.toElement.id);
     // evt.preventDefault();
@@ -212,7 +241,7 @@ function drawChart(){
   var year = parseFloat(Session.get('currentYear'));
   // var year = $('#yearCb').val();
   // console.log($('#yearCb').val());
-  var ET = EventTypes.find({active: true});
+  var ET = EventTypes.find({active: true, parent: null});
   var e = 0;
   var max = 0;
 

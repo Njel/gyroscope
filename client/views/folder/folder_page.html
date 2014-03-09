@@ -54,22 +54,55 @@
     <br/>
     <table style="border: 1px solid black; font-size: 12px;">
       <tr style="border: 1px solid black;">
-        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 40px;" colspan="2">{{currentYear}}</td>
+        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 80px;" colspan="4">{{currentYear}}</td>
         {{#each months}}
           <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px;" title="{{mTxt}}">{{m}}</td>
         {{/each}}
-        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 60px;">Total</td>
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;">Total</td>
       </tr>
       {{#each eventTypes}}
-      <tr>
-        <td style="text-align: center; background-color: {{backgroundColor}};">
-          <input type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked>
+      {{#if isSubType this}}
+      <tr class="{{parent}}" style="display: none;">
+        <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
+          <!-- <input type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked> -->
+          &nbsp;
         </td>
-        <td style="border-right: 1px solid black; text-align: center; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}};" title="{{title}}">{{code}}</td>
+        <td style="background-color: {{backgroundColor}}; width: 10px;">&nbsp;</td>
+        <td style="text-align: center; background-color: {{backgroundColor}}; width: 10px; color: {{textColor}};">-</td>
+        <td style="font-size: 11px; border-right: 1px solid black; text-align: left; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}}; width: 40px;" title="{{title}}">{{code}}</td>
         {{#each totals}}
-        	<td style="border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+          {{#if tot}}
+        	  <td style="font-weight: bold; font-size: 11px; color: #333; background-color: #ddd; border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;"><i>{{value}} {{unit}}</i></td>
+          {{else}}
+            <td style="font-size: 11px; color: #333; background-color: #ddd; border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;"><i>{{value}} {{unit}}</i></td>
+          {{/if}}
         {{/each}}
       </tr>
+      {{else}}
+      <tr class="{{parent}}">
+        <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
+          <input type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked>
+        </td>
+        {{#if hasSubTypes this._id}}
+          <td style="text-align: center; background-color: {{backgroundColor}}; width: 10px;">
+            <a href="" id="{{_id}}" name="{{_id}}" class="lnkBtn" style="color: {{textColor}}; font-weight: bold;" title='Expand'>+</a>
+          </td>
+          <td style="text-align: center; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}}; width: 10px;" title="{{title}}">{{code}}</td>
+          <td style="border-right: 1px solid black; background-color: {{backgroundColor}}; width: 40px;">&nbsp;</td>
+        {{else}}
+          <td style="background-color: {{backgroundColor}}; width: 10px;">&nbsp;</td>
+          <td style="text-align: center; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}}; width: 10px;" title="{{title}}">{{code}}</td>
+          <td style="border-right: 1px solid black; background-color: {{backgroundColor}}; width: 40px;">&nbsp;</td>
+        {{/if}}
+        {{#each totals}}
+          {{#if tot}}
+            <td style="font-weight: bold; border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+          {{/if}}
+        {{/each}}
+      </tr>
+      {{/if}}
       {{/each}}
     </table>
     <div style="margin-top: 8px; margin-left: 6px;">

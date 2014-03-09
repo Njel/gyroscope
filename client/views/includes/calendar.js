@@ -14,7 +14,7 @@ Template.calendar.selectedEventType = function(t) {
 };
 
 Template.calendar.eventTypes = function() {
-  return EventTypes.find({active: true}, {sort: {order: 1}});
+  return EventTypes.find({active: true, parent: null}, {sort: {order: 1}});
 };
 
 Template.calendar.helpers({

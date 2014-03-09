@@ -268,7 +268,8 @@ if (Posts.find().count() === 0) {
     defaultDuration: 0,
     allDay: false,
     active: true,
-    order: 10
+    order: 10,
+    parent: null
   });
 
   var A = EventTypes.insert({
@@ -281,7 +282,8 @@ if (Posts.find().count() === 0) {
     defaultDuration: 0,
     allDay: false,
     active: true,
-    order: 20
+    order: 20,
+    parent: null
   });
 
   var X = EventTypes.insert({
@@ -294,7 +296,8 @@ if (Posts.find().count() === 0) {
     defaultDuration: 1,
     allDay: false,
     active: true,
-    order: 30
+    order: 30,
+    parent: null
   });
 
   var R = EventTypes.insert({
@@ -307,7 +310,8 @@ if (Posts.find().count() === 0) {
     defaultDuration: 1,
     allDay: false,
     active: true,
-    order: 40
+    order: 40,
+    parent: null
   });
 
   var S = EventTypes.insert({
@@ -320,7 +324,8 @@ if (Posts.find().count() === 0) {
     defaultDuration: 0,
     allDay: false,
     active: true,
-    order: 50
+    order: 50,
+    parent: null
   });
 
   var X100 = EventTypes.insert({
@@ -329,11 +334,12 @@ if (Posts.find().count() === 0) {
     unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
-    backgroundColor: '#bbb',
+    backgroundColor: '#999',
     defaultDuration: 0,
     allDay: false,
-    active: false,
-    order: 31
+    active: true,
+    order: 31,
+    parent: X
   });
 
   var X125 = EventTypes.insert({
@@ -342,11 +348,12 @@ if (Posts.find().count() === 0) {
     unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
-    backgroundColor: '#ccc',
+    backgroundColor: '#888',
     defaultDuration: 0,
     allDay: false,
-    active: false,
-    order: 32
+    active: true,
+    order: 32,
+    parent: X
   });
 
   var X150 = EventTypes.insert({
@@ -355,11 +362,12 @@ if (Posts.find().count() === 0) {
     unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
-    backgroundColor: '#ddd',
+    backgroundColor: '#777',
     defaultDuration: 0,
     allDay: false,
-    active: false,
-    order: 33
+    active: true,
+    order: 33,
+    parent: X
   });
 
   var X200 = EventTypes.insert({
@@ -368,11 +376,12 @@ if (Posts.find().count() === 0) {
     unit: 'h',
     textColor: '#fff',
     borderColor: '#000',
-    backgroundColor: '#eee',
+    backgroundColor: '#666',
     defaultDuration: 0,
     allDay: false,
-    active: false,
-    order: 34
+    active: true,
+    order: 34,
+    parent: X
   });
 
   // create Posts and Events
@@ -433,6 +442,7 @@ if (Posts.find().count() === 0) {
     year: 2014,
     month: 1,
     type: A,
+    code: 'A',
     unit: 'h',
     value: 4.0
   });

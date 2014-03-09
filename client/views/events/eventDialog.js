@@ -23,7 +23,7 @@ Template.eventDialog.byPeriod = function() {
 };
 
 Template.eventDialog.eventTypes = function() {
-  return EventTypes.find({active: true});
+  return EventTypes.find({active: true, parent: null});
 };
 
 Template.eventDialog.periods = function(e) {

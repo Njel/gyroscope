@@ -1,6 +1,6 @@
 Template.stats.helpers({
   stats: function() {
-  	var types = EventTypes.find({active: true}, {sort: {order: 1}});
+  	var types = EventTypes.find({active: true, parent: null}, {sort: {order: 1}});
   	var stats = [];
   	var tot = 0.0;
   	var postId = this._id;

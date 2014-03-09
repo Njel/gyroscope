@@ -74,7 +74,8 @@ Meteor.methods({
         empId: post.empId,
         year: post.year,
         month: post.month,
-        type: eventAttributes.type,
+        type: et._id,
+        code: et.code,
         unit: eventAttributes.unit,
         value: eventAttributes.duration,
         createdBy: user._id,
@@ -87,6 +88,7 @@ Meteor.methods({
     // Calculate Extra hours
     // if (et.code = 'X') {
     if (eventAttributes.X) {
+      // console.log(eventAttributes.X);
       // var X = calcExtraHours(ev);
       eventAttributes.X.forEach(function(r) {
         if (r.code.substring(0, 1) == 'X') {
@@ -102,6 +104,7 @@ Meteor.methods({
                 year: post.year,
                 month: post.month,
                 type: et._id,
+                code: et.code,
                 unit: et.unit,
                 value: r.value,
                 createdBy: user._id,
@@ -136,19 +139,19 @@ Meteor.methods({
     var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
-    var type = EventTypes.findOne(eventAttributes.type);
+    var et = EventTypes.findOne(eventAttributes.type);
     prevType = ev.type;
 
-    if (ev && type) {
+    if (ev && et) {
       Events.update(
         ev._id, {
           $set: {
-            type: type._id,
-            title: type.code,
-            textColor: type.textColor,
-            borderColor: type.borderColor,
-            backgroundColor: type.backgroundColor,
-            typeUnit: type.unit,
+            type: et._id,
+            title: et.code,
+            textColor: et.textColor,
+            borderColor: et.borderColor,
+            backgroundColor: et.backgroundColor,
+            typeUnit: et.unit,
             modifiedBy: user._id,
             modified: d
           }
@@ -166,8 +169,8 @@ Meteor.methods({
       // var post = Posts.findOne(ev.postId);
       // Totals.update({empId: post.empId, year: post.year, month: post.month, type: prevType}, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
       Totals.update({postId: ev.postId, type: prevType}, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
-      // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: type._id});
-      var tot = Totals.findOne({postId: ev.postId, type: type._id});
+      // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: et._id});
+      var tot = Totals.findOne({postId: ev.postId, type: et._id});
       if (tot) {
         Totals.update(tot._id, {$inc: {value: ev.duration}, $set: {modifiedBy: user._id, modified: d}});
       } else {
@@ -177,7 +180,8 @@ Meteor.methods({
           empId: post.empId,
           year: post.year,
           month: post.month,
-          type: type._id,
+          type: et._id,
+          code: et.code,
           unit: ev.unit,
           value: ev.duration,
           createdBy: user._id,
@@ -244,6 +248,8 @@ Meteor.methods({
       // if (et.code = 'X') {
       if (eventAttributes.pX) {
         // var X = calcExtraHours(ev);
+        // console.log(eventAttributes.pX);
+        // console.log(eventAttributes.nX);
         eventAttributes.pX.forEach(function(r) {
           if (r.code.substring(0, 1) == 'X') {
             var et = EventTypes.findOne({code: r.code});
