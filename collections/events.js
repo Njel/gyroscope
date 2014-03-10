@@ -64,39 +64,30 @@ Meteor.methods({
 
     var et = EventTypes.findOne(eventAttributes.type);
     var post = Posts.findOne(eventAttributes.postId);
-    // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
-    var tot = Totals.findOne({postId: post._id, type: eventAttributes.type});
-    if (tot) {
-      Totals.update(tot._id, {$inc: {value: parseFloat(eventAttributes.duration)}, $set: {modifiedBy: user._id, modified: d}});
-    } else {
-      Totals.insert({
-        postId: post._id,
-        empId: post.empId,
-        year: post.year,
-        month: post.month,
-        type: et._id,
-        code: et.code,
-        unit: eventAttributes.unit,
-        value: eventAttributes.duration,
-        createdBy: user._id,
-        created: d,
-        modifiedBy: user._id,
-        modified: d
-      });
-    }
 
     // Calculate Extra hours
     // if (et.code = 'X') {
     if (eventAttributes.X) {
       // console.log(eventAttributes.X);
       // var X = calcExtraHours(ev);
+      var cValue = 0.0;
       eventAttributes.X.forEach(function(r) {
         if (r.code.substring(0, 1) == 'X') {
           var et = EventTypes.findOne({code: r.code});
           if (et) {
+            cValue = cValue + (r.value * et.ratio);
             var tot = Totals.findOne({postId: post._id, type: et._id});
             if (tot) {
-              Totals.update(tot._id, {$inc: {value: r.value}, $set: {modifiedBy: user._id, modified: d}});
+              Totals.update(tot._id, {
+                $inc: {
+                  value: r.value,
+                  cValue: (r.value * et.ratio)
+                }, 
+                $set: {
+                  modifiedBy: user._id, 
+                  modified: d
+                }
+              });
             } else {
               Totals.insert({
                 postId: post._id,
@@ -107,6 +98,7 @@ Meteor.methods({
                 code: et.code,
                 unit: et.unit,
                 value: r.value,
+                cValue: (r.value * et.ratio),
                 createdBy: user._id,
                 created: d,
                 modifiedBy: user._id,
@@ -115,6 +107,39 @@ Meteor.methods({
             }
           }
         }
+      });
+    } else {
+      var cValue = (parseFloat(eventAttributes.duration) * et.ratio)
+    }
+
+    // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+    var tot = Totals.findOne({postId: post._id, type: eventAttributes.type});
+    if (tot) {
+      Totals.update(tot._id, {
+        $inc: {
+          value: parseFloat(eventAttributes.duration),
+          cValue: cValue
+        }, 
+        $set: {
+          modifiedBy: user._id,
+          modified: d
+        }
+      });
+    } else {
+      Totals.insert({
+        postId: post._id,
+        empId: post.empId,
+        year: post.year,
+        month: post.month,
+        type: et._id,
+        code: et.code,
+        unit: eventAttributes.unit,
+        value: eventAttributes.duration,
+        cValue: cValue,
+        createdBy: user._id,
+        created: d,
+        modifiedBy: user._id,
+        modified: d
       });
     }
 
@@ -140,7 +165,7 @@ Meteor.methods({
 
     var ev = Events.findOne(eventAttributes.eventId);
     var et = EventTypes.findOne(eventAttributes.type);
-    prevType = ev.type;
+    var etp = EventTypes.findOne(ev.type);
 
     if (ev && et) {
       Events.update(
@@ -168,11 +193,29 @@ Meteor.methods({
       // Update Totals
       // var post = Posts.findOne(ev.postId);
       // Totals.update({empId: post.empId, year: post.year, month: post.month, type: prevType}, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
-      Totals.update({postId: ev.postId, type: prevType}, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
+      Totals.update({postId: ev.postId, type: etp._id}, {
+        $inc: {
+          value: -ev.duration,
+          cValue: (-ev.duration * etp.ratio)
+        }, 
+        $set: {
+          modifiedBy: user._id, 
+          modified: d
+        }
+      });
       // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: et._id});
       var tot = Totals.findOne({postId: ev.postId, type: et._id});
       if (tot) {
-        Totals.update(tot._id, {$inc: {value: ev.duration}, $set: {modifiedBy: user._id, modified: d}});
+        Totals.update(tot._id, {
+          $inc: {
+            value: ev.duration,
+            cValue: (ev.duration * et.ratio)
+          }, 
+          $set: {
+            modifiedBy: user._id, 
+            modified: d
+          }
+        });
       } else {
         var post = Posts.findOne(ev.postId);
         Totals.insert({
@@ -184,6 +227,7 @@ Meteor.methods({
           code: et.code,
           unit: ev.unit,
           value: ev.duration,
+          cValue: (ev.duration * et.ratio),
           createdBy: user._id,
           created: d,
           modifiedBy: user._id,
@@ -212,6 +256,8 @@ Meteor.methods({
     var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
+    var et = EventTypes.findOne(ev.type);
+
     // console.log(eventAttributes.eventId);
     if (ev) {
       prevDuration = ev.duration;
@@ -219,7 +265,7 @@ Meteor.methods({
         ev._id, {
           $set: {
             period: eventAttributes.period,
-            type: eventAttributes.type,
+            type: et._id,
             title: eventAttributes.title,
             // start: moment(eventAttributes.start, 'MM/DD/YYYY HH:mm'),
             // end: moment(eventAttributes.end, 'MM/DD/YYYY HH:mm')
@@ -238,14 +284,10 @@ Meteor.methods({
           }
         }
       );
-      // var post = Posts.findOne(ev.postId);
-      // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
-      var tot = Totals.findOne({postId: ev.postId, type: eventAttributes.type});
-      if (tot)
-        Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
 
       // Calculate Extra hours
       // if (et.code = 'X') {
+      var cValue = 0.0;
       if (eventAttributes.pX) {
         // var X = calcExtraHours(ev);
         // console.log(eventAttributes.pX);
@@ -254,13 +296,25 @@ Meteor.methods({
           if (r.code.substring(0, 1) == 'X') {
             var et = EventTypes.findOne({code: r.code});
             if (et) {
+              cValue = cValue - (r.value * et.ratio);
               var tot = Totals.findOne({postId: ev.postId, type: et._id});
               if (tot) {
-                Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+                Totals.update(tot._id, {
+                  $inc: {
+                    value: -r.value,
+                    cValue: -(r.value * et.ratio)
+                  }, 
+                  $set: {
+                    modifiedBy: user._id, 
+                    modified: d
+                  }
+                });
               }
             }
           }
         });
+      } else {
+        var cValue = ((eventAttributes.duration * et.ratio) - (prevDuration * et.ratio)) 
       }
 
       if (eventAttributes.nX) {
@@ -269,14 +323,39 @@ Meteor.methods({
           if (r.code.substring(0, 1) == 'X') {
             var et = EventTypes.findOne({code: r.code});
             if (et) {
+              cValue = cValue + (r.value * et.ratio);
               var tot = Totals.findOne({postId: ev.postId, type: et._id});
               if (tot) {
-                Totals.update(tot._id, {$inc: {value: r.value}, $set: {modifiedBy: user._id, modified: d}});
+                Totals.update(tot._id, {
+                  $inc: {
+                    value: r.value,
+                    cValue: (r.value * et.ratio)
+                  }, 
+                  $set: {
+                    modifiedBy: user._id, 
+                    modified: d
+                  }
+                });
               }
             }
           }
         });
       }
+
+      // var post = Posts.findOne(ev.postId);
+      // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: eventAttributes.type});
+      var tot = Totals.findOne({postId: ev.postId, type: et._id});
+      if (tot)
+        Totals.update(tot._id, {
+          $inc: {
+            value: (eventAttributes.duration - prevDuration),
+            cValue: cValue
+          }, 
+          $set: {
+            modifiedBy: user._id, 
+            modified: d
+          }
+        });
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -293,6 +372,7 @@ Meteor.methods({
     var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
+    var et = EventTypes.findOne(ev.type);
 
     if (ev) {
       prevDuration = ev.duration;
@@ -316,29 +396,35 @@ Meteor.methods({
           }
         }
       );
-      if (prevDuration != eventAttributes.duration) {
-        // var post = Posts.findOne(ev.postId);
-        // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
-        var tot = Totals.findOne({postId: ev.postId, type: ev.type});
-        if (tot)
-          Totals.update(tot._id, {$inc: {value: (eventAttributes.duration - prevDuration)}, $set: {modifiedBy: user._id, modified: d}});
-      }
 
       // Calculate Extra hours
       // if (et.code = 'X') {
+      var cValue = 0.0;
       if (eventAttributes.pX) {
         // var X = calcExtraHours(ev);
         eventAttributes.pX.forEach(function(r) {
           if (r.code.substring(0, 1) == 'X') {
             var et = EventTypes.findOne({code: r.code});
             if (et) {
+              cValue = cValue - (r.value * et.ratio);
               var tot = Totals.findOne({postId: ev.postId, type: et._id});
               if (tot) {
-                Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+                Totals.update(tot._id, {
+                  $inc: {
+                    value: -r.value,
+                    cValue: -(r.value * et.ratio)
+                  }, 
+                  $set: {
+                    modifiedBy: user._id, 
+                    modified: d
+                  }
+                });
               }
             }
           }
         });
+      } else {
+        cValue = ((eventAttributes.duration * et.ratio) - (prevDuration * et.ratio));
       }
 
       if (eventAttributes.nX) {
@@ -347,14 +433,42 @@ Meteor.methods({
           if (r.code.substring(0, 1) == 'X') {
             var et = EventTypes.findOne({code: r.code});
             if (et) {
+              cValue = cValue + (r.value * et.ratio);
               var tot = Totals.findOne({postId: ev.postId, type: et._id});
               if (tot) {
-                Totals.update(tot._id, {$inc: {value: r.value}, $set: {modifiedBy: user._id, modified: d}});
+                Totals.update(tot._id, {
+                  $inc: {
+                    value: r.value,
+                    cValue: (r.value * et.ratio)
+                  }, 
+                  $set: {
+                    modifiedBy: user._id, 
+                    modified: d
+                  }
+                });
               }
             }
           }
         });
       }
+
+      // if (prevDuration != eventAttributes.duration) {
+        // var post = Posts.findOne(ev.postId);
+        // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
+        var tot = Totals.findOne({postId: ev.postId, type: et._id});
+        if (tot) {
+          Totals.update(tot._id, {
+            $inc: {
+              value: (eventAttributes.duration - prevDuration),
+              cValue: cValue
+            }, 
+            $set: {
+              modifiedBy: user._id, 
+              modified: d
+            }
+          });
+        }
+      // }
     }
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
@@ -371,6 +485,7 @@ Meteor.methods({
     var d = new Date().toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
+    var et = EventTypes.findOne(ev.type);
 
     Events.remove(ev._id, function(error) {
       if (error) {
@@ -381,28 +496,50 @@ Meteor.methods({
       }
     });
 
-    // var post = Posts.findOne(ev.postId);
-    // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
-    var tot = Totals.findOne({postId: ev.postId, type: ev.type});
-    if (tot)
-      Totals.update(tot._id, {$inc: {value: -ev.duration}, $set: {modifiedBy: user._id, modified: d}});
-
     // Calculate Extra hours
     // if (et.code = 'X') {
     if (eventAttributes.X) {
       // var X = calcExtraHours(ev);
+      var cValue = 0.0;
       eventAttributes.X.forEach(function(r) {
         if (r.code.substring(0, 1) == 'X') {
           var et = EventTypes.findOne({code: r.code});
           if (et) {
             var tot = Totals.findOne({postId: ev.postId, type: et._id});
             if (tot) {
-              Totals.update(tot._id, {$inc: {value: -r.value}, $set: {modifiedBy: user._id, modified: d}});
+              cValue = cValue - (r.value * et.ratio);
+              Totals.update(tot._id, {
+                $inc: {
+                  value: -r.value,
+                  cValue: -(r.value * et.ratio)
+                }, 
+                $set: {
+                  modifiedBy: user._id, 
+                  modified: d
+                }
+              });
             }
           }
         }
       });
+    } else {
+      var cValue = -(ev.duration * et.ratio);
     }
+
+    // var post = Posts.findOne(ev.postId);
+    // var tot = Totals.findOne({empId: post.empId, year: post.year, month: post.month, type: ev.type});
+    var tot = Totals.findOne({postId: ev.postId, type: et._id});
+    if (tot)
+      Totals.update(tot._id, {
+        $inc: {
+          value: -ev.duration,
+          cValue: cValue
+        }, 
+        $set: {
+          modifiedBy: user._id, 
+          modified: d
+        }
+      });
 
     // update the post with the number of events
     Posts.update(ev.postId, {$inc: {eventsCount: -1}});

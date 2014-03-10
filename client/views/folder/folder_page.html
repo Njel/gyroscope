@@ -11,7 +11,7 @@
         <td style="width: 120px; font-weight: bold;">
           <label for="empIdCb" style="font-weight: bold;">Employee Name:</label>
         </td>
-        <td>
+        <td colspan="7">
           <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
             {{#if isAdmin}}
               <option value='All' text='All Employees'{{selectedValue 'All' currentEmployee._id}}>All Employees</option>
@@ -26,7 +26,7 @@
         <td style="font-weight: bold;">
           <label for="yearCb" style="font-weight: bold;">Year:</label>
         </td>
-        <td>
+        <td colspan="7">
           <select style="width: 70px; margin: 0px;" type="text" name="yearCb" value="{{currentYear}}" id="yearCb" class="yearCb">
             {{#each years}}
               <option value='{{year}}' text='{{year}}'{{selectedValue year currentYear}}>{{year}}</option>
@@ -34,29 +34,27 @@
           </select>
         </td>
       </tr>
-      <tr>
-      	<td style="font-weight: bold;"># work Days</td>
-      	<td>0.0</td>
-      </tr>
-      <tr>
-      	<td style="font-weight: bold;"># Leave Days</td>
-      	<td>0.0</td>
-      </tr>
-      <tr>
-      	<td style="font-weight: bold;"># Extra Hours</td>
-      	<td>0.0</td>
-      </tr>
-      <tr>
-      	<td style="font-weight: bold;"># Recup Hours</td>
-      	<td>0.0</td>
-      </tr>
+      <!-- <tr> -->
+      	<!-- <td style="width: 120px; font-weight: bold;"># work Days</td> -->
+      	<!-- <td style="width: 60px;">0.0</td> -->
+      	<!-- <td style="width: 120px; font-weight: bold;"># Leave Days</td> -->
+      	<!-- <td style="width: 60px;">0.0</td> -->
+      	<!-- <td style="width: 120px; font-weight: bold;"># Extra Hours</td> -->
+      	<!-- <td style="width: 60px;">0.0</td> -->
+      	<!-- <td style="width: 120px; font-weight: bold;"># Recup Hours</td> -->
+      	<!-- <td style="width: 60px;">0.0</td> -->
+      <!-- </tr> -->
     </table>
     <br/>
     <table style="border: 1px solid black; font-size: 12px;">
       <tr style="border: 1px solid black;">
         <td style="border-right: 1px solid black; text-align: center; font-weight: bold; width: 80px;" colspan="4">{{currentYear}}</td>
         {{#each months}}
-          <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px;" title="{{mTxt}}">{{m}}</td>
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px;" title="{{mTxt}}">{{m}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 50px; background-color: #ccc; color: #fff;" title="{{mTxt}}">{{m}}</td>
+          {{/if}}
         {{/each}}
         <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;">Total</td>
       </tr>
@@ -94,19 +92,61 @@
           <td style="text-align: center; font-weight: bold; background-color: {{backgroundColor}}; color: {{textColor}}; width: 10px;" title="{{title}}">{{code}}</td>
           <td style="border-right: 1px solid black; background-color: {{backgroundColor}}; width: 40px;">&nbsp;</td>
         {{/if}}
-        {{#each totals}}
-          {{#if tot}}
-            <td style="font-weight: bold; border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+        {{#each etTotals}}
+          {{#if m}}
+            <td style="border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{tot}} {{unit}}</td>
           {{else}}
-            <td style="border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{value}} {{unit}}</td>
+            <td style="font-weight: bold; border-left: 1px solid black; text-align: right; padding: 0px 4px 0px 4px;">{{tot}} {{unit}}</td>
           {{/if}}
         {{/each}}
       </tr>
       {{/if}}
       {{/each}}
+      <tr style="border: 1px solid black;">
+        <td style="text-align: center; background-color: #ddd; width: 20px;">
+          <input type="checkBox" id="totalsChk" class="eventTypeChk" name="totalsChk">
+        </td>
+        <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #ddd; color: #000;" colspan="3">Totals</td>
+        {{#each mTotals}}
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; padding: 0px 4px 0px 4px;" title="{{mTxt}}">{{tot}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; background-color: #ccc; color: #fff; padding: 0px 4px 0px 4px;" title="{{mTxt}}">-</td>
+          {{/if}}
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
+      </tr>
+      <tr style="border: 1px solid black;">
+        <td style="text-align: center; background-color: #555; width: 20px;">
+          <input type="checkBox" id="extraTotChk" class="eventTypeChk" name="extraTotChk">
+        </td>
+        <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #555; color: #fff;" colspan="3">Extra</td>
+        {{#each XTotals}}
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; padding: 0px 4px 0px 4px;" title="{{mTxt}}">{{tot}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; background-color: #ccc; color: #fff; padding: 0px 4px 0px 4px;" title="{{mTxt}}">-</td>
+          {{/if}}
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
+      </tr>
+      <tr style="border: 1px solid black;">
+        <td style="text-align: center; background-color: #333; width: 20px;">
+          <input type="checkBox" id="extraBalChk" class="eventTypeChk" name="extraBalChk">
+        </td>
+        <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #333; color: #fff;" colspan="3">Extra Bal.</td>
+        {{#each XBalances}}
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; padding: 0px 4px 0px 4px;" title="{{mTxt}}">{{tot}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; background-color: #ccc; color: #fff; padding: 0px 4px 0px 4px;" title="{{mTxt}}">-</td>
+          {{/if}}
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
+      </tr>
     </table>
     <div style="margin-top: 8px; margin-left: 6px;">
-      <canvas id="dataChart" width="690" height="280" title='{{currentYear}}'></canvas>
+      <canvas id="dataChart" width="860" height="280" title='{{currentYear}}'></canvas>
     </div>
   {{/with}}
 </template>

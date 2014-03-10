@@ -269,7 +269,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 10,
-    parent: null
+    parent: null,
+    ratio: 1.0
   });
 
   var A = EventTypes.insert({
@@ -283,7 +284,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 20,
-    parent: null
+    parent: null,
+    ratio: 1.0
   });
 
   var X = EventTypes.insert({
@@ -297,7 +299,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 30,
-    parent: null
+    parent: null,
+    ratio: 1.0
   });
 
   var R = EventTypes.insert({
@@ -311,7 +314,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 40,
-    parent: null
+    parent: null,
+    ratio: 1.0
   });
 
   var S = EventTypes.insert({
@@ -325,7 +329,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 50,
-    parent: null
+    parent: null,
+    ratio: 1.0
   });
 
   var X100 = EventTypes.insert({
@@ -339,7 +344,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 31,
-    parent: X
+    parent: X,
+    ratio: 1.0
   });
 
   var X125 = EventTypes.insert({
@@ -353,7 +359,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 32,
-    parent: X
+    parent: X,
+    ratio: 1.25
   });
 
   var X150 = EventTypes.insert({
@@ -367,7 +374,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 33,
-    parent: X
+    parent: X,
+    ratio: 1.50
   });
 
   var X200 = EventTypes.insert({
@@ -381,7 +389,8 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 34,
-    parent: X
+    parent: X,
+    ratio: 2.0
   });
 
   // create Posts and Events
@@ -444,7 +453,8 @@ if (Posts.find().count() === 0) {
     type: A,
     code: 'A',
     unit: 'h',
-    value: 4.0
+    value: 4.0,
+    cValue: 4.0
   });
 
   Posts.insert({

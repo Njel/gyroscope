@@ -70,20 +70,39 @@ Template.folderPage.helpers({
     return EventTypes.find({active: true}, {sort: {order: 1}});
   },
   months: function() {
-  	return [
-  	  {m: '01', mTxt: 'Jan'},
-  	  {m: '02', mTxt: 'Feb'},
-  	  {m: '03', mTxt: 'Mar'},
-  	  {m: '04', mTxt: 'Apr'},
-  	  {m: '05', mTxt: 'May'},
-  	  {m: '06', mTxt: 'Jun'},
-  	  {m: '07', mTxt: 'Jul'},
-  	  {m: '08', mTxt: 'Aug'},
-  	  {m: '09', mTxt: 'Sep'},
-  	  {m: '10', mTxt: 'Oct'},
-  	  {m: '11', mTxt: 'Nov'},
-  	  {m: '12', mTxt: 'Dec'}
-  	];
+    var M = [];
+    var y = Session.get('currentYear');
+    var e = Session.get('currentEmpId');
+    if (e == 'All') {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        M.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          posted: true
+        });
+      }
+    } else {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var t = Totals.findOne({empId: e, year: y, month: m});
+        // console.log(e + ', ' + y + ', ' + m + ', ' + ' -> ' + p);
+        if (t) {
+          M.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            posted: true
+          });
+        } else {
+          M.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            posted: false
+          });
+        }
+      };
+    }
+  	return M;
   },
   totals: function() {
   	var R = [];
@@ -101,7 +120,7 @@ Template.folderPage.helpers({
   	T.forEach(function(t) {
 	  while (t.month > i) {
 	  	E[i] = true;
-	  	V[i] = 0;
+	  	V[i] = '-';
 	  	U[i] = '';
 	  	// R.push({
 	  	//   value: 0,
@@ -126,7 +145,7 @@ Template.folderPage.helpers({
   	});
   	while (i < 13) {
   	  E[i] = true;
-  	  V[i] = 0;
+  	  V[i] = '-';
   	  U[i] = '';
       // R.push({
   	  //   value: 0,
@@ -147,6 +166,239 @@ Template.folderPage.helpers({
       tot: true
     });
     return R;
+  },
+  etTotals: function() {
+    var R = [];
+    var Total = 0.0;
+    var y = parseFloat(Session.get('currentYear'));
+    var e = Session.get('currentEmpId');
+    if (e == 'All') {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var T = Totals.find({year: y, month: m, type: this._id});
+        if (T.count() > 0) {
+          var tot = 0.0;
+          var unit = '';
+          T.forEach(function(t) {
+            tot = tot + t.value;
+            unit = t.unit;
+          });
+          R.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            tot: tot,
+            unit: unit,
+            posted: true
+          });
+          Total = Total + tot;
+        } else {
+          R.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            tot: '-',
+            unit: '',
+            posted: false
+          });
+        }
+      }
+    } else {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var T = Totals.find({empId: e, year: y, month: m, type: this._id});
+        if (T.count() > 0) {
+          var tot = 0.0;
+          var unit = '';
+          T.forEach(function(t) {
+            tot = tot + t.value;
+            unit = t.unit;
+          });
+          R.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            tot: tot,
+            unit: unit,
+            posted: true
+          });
+          Total = Total + tot;
+        } else {
+          R.push({
+            m: moment(d).format("MM"),
+            mTxt: moment(d).format("MMM"),
+            tot: '-',
+            unit: '',
+            posted: false
+          });
+        }
+      };
+    }
+    R.push({
+      m: null,
+      mTxt: 'Total',
+      tot: Total,
+      unit: 'h',
+      posted: true
+    });
+
+    return R;
+  },
+  mTotals: function() {
+    return calcMTotals();
+    // var R = [];
+    // var i = 1;
+    // var unit = '';
+    // var y = parseFloat(Session.get('currentYear'));
+    // var e = Session.get('currentEmpId');
+    // if (e == 'All') {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var T = Totals.find({year: y, month: m});
+    //     var tot = 0.0;
+    //     var posted = false;
+    //     T.forEach(function(t) {
+    //       if (t.code.substring(0, 1) != 'X') 
+    //         tot = tot + t.value;
+    //       posted = true;
+    //     });
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: tot,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //   }
+    // } else {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var T = Totals.find({empId: e, year: y, month: m});
+    //     var tot = 0.0;
+    //     var posted = false;
+    //     T.forEach(function(t) {
+    //       if (t.code.substring(0, 1) != 'X') 
+    //         tot = tot + t.value;
+    //       posted = true;
+    //     });
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: tot,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //   };
+    // }
+    // return R;
+  },
+  XTotals: function() {
+    return calcXTotals();
+    // var R = [];
+    // var i = 1;
+    // var unit = '';
+    // var y = parseFloat(Session.get('currentYear'));
+    // var e = Session.get('currentEmpId');
+    // var XId = EventTypes.findOne({code: 'X'})._id;
+    // if (e == 'All') {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var T = Totals.find({year: y, month: m, type: XId});
+    //     var tot = 0.0;
+    //     var posted = false;
+    //     T.forEach(function(t) {
+    //       tot = tot + t.cValue;
+    //       posted = true;
+    //     });
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: tot,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //   }
+    // } else {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var T = Totals.find({empId: e, year: y, month: m, type: XId});
+    //     var tot = 0.0;
+    //     var posted = false;
+    //     T.forEach(function(t) {
+    //       tot = tot + t.cValue;
+    //       posted = true;
+    //     });
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: tot,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //   };
+    // }
+    // return R;
+  },XBalances: function() {
+    return calcExtraBal();
+    // var R = [];
+    // var i = 1;
+    // var unit = '';
+    // var y = parseFloat(Session.get('currentYear'));
+    // var e = Session.get('currentEmpId');
+    // var XId = EventTypes.findOne({code: 'X'})._id;
+    // var RId = EventTypes.findOne({code: 'R'})._id;
+    // var prevBal = 0.0;
+    // if (e == 'All') {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var XT = Totals.find({year: y, month: m, type: XId});
+    //     var RT = Totals.find({year: y, month: m, type: RId});
+    //     var XTot = 0.0;
+    //     var RTot = 0.0;
+    //     var posted = false;
+    //     XT.forEach(function(t) {
+    //       XTot = XTot + t.cValue;
+    //       posted = true;
+    //     });
+    //     RT.forEach(function(t) {
+    //       RTot = RTot + t.cValue;
+    //       posted = true;
+    //     });
+    //     var bal = prevBal + XTot - RTot
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: bal,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //     prevBal = bal;
+    //   }
+    // } else {
+    //   for (var m = 1; m <= 12; m++) {
+    //     var d = new Date(y, m - 1, 1);
+    //     var XT = Totals.find({empId: e, year: y, month: m, type: XId});
+    //     var RT = Totals.find({empId: e, year: y, month: m, type: RId});
+    //     var XTot = 0.0;
+    //     var RTot = 0.0;
+    //     var posted = false;
+    //     XT.forEach(function(t) {
+    //       XTot = XTot + t.cValue;
+    //       posted = true;
+    //     });
+    //     RT.forEach(function(t) {
+    //       RTot = RTot + t.cValue;
+    //       posted = true;
+    //     });
+    //     var bal = prevBal + XTot - RTot
+    //     R.push({
+    //       m: moment(d).format("MM"),
+    //       mTxt: moment(d).format("MMM"),
+    //       tot: bal,
+    //       unit: 'h',
+    //       posted: posted
+    //     });
+    //     prevBal = bal;
+    //   };
+    // }
+    // return R;
   },
   hasSubTypes: function(et) {
     var n = EventTypes.find({parent: et}).count();
@@ -205,7 +457,174 @@ Template.folderPage.events({
   }
 });
 
-function drawChart(){
+function calcMTotals() {
+  var R = [];
+  var i = 1;
+  var unit = '';
+  var y = parseFloat(Session.get('currentYear'));
+  var e = Session.get('currentEmpId');
+  if (e == 'All') {
+    for (var m = 1; m <= 12; m++) {
+      var d = new Date(y, m - 1, 1);
+      var T = Totals.find({year: y, month: m});
+      var tot = 0.0;
+      var posted = false;
+      T.forEach(function(t) {
+        if (t.code.substring(0, 1) != 'X') 
+          tot = tot + t.value;
+        posted = true;
+      });
+      R.push({
+        m: moment(d).format("MM"),
+        mTxt: moment(d).format("MMM"),
+        tot: tot,
+        unit: 'h',
+        posted: posted
+      });
+    }
+  } else {
+    for (var m = 1; m <= 12; m++) {
+      var d = new Date(y, m - 1, 1);
+      var T = Totals.find({empId: e, year: y, month: m});
+      var tot = 0.0;
+      var posted = false;
+      T.forEach(function(t) {
+        if (t.code.substring(0, 1) != 'X') 
+          tot = tot + t.value;
+        posted = true;
+      });
+      R.push({
+        m: moment(d).format("MM"),
+        mTxt: moment(d).format("MMM"),
+        tot: tot,
+        unit: 'h',
+        posted: posted
+      });
+    };
+  }
+  return R;
+}
+
+function calcXTotals() {
+  var R = [];
+  var i = 1;
+  var unit = '';
+  var y = parseFloat(Session.get('currentYear'));
+  var e = Session.get('currentEmpId');
+  var X = EventTypes.findOne({code: 'X'});
+  if (X) {
+    var XId = X._id;
+    if (e == 'All') {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var T = Totals.find({year: y, month: m, type: XId});
+        var tot = 0.0;
+        var posted = false;
+        T.forEach(function(t) {
+          tot = tot + t.cValue;
+          posted = true;
+        });
+        R.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: tot,
+          unit: 'h',
+          posted: posted
+        });
+      }
+    } else {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var T = Totals.find({empId: e, year: y, month: m, type: XId});
+        var tot = 0.0;
+        var posted = false;
+        T.forEach(function(t) {
+          tot = tot + t.cValue;
+          posted = true;
+        });
+        R.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: tot,
+          unit: 'h',
+          posted: posted
+        });
+      };
+    }
+  }
+  return R;
+}
+
+function calcExtraBal() {
+  var B = [];
+  var i = 1;
+  var unit = '';
+  var y = parseFloat(Session.get('currentYear'));
+  var e = Session.get('currentEmpId');
+  var X = EventTypes.findOne({code: 'X'});
+  var R = EventTypes.findOne({code: 'R'});
+  if (X && R) {
+    var XId = X._id;
+    var RId = R._id;
+    var prevBal = 0.0;
+    if (e == 'All') {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var XT = Totals.find({year: y, month: m, type: XId});
+        var RT = Totals.find({year: y, month: m, type: RId});
+        var XTot = 0.0;
+        var RTot = 0.0;
+        var posted = false;
+        XT.forEach(function(t) {
+          XTot = XTot + t.cValue;
+          posted = true;
+        });
+        RT.forEach(function(t) {
+          RTot = RTot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal + XTot - RTot
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      }
+    } else {
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var XT = Totals.find({empId: e, year: y, month: m, type: XId});
+        var RT = Totals.find({empId: e, year: y, month: m, type: RId});
+        var XTot = 0.0;
+        var RTot = 0.0;
+        var posted = false;
+        XT.forEach(function(t) {
+          XTot = XTot + t.cValue;
+          posted = true;
+        });
+        RT.forEach(function(t) {
+          RTot = RTot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal + XTot - RTot
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      };
+    }
+  }
+  return B;
+}
+
+function drawChart() {
  //  var ETChart = Session.get('ETChart');
  //  if (!ETChart) {
  //    var ETChart = new Array();
@@ -276,10 +695,10 @@ function drawChart(){
 	  	    i++;
 		  });
 
-	      for (var j = 1; j < i; j++) {
-	      	if (V[j] > max) max = V[j];
-	    	D1.push(V[j]);
-	      };
+	    for (var j = 1; j < i; j++) {
+	    	if (V[j] > max) max = V[j];
+	      D1.push(V[j]);
+	    };
 
 		  data.datasets.push({
 		    fillColor: et.backgroundColor,
@@ -290,84 +709,135 @@ function drawChart(){
 	  e++;
   	});
 
-	var obj = $("#dataChart").get(0)
-	// console.log(obj);
-	var m = 5;
-	while (m * 10 < max) m += 5;
-	if (obj) {
-	  var ctx = obj.getContext("2d");
-	  var c = new Chart(ctx).Bar(data, {
-		//Boolean - If we show the scale above the chart data			
-		scaleOverlay : false,
-		
-		//Boolean - If we want to override with a hard coded scale
-		scaleOverride : true,
-		
-		//** Required if scaleOverride is true **
-		//Number - The number of steps in a hard coded scale
-		scaleSteps : 10,
-		//Number - The value jump in the hard coded scale
-		scaleStepWidth : m,
-		//Number - The scale starting value
-		scaleStartValue : 0,
+    var chk = $('#totalsChk').get(0);
+    if (chk && chk.checked) {
+      var D = [];
+      var R = calcMTotals();
+      R.forEach(function(r) {
+        if (r.posted) {
+          if (r.tot > max) max = r.tot;
+          D.push(r.tot);
+        }
+      });
+      data.datasets.push({
+        fillColor: '#ddd',
+        strokeColor: '#000',
+        data: D
+      });
+    }
 
-		//String - Colour of the scale line	
-		scaleLineColor : "rgba(0,0,0,.1)",
-		
-		//Number - Pixel width of the scale line	
-		scaleLineWidth : 1,
+    var chk = $('#extraTotChk').get(0);
+    if (chk && chk.checked) {
+      var D = [];
+      var R = calcXTotals();
+      R.forEach(function(r) {
+        if (r.posted) {
+          if (r.tot > max) max = r.tot;
+          D.push(r.tot);
+        }
+      });
+      data.datasets.push({
+        fillColor: '#555',
+        strokeColor: '#555',
+        data: D
+      });
+    }
 
-		//Boolean - Whether to show labels on the scale	
-		scaleShowLabels : true,
-		
-		//Interpolated JS string - can access value
-		scaleLabel : "<%=value%>",
-		
-		//String - Scale label font declaration for the scale label
-		scaleFontFamily : "'Arial'",
-		
-		//Number - Scale label font size in pixels	
-		scaleFontSize : 10,
-		
-		//String - Scale label font weight style	
-		scaleFontStyle : "bold",
-		
-		//String - Scale label font colour	
-		scaleFontColor : "#666",	
-		
-		///Boolean - Whether grid lines are shown across the chart
-		scaleShowGridLines : true,
-		
-		//String - Colour of the grid lines
-		scaleGridLineColor : "rgba(0,0,0,.05)",
-		
-		//Number - Width of the grid lines
-		scaleGridLineWidth : 1,	
+    var chk = $('#extraBalChk').get(0);
+    if (chk && chk.checked) {
+      var D = [];
+      var R = calcExtraBal();
+      R.forEach(function(r) {
+        if (r.posted) {
+          if (r.tot > max) max = r.tot;
+          D.push(r.tot);
+        }
+      });
+      data.datasets.push({
+        fillColor: '#333',
+        strokeColor: '#333',
+        data: D
+      });
+    }
 
-		//Boolean - If there is a stroke on each bar	
-		barShowStroke : true,
-		
-		//Number - Pixel width of the bar stroke	
-		barStrokeWidth : 2,
-		
-		//Number - Spacing between each of the X value sets
-		barValueSpacing : 5,
-		
-		//Number - Spacing between data sets within X values
-		barDatasetSpacing : 1,
-		
-		//Boolean - Whether to animate the chart
-		animation : true,
+  	var obj = $("#dataChart").get(0)
+  	// console.log(obj);
+  	var m = 5;
+  	while (m * 10 < max) m += 5;
+  	if (obj) {
+  	  var ctx = obj.getContext("2d");
+  	  var c = new Chart(ctx).Bar(data, {
+  		//Boolean - If we show the scale above the chart data			
+  		scaleOverlay : false,
+  		
+  		//Boolean - If we want to override with a hard coded scale
+  		scaleOverride : true,
+  		
+  		//** Required if scaleOverride is true **
+  		//Number - The number of steps in a hard coded scale
+  		scaleSteps : 10,
+  		//Number - The value jump in the hard coded scale
+  		scaleStepWidth : m,
+  		//Number - The scale starting value
+  		scaleStartValue : 0,
 
-		//Number - Number of animation steps
-		animationSteps : 60,
-		
-		//String - Animation easing effect
-		animationEasing : "easeOutQuart",
+  		//String - Colour of the scale line	
+  		scaleLineColor : "rgba(0,0,0,.1)",
+  		
+  		//Number - Pixel width of the scale line	
+  		scaleLineWidth : 1,
 
-		//Function - Fires when the animation is complete
-		onAnimationComplete : null
-	  });
-	}
+  		//Boolean - Whether to show labels on the scale	
+  		scaleShowLabels : true,
+  		
+  		//Interpolated JS string - can access value
+  		scaleLabel : "<%=value%>",
+  		
+  		//String - Scale label font declaration for the scale label
+  		scaleFontFamily : "'Arial'",
+  		
+  		//Number - Scale label font size in pixels	
+  		scaleFontSize : 10,
+  		
+  		//String - Scale label font weight style	
+  		scaleFontStyle : "bold",
+  		
+  		//String - Scale label font colour	
+  		scaleFontColor : "#666",	
+  		
+  		///Boolean - Whether grid lines are shown across the chart
+  		scaleShowGridLines : true,
+  		
+  		//String - Colour of the grid lines
+  		scaleGridLineColor : "rgba(0,0,0,.05)",
+  		
+  		//Number - Width of the grid lines
+  		scaleGridLineWidth : 1,	
+
+  		//Boolean - If there is a stroke on each bar	
+  		barShowStroke : true,
+  		
+  		//Number - Pixel width of the bar stroke	
+  		barStrokeWidth : 2,
+  		
+  		//Number - Spacing between each of the X value sets
+  		barValueSpacing : 5,
+  		
+  		//Number - Spacing between data sets within X values
+  		barDatasetSpacing : 1,
+  		
+  		//Boolean - Whether to animate the chart
+  		animation : true,
+
+  		//Number - Number of animation steps
+  		animationSteps : 60,
+  		
+  		//String - Animation easing effect
+  		animationEasing : "easeOutQuart",
+
+  		//Function - Fires when the animation is complete
+  		onAnimationComplete : null
+  	  });
+  	}
   }
 }
