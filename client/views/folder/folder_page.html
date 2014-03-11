@@ -8,8 +8,8 @@
       <tr>
       	<!-- <td style="width: 120px; font-weight: bold;">Name</td> -->
         <!-- <td>{{fname}} {{lname}}</td> -->
-        <td style="width: 120px; font-weight: bold;">
-          <label for="empIdCb" style="font-weight: bold;">Employee Name:</label>
+        <td style="width: 160px; font-weight: bold;">
+          <label for="empIdCb" style="font-weight: bold;">Employee Name</label>
         </td>
         <td colspan="7">
           <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td style="font-weight: bold;">
-          <label for="yearCb" style="font-weight: bold;">Year:</label>
+          <label for="yearCb" style="font-weight: bold;">Year</label>
         </td>
         <td colspan="7">
           <select style="width: 70px; margin: 0px;" type="text" name="yearCb" value="{{currentYear}}" id="yearCb" class="yearCb">
@@ -33,6 +33,17 @@
             {{/each}}
           </select>
         </td>
+      </tr>
+      <tr>
+        {{#with balances}}
+          <td style="font-weight: bold;"><label style="font-weight: bold;">Starting Balances - AL:</label></td>
+          <td><input type="text" value="{{AL}}" id="balALTxt" title="Annual Leave" style="width: 40px; text-align: right;" disabled></td>
+          <td><label style="font-weight: bold; text-align: right;">SL:</label></td>
+          <td><input type="text" value="{{SL}}" id="balSLTxt" title="Sick Leave" style="width: 40px; text-align: right;" disabled></td>
+          <td><label style="font-weight: bold; text-align: right;">X:</label></td>
+          <td><input type="text" value="{{X}}" id="balXTxt" title="Extra" style="width: 40px; text-align: right;" disabled></td>
+        {{/with}}
+        <td></td>
       </tr>
       <!-- <tr> -->
       	<!-- <td style="width: 120px; font-weight: bold;"># work Days</td> -->
@@ -144,6 +155,42 @@
         {{/each}}
         <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
       </tr>
+
+      <tr style="border: 1px solid black;">
+        {{#with ALEventType}}
+        <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
+          <input type="checkBox" id="ALBalChk" class="eventTypeChk" name="ALBalChk">
+        </td>
+        <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: {{backgroundColor}}; color: {{textColor}};" colspan="3">AL Bal.</td>
+        {{/with}}
+        {{#each ALBalances}}
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; padding: 0px 4px 0px 4px;" title="{{mTxt}}">{{tot}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; background-color: #ccc; color: #fff; padding: 0px 4px 0px 4px;" title="{{mTxt}}">-</td>
+          {{/if}}
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
+      </tr>
+
+      {{#if SL}}
+      <tr style="border: 1px solid black;">
+        {{#with SLEventType}}
+        <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
+          <input type="checkBox" id="SLBalChk" class="eventTypeChk" name="SLBalChk">
+        </td>
+        <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: {{backgroundColor}}; color: {{textColor}};" colspan="3">SL Bal.</td>
+        {{/with}}
+        {{#each SLBalances}}
+          {{#if posted}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; padding: 0px 4px 0px 4px;" title="{{mTxt}}">{{tot}} {{unit}}</td>
+          {{else}}
+            <td style="border-left: 1px solid black; text-align: right; font-weight: bold; width: 50px; background-color: #ccc; color: #fff; padding: 0px 4px 0px 4px;" title="{{mTxt}}">-</td>
+          {{/if}}
+        {{/each}}
+        <td style="border-left: 1px solid black; text-align: center; font-weight: bold; width: 70px;"></td>
+      </tr>
+      {{/if}}
     </table>
     <div style="margin-top: 8px; margin-left: 6px;">
       <canvas id="dataChart" width="860" height="280" title='{{currentYear}}'></canvas>

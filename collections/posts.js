@@ -53,6 +53,28 @@ Meteor.methods({
 
   	var postId = Posts.insert(post);
 
+    var bal = Balances.findOne({year: postAttributes.year, empId: postAttributes.empId});
+    if (!bal) {
+      var emp = Employees.findOne(postAttributes.empId);
+      var prevBal = Balances.findOne({year: postAttributes.year - 1, empId: emp._id});
+      if (prevBal) {
+        var AL = parseFloat(prevBal.AL) + parseFloat(emp.AL * 7.5);
+        var SL = parseFloat(prevBal.SL) + parseFloat(emp.SL * 7.5);
+        var X = parseFloat(prevBal.X);
+      } else {
+        var AL = parseFloat(emp.AL * 7.5);
+        var SL = parseFloat(emp.SL * 7.5);
+        var X = 0.0;
+      }
+      Balances.insert({
+        year: postAttributes.year,
+        empId: postAttributes.empId,
+        AL: AL,
+        SL: SL,
+        X: X
+      });
+    }
+
   	return postId;
   },
 

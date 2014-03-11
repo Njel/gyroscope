@@ -49,6 +49,18 @@ Template.folderPage.helpers({
   currentYear: function() {
   	return Session.get('currentYear');
   },
+  balances: function() {
+    if (Session.get('currentEmpId') == 'All') {
+      return {AL: '-', SL: '-', X: '-'};
+    } else {
+      var b = Balances.findOne({empId: Session.get('currentEmpId'), year: Session.get('currentYear')});
+      return {
+        AL: b.AL,
+        SL: b.SL,
+        X: b.X
+      };
+    }
+  },
   years: function() {
   	if (Session.get('currentEmpId') == 'All') {
   	  var Y = Posts.find({},{sort: {year: -1}});
@@ -400,6 +412,18 @@ Template.folderPage.helpers({
     // }
     // return R;
   },
+  ALEventType: function() {
+    return EventTypes.findOne({code: 'A'});
+  },
+  ALBalances: function() {
+    return calcALBal();
+  },
+  SLEventType: function() {
+    return EventTypes.findOne({code: 'S'});
+  },
+  SLBalances: function() {
+    return calcSLBal();
+  },
   hasSubTypes: function(et) {
     var n = EventTypes.find({parent: et}).count();
     if (n > 0) return true;
@@ -566,8 +590,12 @@ function calcExtraBal() {
   if (X && R) {
     var XId = X._id;
     var RId = R._id;
-    var prevBal = 0.0;
     if (e == 'All') {
+      var prevBal = 0.0;
+      var b = Balances.find({year: y});
+      b.forEach(function(r) {
+        prevBal = prevBal + r.X;
+      });
       for (var m = 1; m <= 12; m++) {
         var d = new Date(y, m - 1, 1);
         var XT = Totals.find({year: y, month: m, type: XId});
@@ -583,7 +611,7 @@ function calcExtraBal() {
           RTot = RTot + t.cValue;
           posted = true;
         });
-        var bal = prevBal + XTot - RTot
+        var bal = prevBal + XTot - RTot;
         B.push({
           m: moment(d).format("MM"),
           mTxt: moment(d).format("MMM"),
@@ -594,6 +622,10 @@ function calcExtraBal() {
         prevBal = bal;
       }
     } else {
+      var prevBal = 0.0;
+      var b = Balances.findOne({year: y, empId: e});
+      if (b)
+        prevBal = b.X;
       for (var m = 1; m <= 12; m++) {
         var d = new Date(y, m - 1, 1);
         var XT = Totals.find({empId: e, year: y, month: m, type: XId});
@@ -609,7 +641,133 @@ function calcExtraBal() {
           RTot = RTot + t.cValue;
           posted = true;
         });
-        var bal = prevBal + XTot - RTot
+        var bal = prevBal + XTot - RTot;
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      };
+    }
+  }
+  return B;
+}
+
+function calcALBal() {
+  var B = [];
+  var i = 1;
+  var unit = '';
+  var y = parseFloat(Session.get('currentYear'));
+  var e = Session.get('currentEmpId');
+  var A = EventTypes.findOne({code: 'A'});
+  if (A) {
+    var AId = A._id;
+    if (e == 'All') {
+      var prevBal = 0.0;
+      var b = Balances.find({year: y});
+      b.forEach(function(r) {
+        prevBal = prevBal + r.AL;
+      });
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var AT = Totals.find({year: y, month: m, type: AId});
+        var ATot = 0.0;
+        var posted = false;
+        AT.forEach(function(t) {
+          ATot = ATot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal - ATot;
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      }
+    } else {
+      var prevBal = 0.0;
+      var b = Balances.findOne({year: y, empId: e});
+      if (b)
+        prevBal = b.AL;
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var AT = Totals.find({empId: e, year: y, month: m, type: AId});
+        var ATot = 0.0;
+        var posted = false;
+        AT.forEach(function(t) {
+          ATot = ATot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal - ATot;
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      };
+    }
+  }
+  return B;
+}
+
+function calcSLBal() {
+  var B = [];
+  var i = 1;
+  var unit = '';
+  var y = parseFloat(Session.get('currentYear'));
+  var e = Session.get('currentEmpId');
+  var S = EventTypes.findOne({code: 'S'});
+  if (S) {
+    var SId = S._id;
+    if (e == 'All') {
+      var prevBal = 0.0;
+      var b = Balances.find({year: y});
+      b.forEach(function(r) {
+        prevBal = prevBal + r.AL;
+      });
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var ST = Totals.find({year: y, month: m, type: SId});
+        var STot = 0.0;
+        var posted = false;
+        ST.forEach(function(t) {
+          STot = STot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal - STot;
+        B.push({
+          m: moment(d).format("MM"),
+          mTxt: moment(d).format("MMM"),
+          tot: bal,
+          unit: 'h',
+          posted: posted
+        });
+        prevBal = bal;
+      }
+    } else {
+      var prevBal = 0.0;
+      var b = Balances.findOne({year: y, empId: e});
+      if (b)
+        prevBal = b.SL;
+      for (var m = 1; m <= 12; m++) {
+        var d = new Date(y, m - 1, 1);
+        var ST = Totals.find({empId: e, year: y, month: m, type: SId});
+        var STot = 0.0;
+        var posted = false;
+        ST.forEach(function(t) {
+          STot = STot + t.cValue;
+          posted = true;
+        });
+        var bal = prevBal - STot;
         B.push({
           m: moment(d).format("MM"),
           mTxt: moment(d).format("MMM"),
@@ -663,6 +821,7 @@ function drawChart() {
   var ET = EventTypes.find({active: true, parent: null});
   var e = 0;
   var max = 0;
+  var min = 0;
 
   if (ET) {
   	ET.forEach(function(et) {
@@ -697,6 +856,7 @@ function drawChart() {
 
 	    for (var j = 1; j < i; j++) {
 	    	if (V[j] > max) max = V[j];
+        if (V[j] < min) min = V[j];
 	      D1.push(V[j]);
 	    };
 
@@ -733,6 +893,7 @@ function drawChart() {
       R.forEach(function(r) {
         if (r.posted) {
           if (r.tot > max) max = r.tot;
+          if (r.tot < min) min = r.tot;
           D.push(r.tot);
         }
       });
@@ -750,6 +911,7 @@ function drawChart() {
       R.forEach(function(r) {
         if (r.posted) {
           if (r.tot > max) max = r.tot;
+          if (r.tot < min) min = r.tot;
           D.push(r.tot);
         }
       });
@@ -760,10 +922,63 @@ function drawChart() {
       });
     }
 
+    var chk = $('#ALBalChk').get(0);
+    if (chk && chk.checked) {
+      var D = [];
+      var R = calcALBal();
+      R.forEach(function(r) {
+        if (r.posted) {
+          if (r.tot > max) max = r.tot;
+          if (r.tot < min) min = r.tot;
+          D.push(r.tot);
+        }
+      });
+      var ET = EventTypes.findOne({code: 'A'});
+      if (ET) {
+        var fillColor = ET.backgroundColor;
+        var strokeColor = ET.borderColor;
+      } else {
+        var fillColor = '#005000'; //#5CC65E';
+        var strokeColor = '#000';
+      }
+      data.datasets.push({
+        fillColor: fillColor,
+        strokeColor: strokeColor,
+        data: D
+      });
+    }
+
+    var chk = $('#SLBalChk').get(0);
+    if (chk && chk.checked) {
+      var D = [];
+      var R = calcSLBal();
+      R.forEach(function(r) {
+        if (r.posted) {
+          if (r.tot > max) max = r.tot;
+          if (r.tot < min) min = r.tot;
+          D.push(r.tot);
+        }
+      });
+      var ET = EventTypes.findOne({code: 'S'});
+      if (ET) {
+        var fillColor = ET.backgroundColor;
+        var strokeColor = ET.borderColor;
+      } else {
+        var fillColor = '#500000'; //#b00';
+        var strokeColor = '#000';
+      }
+      data.datasets.push({
+        fillColor: fillColor,
+        strokeColor: strokeColor,
+        data: D
+      });
+    }
+
   	var obj = $("#dataChart").get(0)
   	// console.log(obj);
   	var m = 5;
-  	while (m * 10 < max) m += 5;
+  	// while (m * 10 < (max - min)) m += 5;
+    while (m * 10 < max) m += 5;
   	if (obj) {
   	  var ctx = obj.getContext("2d");
   	  var c = new Chart(ctx).Bar(data, {

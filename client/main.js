@@ -71,6 +71,7 @@ Meteor.autorun(function() {
 });
 
 Meteor.subscribe('employees');
+Meteor.subscribe('balances');
 Meteor.subscribe('groups');
 Meteor.subscribe('holidays');
 Meteor.subscribe('schedules');

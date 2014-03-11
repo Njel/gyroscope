@@ -34,7 +34,9 @@ Meteor.methods({
 
     var d = new Date().toISOString();
 
-    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'userId', 'group', 'AL', 'SL'), {
+    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'userId', 'group'), {
+      AL: parseFloat(empAttributes.AL),
+      SL: parseFloat(empAttributes.SL),
       createdBy: user._id,
       created: d,
       modifiedBy: user._id,
@@ -81,8 +83,8 @@ Meteor.methods({
             roleId: empAttributes.roleId,
             userId: empAttributes.userId,
             group: empAttributes.group,
-            AL: empAttributes.AL,
-            SL: empAttributes.SL,
+            AL: parseFloat(empAttributes.AL),
+            SL: parseFloat(empAttributes.SL),
             modifiedBy: user._id,
             modified: new Date().toISOString()
           }

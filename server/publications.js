@@ -12,6 +12,10 @@ Meteor.publish('employees', function() {
   return Employees.find();
 });
 
+Meteor.publish('balances', function() {
+  return Balances.find();
+});
+
 Meteor.publish('groups', function() {
   return Groups.find();
 });

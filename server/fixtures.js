@@ -87,8 +87,8 @@ if (Posts.find().count() === 0) {
     userId: '',
     group: grp,
     status: 'EA',
-    AL: 10,
-    SL: 0,
+    AL: 24.0,
+    SL: 0.0,
     active: true,
     createdBy: adminId,
     created: new Date().toISOString(),
@@ -104,8 +104,8 @@ if (Posts.find().count() === 0) {
     userId: '',
     group: grp,
     status: 'EA',
-    AL: 10,
-    SL: null,
+    AL: 28.0,
+    SL: 0.0,
     active: true,
     createdBy: adminId,
     created: new Date().toISOString(),
@@ -418,6 +418,14 @@ if (Posts.find().count() === 0) {
     modified: new Date().toISOString()
   });
 
+  var balEmp01 = Balances.insert({
+    year: 2014,
+    empId: emp01Id,
+    AL: 24 * 7.5,
+    SL: 0.0,
+    X: 0.0
+  });
+
   Events.insert({
     postId: firstPostId,
     empId: emp01Id,
@@ -457,29 +465,29 @@ if (Posts.find().count() === 0) {
     cValue: 4.0
   });
 
-  Posts.insert({
-    title: 'January 2014',
-    year: 2014,
-    month: 1,
-    empId: emp02Id,
-    status: 'Pending',
-    lockedBy: null,
-    locked: null,
-    submittedBy: null,
-    submitted: null,
-    approvedBy: null,
-    approved: null,
-    rejectedBy: null,
-    rejected: null,
-    reviewedBy: null,
-    reviewed: null,
-    daysCount: daysInMonth(2014, 1),
-    eventsCount: 0,
-    createdBy: adminId,
-    created: new Date().toISOString(),
-    modifiedBy: adminId,
-    modified: new Date().toISOString()
-  });
+  // Posts.insert({
+  //   title: 'January 2014',
+  //   year: 2014,
+  //   month: 1,
+  //   empId: emp02Id,
+  //   status: 'Pending',
+  //   lockedBy: null,
+  //   locked: null,
+  //   submittedBy: null,
+  //   submitted: null,
+  //   approvedBy: null,
+  //   approved: null,
+  //   rejectedBy: null,
+  //   rejected: null,
+  //   reviewedBy: null,
+  //   reviewed: null,
+  //   daysCount: daysInMonth(2014, 1),
+  //   eventsCount: 0,
+  //   createdBy: adminId,
+  //   created: new Date().toISOString(),
+  //   modifiedBy: adminId,
+  //   modified: new Date().toISOString()
+  // });
 
   Posts.insert({
     title: 'February 2014',

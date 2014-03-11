@@ -61,12 +61,27 @@ Template.postDialog.post = function() {
   } else {
     var d = new Date();
     var currEmp = Employees.findOne({userId: Meteor.userId()});
-    var post = {
-      empId: currEmp._id,
-      year: d.getFullYear(),
-      month: d.getMonth(),
-      title: '',
-      status: ''
+    if (currEmp) {
+      var lastPost = Posts.findOne({empId: currEmp._id}, {$sort: {year: -1, month: -1}, $limit: 1});
+      if (lastPost)
+        var m = lastPost.month;
+      else
+        var m = d.getMonth();
+      var post = {
+        empId: currEmp._id,
+        year: d.getFullYear(),
+        month: m,
+        title: '',
+        status: ''
+      }
+    } else {
+      var post = {
+        empId: null,
+        year: d.getFullYear(),
+        month: d.getMonth(),
+        title: '',
+        status: ''
+      }
     }
   }
   return post;
