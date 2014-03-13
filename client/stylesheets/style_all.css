@@ -61,13 +61,14 @@
     margin-top: -29px;
     vertical-align: top !important;
 }
+
 .notification {
-    position: absolute !important;
-    left: 74px;
-    top: 3px;
-    display: inline;
+    /*position: absolute !important;*/
+    /*left: 74px;*/
+    /*top: 3px;*/
+    /*display: inline;*/
     font-size: 10px !important;
-    padding: 0px 2px 0px 2px !important;
+    /*padding: 0px 2px 0px 2px !important;*/
 }
 
 #adjustment {

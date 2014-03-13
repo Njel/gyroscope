@@ -8,7 +8,7 @@ Template.scheduleDialog.helpers({
     var adminRole = Roles.findOne({name: 'Admin'});
     if (adminRole) {
       var currEmp = Employees.findOne({userId: currUser._id});
-      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+      if (currEmp && currEmp.roleId == adminRole._id) {
         return true;
       }
     }
@@ -24,6 +24,10 @@ Template.scheduleDialog.selectedSchedule = function() {
 };
 
 Template.scheduleDialog.sch = function() {
+  var currUser = Meteor.user();
+  if (!currUser)
+    return null;
+
   var schId = Session.get('selectedSchedule');
 
   if (schId) {
@@ -54,13 +58,18 @@ Template.scheduleDialog.sch = function() {
       }
     }
   } else {
-    var sch = {
-      empId: '',
-      periodsCount: '',
-      hoursCount: '',
-      validS: '',
-      validE: '',
-      status: ''
+    var currEmp = Employees.findOne({userId: currUser._id});
+    if(currEmp) {
+      var sch = {
+        empId: currEmp._id,
+        periodsCount: null,
+        hoursCount: null,
+        validS: '',
+        validE: '',
+        status: ''
+      };
+    } else {
+      return null;
     }
   }
   return sch;
@@ -115,5 +124,55 @@ Template.scheduleDialog.events({
         Session.set('showDialogSchedule', false);
       }
     });
+  },
+  'change #validS': function(evt, tmpl) {
+    var t = evt.target.value;
+    if (t == '-') {
+      t = moment(new Date()).format('YYYY-MM-DD');
+    } else {
+      if (t.length == 4) {
+        t = t + '-01-01';
+      } else {
+        if (t.length == 8) {
+          p = t.indexOf('-');
+          if (p == -1)
+            t = t.substring(0, 4) + '-' + t.substring(4, 6) + '-' + t.substring(6, 8);
+          else
+            if (p != 5)
+              t = '';
+            else
+              t = t.substring(0, 5) + '0' + t.substring(5, 7) + '0' + t.substring(7, 8);
+        } else {
+          t = '';
+        }
+      }
+    }
+    evt.target.value = t;
+    if (tmpl.find('[name=validE]').value == '')
+      tmpl.find('[name=validE]').value = t.substring(0, 5) + '12-31';
+  },
+  'change #validE': function(evt, tmpl) {
+    var t = evt.target.value;
+    if (t == '-') {
+      t = moment(new Date()).format('YYYY-MM-DD');
+    } else {
+      if (t.length == 4) {
+        t = t + '-12-31';
+      } else {
+        if (t.length == 8) {
+          p = t.indexOf('-');
+          if (p == -1)
+            t = t.substring(0, 4) + '-' + t.substring(4, 6) + '-' + t.substring(6, 8);
+          else
+            if (p != 5)
+              t = '';
+            else
+              t = t.substring(0, 5) + '0' + t.substring(5, 7) + '0' + t.substring(7, 8);
+        } else {
+          t = '';
+        }
+      }
+    }
+    evt.target.value = t;
   }
 });

@@ -71,12 +71,12 @@ Template.scheduleCalendar.rendered = function() {
 			right: ''
 		},
     allDaySlot: false,
-    selectable: true,
-    selectHelper: true,
-	  editable: true,
-    droppable: true,
-    eventStartEditable: true,
-    eventDurationEditable: true,
+    selectable: hasAccess(),
+    selectHelper: hasAccess(),
+	  editable: hasAccess(),
+    droppable: hasAccess(),
+    eventStartEditable: hasAccess(),
+    eventDurationEditable: hasAccess(),
 	  // contentHeight: 600,
     select: function(start, end, allDay, jsEvent, view) {
       calendar.fullCalendar('unselect');
@@ -85,15 +85,19 @@ Template.scheduleCalendar.rendered = function() {
       Session.set('showDialogCalPeriod', true);
     },
     dayClick: function(date, allDay, jsEvent, view) {
-    // dayClick: function(date, jsEvent, view) {
-      // Session.set('calStartDate', new Date(date));
-      Session.set('selectedCalDateStart', date);
-      Session.set('selectedCalDateEnd', date);
-      Session.set('showDialogCalPeriod', true);
+      if (hasAccess()) {
+        // dayClick: function(date, jsEvent, view) {
+        // Session.set('calStartDate', new Date(date));
+        Session.set('selectedCalDateStart', date);
+        Session.set('selectedCalDateEnd', date);
+        Session.set('showDialogCalPeriod', true);
+      }
   	},
   	eventClick: function(evt, jsEvent, view) {
-      Session.set('selectedCalPeriod', evt.id);
-      Session.set('showDialogCalPeriod', true);
+      if (hasAccess()) {
+        Session.set('selectedCalPeriod', evt.id);
+        Session.set('showDialogCalPeriod', true);
+      }
   	},
     // eventDrop: function(evt, revertFunc, jsEvent, ui, view) {
     eventDrop: function(evt, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
@@ -201,3 +205,26 @@ Template.scheduleCalendar.rendered = function() {
   $('#calendar').fullCalendar('changeView', 'agendaWeek');
   $('#calendar').fullCalendar('gotoDate', 2010, 0, 3);
 };
+
+function hasAccess() {
+  var currUser = Meteor.user();
+  if (!currUser)
+    return false;
+  var sch = Schedules.findOne(Session.get('currentScheduleId'));
+  if (sch && sch.locked)
+    return false;
+  var currEmp = Employees.findOne({userId: currUser._id});
+  if (sch && currEmp && sch.empId == currEmp._id)
+    return true;
+  if (currEmp && ((currEmp._id == currUser._id) || (this.createdBy == currUser._id)))
+    return true;
+  if(currUser.username == 'Admin')
+    return true;
+  var adminRole = Roles.findOne({name: 'Admin'});
+  if (adminRole) {
+    if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+      return true;
+    }
+  }
+  return false;
+}

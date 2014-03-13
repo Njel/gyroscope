@@ -1,22 +1,37 @@
 <template name="period">
-    <div >
-   	  <div class="post-content">
-   	  	<table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px;" class="author">
+  <div >
+    <div class="post-content">
+  	  <table style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px;" class="author">
    	  	<tr>
-   	  	<td style="width: 34px;"><b>{{dayTxt this}}</b></td>
-	    <td style="text-align: center; width: 10px;">|</td>
-	    <td style="text-align: center; width: 72px;">{{period this}}</td>
-	    <td style="text-align: center; width: 10px;">|</td>
-	    <td style="text-align: right; width: 70px;">{{hours}} hour(s)</td>
-	    <td style="width: 16px;"></td>
-	    <td style="width: 130px;">
-	      <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
-	    </td>
-	    <td>
-  	    <a href="{{postPagePath this}}" class="delete btn btn-danger btn-mini">x</a>
-  	    </td>
+   	  	<!-- <td style="width: 34px;"><b>{{dayTxt this}}</b></td> -->
+	    <!-- <td style="text-align: center; width: 10px;">|</td> -->
+	    <!-- <td style="text-align: center; width: 72px;">{{period this}}</td> -->
+	    <!-- <td style="text-align: center; width: 10px;">|</td> -->
+	    <!-- <td style="text-align: right; width: 70px;">{{hours}} hour(s)</td> -->
+	    <!-- <td style="width: 16px;"></td> -->
+	    <!-- <td style="width: 130px;"> -->
+	      <!-- <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span> -->
+	    <!-- </td> -->
+
+  	  	  <td style="width: 30px; padding: 0px 4px 0px 0px;">
+		    {{#if hasAccess}}
+	  	  	  <a href="" class="editPeriodBtn" title="Edit"><b>{{dayTxt this}}</b></a>
+	  	  	{{else}}
+	  	  	  <b>{{dayTxt this}}</b>
+	  	  	{{/if}}
+	  	  </td>
+	      <td style="text-align: center; width: 80px; border-left: 1px solid black; padding: 0px 4px 0px 4px;">{{period this}}</td>
+	      <td style="text-align: right; width: 80px; border-left: 1px solid black; padding: 0px 8px 0px 0px;">{{hours}} hour(s)</td>
+	      <td style="width: 136px; border-left: 1px solid black; padding: 0px 0px 0px 8px;">
+	        <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">{{status}}</span>
+	      </td>
+          <td style="width: 24px; height: 24px; padding: 0px 0px 0px 0px;">
+		    {{#if hasAccess}}
+              <a href=""><button class="btn btn-danger btn-mini delete" style="padding: 0px 3px 0px 2px;"><i class="icon-white icon-trash" title="Delete"></i></button></a>
+  	        {{/if}}
+          </td>
 	    </tr>
-	    </table>
-	  </div>
-    </div>
+	  </table>
+	</div>
+  </div>
 </template>

@@ -30,12 +30,13 @@
         {{#if isAdmin}}
           <label for="status">Status <span style="color: red">*</span></label>
           <select type="text" name="status" id="status" value="{{status}}" style="width: 100px;">
-              <option value='pending'{{selectedValue status 'pending'}}>pending</option>
-              <option value='approved'{{selectedValue status 'approved'}}>approved</option>
-              <option value='rejected'{{selectedValue status 'rejected'}}>rejected</option>
+              <option value='not submitted'{{selectedValue status 'not submitted'}}>Not Submitted</option>
+              <option value='pending'{{selectedValue status 'pending'}}>Pending</option>
+              <option value='approved'{{selectedValue status 'approved'}}>Approved</option>
+              <option value='rejected'{{selectedValue status 'rejected'}}>Rejected</option>
           </select>
         {{else}}
-          <label for="status">Status</span></label>
+          <label for="status">Status</label>
           <select type="text" name="status" id="status" value="{{status}}" style="width: 220px;" disabled>
             <option value='{{status}}' selected='selected'>{{status}}</option>
           </select>

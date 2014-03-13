@@ -52,10 +52,6 @@ Meteor.publish('eventTypes', function() {
   return EventTypes.find();
 });
 
-// Meteor.publish('notifications', function() {
-//   return Notifications.find({userId: this.userId});
-// });
-
 // Meteor.publish('settings', function() {
 //   return Settings.find();
 // });
@@ -243,12 +239,16 @@ Meteor.publish('settings', function() {
 });
 
 Meteor.publish('notifications', function() {
-  // only publish notifications belonging to the current user
-  if(canViewById(this.userId)){
-    return Notifications.find({userId:this.userId});
-  }
-  return [];
+  return Notifications.find();
 });
+
+// Meteor.publish('notifications', function() {
+//   // only publish notifications belonging to the current user
+//   if(canViewById(this.userId)){
+//     return Notifications.find({userId:this.userId});
+//   }
+//   return [];
+// });
 
 // Meteor.publish('categories', function() {
 //   if(canViewById(this.userId)){

@@ -1,7 +1,15 @@
 Template.scheduleItem.helpers({
+  approved: function() {
+    return (this.status == 'Approved');
+  },
+  submitted: function() {
+    return (this.status == 'Pending');
+  },
   hasAccess: function() {
     var currUser = Meteor.user();
     if (!currUser)
+      return false;
+    if (this.periodsCount == 0 || this.status != 'Not Submitted')
       return false;
     if ((this.empId == currUser._id) || (this.createdBy == currUser._id))
       return true;
@@ -60,4 +68,25 @@ Template.scheduleItem.rendered = function() {
 };
 
 Template.scheduleItem.events({
+  'click .submit': function(event) {
+    // console.log(this._id);
+    event.preventDefault();
+    Meteor.call('scheduleSubmit', this._id);
+  },
+  'click .lockBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('scheduleLock', this._id);
+  },
+  'click .unlockBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('scheduleUnlock', this._id);
+  },
+  'click .approveBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('scheduleApprove', this._id);
+  },
+  'click .rejectBtn': function(event) {
+    event.preventDefault();
+    Meteor.call('scheduleReject', this._id);
+  }
 });

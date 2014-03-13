@@ -1,4 +1,7 @@
 Template.schedulesListItem.helpers({
+  notSubmitted: function() {
+    return (this.status == 'Not Submitted' && this.periodsCount != 0);
+  },
   hasAccess: function() {
     var currUser = Meteor.user();
     if (!currUser)
@@ -80,6 +83,11 @@ Template.schedulesListItem.events({
   },
   'click .detailsBtn': function(event) {
     // Session.set('selectedSchedule', this._id);
+  },
+  'click .submitBtn': function(event) {
+    // console.log('Submit click (' + this._id + ')');
+    event.preventDefault();
+    Meteor.call('scheduleSubmit', this._id);
   },
   'click .deleteBtn': function(event) {
     // console.log('Employee Delete click (' + this._id + ')');

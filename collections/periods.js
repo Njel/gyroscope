@@ -52,8 +52,8 @@ Meteor.methods({
       modified: d
     });
 
-    // update the schedule with the number of periods
-    Schedules.update(p.schId, {$inc: {periodsCount: 1, hoursCount: p.hours}});
+    // update the schedule with the number of periods and new status
+    Schedules.update(p.schId, {$inc: {periodsCount: 1, hoursCount: p.hours}, $set: {status: 'Not Submitted'}});
 
     // create the period, save the id
     // console.log(p.start);
@@ -108,6 +108,10 @@ Meteor.methods({
         }
       );
     }
+
+    // update the schedule status
+    Schedules.update(p.schId, {$set: {status: 'Not Submitted'}});
+
     var s = Settings.findOne({name: 'lastCalPeriodMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
 
@@ -155,8 +159,8 @@ Meteor.methods({
         }
       );
 
-    // update the schedule with the number of periods
-    Schedules.update(p.schId, {$inc: {hoursCount: periodAttributes.hours - pHours}});
+    // update the schedule with the number of periods and new status
+    Schedules.update(p.schId, {$inc: {hoursCount: periodAttributes.hours - pHours}, $set: {status: 'Not Submitted'}});
 
     }
     var s = Settings.findOne({name: 'lastCalPeriodMod'});
@@ -184,7 +188,7 @@ Meteor.methods({
     });
 
     // update the schedule with the number of periods
-    Schedules.update(p.schId, {$inc: {periodsCount: -1, hoursCount: -p.hours}});
+    Schedules.update(p.schId, {$inc: {periodsCount: -1, hoursCount: -p.hours}, $set: {status: 'Not Submitted'}});
 
     var s = Settings.findOne({name: 'lastCalPeriodMod'});
     Settings.update(s._id, {$set: {value: new Date()}});

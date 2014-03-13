@@ -44,5 +44,41 @@ Template.event.events({
     var s = Settings.findOne({name: 'lastCalEventMod'});
     Settings.update(s._id, {$set: {value: new Date()}});
   	Session.set('lastCalEventMod', new Date());
+  },
+  'click .editEventBtn': function(event) {
+    var e = Events.findOne(this._id);
+    if (e) {
+      var dateTimeFormat = Settings.findOne({name: 'DateTimeFormat'}).value;
+      var type = EventTypes.findOne(e.type);
+      var calEvent = {
+        _id: e._id,
+        postId: e.postId,
+        start: moment(new Date(e.start)).format(dateTimeFormat),
+        end: moment(new Date(e.end)).format(dateTimeFormat),
+        duration: e.duration,
+        unit: e.unit,
+        period: e.period,
+        type: e.type,
+        title: e.title,
+        status: e.status,
+        allDay: e.allDay,
+        createdBy: e.createdBy,
+        created: new Date(e.created),
+        modifiedBy: e.modifiedBy,
+        modified: new Date(e.modified),
+        textColor: type.textColor,
+        borderColor: type.borderColor,
+        backgroundColor: type.backgroundColor,
+        typeUnit: type.unit
+      }
+
+      Session.set('calEvent', calEvent);
+      Session.set('calOperation', 'Update');
+      Session.set('calEventUnit', calEvent.typeUnit);
+
+      Session.set('showDialogCalEvent', true);
+    } else {
+      return false;
+    }
   }
 });

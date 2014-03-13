@@ -1,26 +1,28 @@
 <template name="notifications">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
+  <a href="#" class="dropdown" data-toggle="dropdown">
     Notifications
     {{#if notificationCount}}
       <span class="badge badge-inverse">{{notificationCount}}</span>
     {{/if}}
     <b class="caret"></b>
   </a>
-  <ul class="notification dropdown-menu" style="display: none;">
+  <!-- <ul class="notification dropdown-menu" style="margin-top: 32px; margin-left: -60px; padding: 4px 4px 4px 4px !important;"> -->
+  <ul class="notification dropdown-menu" style="margin-top: -6px; margin-left: 12px; padding: 4px 4px 4px 4px !important;">
     {{#if notificationCount}}
       {{#each notifications}}
         {{> notification}}
       {{/each}}
     {{else}}
-      <li><span>No Notifications</span></li>
+      <li><span style="line-height: 14px;">No Notifications</span></li>
     {{/if}}
   </ul>
 </template>
 
 <template name="notification">
   <li>
-    <a href="{{postPagePath postId}}">
-      <strong>{{authorName}}</strong> submitted a new event during that month
+    <a href="{{link}}" style="line-height: 14px;">
+      <strong>{{title}}</strong> <i>at <strong>{{dateTimeFormat time}}</strong> by <strong>{{authorName}}</strong></i>
     </a>
   </li>
 </template>

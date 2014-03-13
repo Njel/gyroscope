@@ -22,13 +22,16 @@ Template.schedules.helpers({
     var currUser = Meteor.user();
     if (!currUser)
       return false;
+    var sch = Schedules.findOne(this._id);
+    var currEmp = Employees.findOne({userId: currUser._id});
+    if (sch && currEmp && sch.empId == currEmp._id)
+      return true;
     if ((this.userId == currUser._id) || (this.createdBy == currUser._id))
       return true;
     if(currUser.username == 'Admin')
       return true;
     var adminRole = Roles.findOne({name: 'Admin'});
     if (adminRole) {
-      var currEmp = Employees.findOne({userId: currUser._id});
       if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
         return true;
       }
