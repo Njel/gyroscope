@@ -301,11 +301,30 @@ Meteor.methods({
       var emp = Employees.findOne({userId: user._id});
       if (emp) {
         // console.log('Employee found: ' + emp.fname + ' ' + emp.lname);
+        var userId = null;
+        if (emp.supervisorId) {
+          var sup = Employees.findOne(emp.supervisorId);
+          if (sup) {
+            var empId = sup._id;
+            var emp = Employees.findOne(empId);
+            if (emp) {
+              userId = emp.userId;
+            }
+          }
+        }
+        if(!userId) {
+          var adminUser = Meteor.users.findOne({username: 'Admin'});
+          if (adminUser) {
+            userId = adminUser._id;
+          }
+        }
+
         Notifications.insert({
           title: 'Schedule submitted',
           authorName: emp.fname + ' ' + emp.lname,
           link: '/schedules/' + sch._id,
           read: false,
+          userId: userId,
           time: new Date()
         });
       }

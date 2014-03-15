@@ -15,6 +15,13 @@ if (Posts.find().count() === 0) {
   });
   Accounts.setPassword(adminId, 'password');
   
+  var approver01Id = Meteor.users.insert({
+    username: 'Approver01',
+    profile: { name: 'Approver 01' },
+    isAdmin: false
+  });
+  Accounts.setPassword(approver01Id, 'password');
+  
   var user01Id = Meteor.users.insert({
     username: 'User01',
     profile: { name: 'User 01' },
@@ -53,7 +60,7 @@ if (Posts.find().count() === 0) {
     modified: new Date().toISOString()
   });
 
-  Roles.insert({
+  var approverRole = Roles.insert({
     name: 'Approver',
     createdBy: adminId,
     created: new Date().toISOString(),
@@ -79,12 +86,49 @@ if (Posts.find().count() === 0) {
   });
 
   // create Employees
+  var AdministratorId = Employees.insert({
+    fname: 'Administrator',
+    lname: 'Name',
+    email: 'administrator@gyroscope.com',
+    roleId: adminRole,
+    userId: adminId,
+    supervisorId: null,
+    group: grp,
+    status: 'EA',
+    AL: 24.0,
+    SL: 0.0,
+    active: true,
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
+  var empApprover01Id = Employees.insert({
+    fname: 'Approver01',
+    lname: 'Name',
+    email: 'approver01@gyroscope.com',
+    roleId: approverRole,
+    userId: approver01Id,
+    supervisorId: AdministratorId,
+    group: grp,
+    status: 'EA',
+    AL: 24.0,
+    SL: 0.0,
+    active: true,
+    createdBy: adminId,
+    created: new Date().toISOString(),
+    modifiedBy: adminId,
+    modified: new Date().toISOString()
+  });
+
   var emp01Id = Employees.insert({
-    fname: 'empl01',
-    lname: 'name',
+    fname: 'Empl01',
+    lname: 'Name',
     email: 'empl01@gyroscope.com',
     roleId: userRole,
-    userId: '',
+    userId: user01Id,
+    supervisorId: empApprover01Id,
     group: grp,
     status: 'EA',
     AL: 24.0,
@@ -97,11 +141,12 @@ if (Posts.find().count() === 0) {
   });
 
   var emp02Id = Employees.insert({
-    fname: 'empl02',
-    lname: 'name',
+    fname: 'Empl02',
+    lname: 'Name',
     email: 'empl02@gyroscope.com',
     roleId: userRole,
-    userId: '',
+    userId: null,
+    supervisorId: null,
     group: grp,
     status: 'EA',
     AL: 28.0,

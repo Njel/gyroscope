@@ -69,7 +69,14 @@ Template.scheduleDialog.sch = function() {
         status: ''
       };
     } else {
-      return null;
+      var sch = {
+        empId: null,
+        periodsCount: null,
+        hoursCount: null,
+        validS: '',
+        validE: '',
+        status: ''
+      };
     }
   }
   return sch;

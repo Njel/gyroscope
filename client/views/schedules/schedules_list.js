@@ -76,6 +76,6 @@ Template.schedules.showDialogSchDelConf = function() {
 
 Template.schedulesList.helpers({
   schedules: function() {
-    return Schedules.find();
+    return Schedules.find({},{sort: {modified: -1}});
   }
 });

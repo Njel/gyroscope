@@ -1,9 +1,14 @@
 Template.scheduleItem.helpers({
-  approved: function() {
-    return (this.status == 'Approved');
-  },
-  submitted: function() {
-    return (this.status == 'Pending');
+    isAuthorized: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    var currEmp = Employees.findOne({userId: currUser._id});
+    if (currEmp)
+      return true;
+    return false;
   },
   hasAccess: function() {
     var currUser = Meteor.user();
@@ -11,6 +16,11 @@ Template.scheduleItem.helpers({
       return false;
     if (this.periodsCount == 0 || this.status != 'Not Submitted')
       return false;
+    // var sch = Schedules.findOne(this._id);
+    var currEmp = Employees.findOne({userId: currUser._id});
+    // if (sch && currEmp && sch.empId == currEmp._id)
+    if (currEmp && this.empId == currEmp._id)
+      return true;
     if ((this.empId == currUser._id) || (this.createdBy == currUser._id))
       return true;
     if(currUser.username == 'Admin')
@@ -23,6 +33,31 @@ Template.scheduleItem.helpers({
       }
     }
     return false;
+  },
+  isAdmin: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    var currEmp = Employees.findOne({userId: currUser._id});
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      if (currEmp && currEmp.roleId == adminRole._id) {
+        return true;
+      }
+    }
+    var emp = Employees.findOne(this.empId);
+    if (emp && (emp.supervisorId == currEmp._id)) {
+      return true;
+    }
+    return false;
+  },
+  approved: function() {
+    return (this.status == 'Approved');
+  },
+  submitted: function() {
+    return (this.status == 'Pending');
   },
   empName: function() {
     var emp = Employees.findOne(this.empId);

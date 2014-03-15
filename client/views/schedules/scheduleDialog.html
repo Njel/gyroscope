@@ -29,7 +29,8 @@
         <input type="text" name="validE" value="{{validE}}" id="validE" placeholder="YYYY-MM-DD" style="width: 90px;">
         {{#if isAdmin}}
           <label for="status">Status <span style="color: red">*</span></label>
-          <select type="text" name="status" id="status" value="{{status}}" style="width: 100px;">
+          <select type="text" name="status" id="status" value="{{status}}" style="width: 130px;">
+              <option value=''{{selectedValue status ''}}></option>
               <option value='not submitted'{{selectedValue status 'not submitted'}}>Not Submitted</option>
               <option value='pending'{{selectedValue status 'pending'}}>Pending</option>
               <option value='approved'{{selectedValue status 'approved'}}>Approved</option>
