@@ -21,6 +21,11 @@ Template.event.helpers({
 
 Template.event.events({
   'click .delete': function(event) {
+    var view = $('#calendar').fullCalendar('getView');
+    // console.log(view);
+    Session.set('calStartDate', view.start);
+    Session.set('calMonthView', view.name);
+
     event.preventDefault();
     var ev = {
       eventId: this._id,

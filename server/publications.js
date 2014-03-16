@@ -1,7 +1,7 @@
 // Meteor.publish('posts', function() {
 Meteor.publish('newPosts', function(limit) {
   // return Posts.find();
-  return Posts.find({}, {sort: {submitted: -1}, limit: limit});
+  return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: limit});
 });
 
 // Meteor.publish('singlePost', function(id) {

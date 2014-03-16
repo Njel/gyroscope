@@ -22,6 +22,13 @@ if (Posts.find().count() === 0) {
   });
   Accounts.setPassword(approver01Id, 'password');
   
+  var supervisor01Id = Meteor.users.insert({
+    username: 'Supervisor01',
+    profile: { name: 'Supervisor 01' },
+    isAdmin: false
+  });
+  Accounts.setPassword(supervisor01Id, 'password');
+  
   var user01Id = Meteor.users.insert({
     username: 'User01',
     profile: { name: 'User 01' },
@@ -47,42 +54,42 @@ if (Posts.find().count() === 0) {
   var adminRole = Roles.insert({
     name: 'Admin',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
-  Roles.insert({
-    name: 'Reviewer',
+  var supervisorRole = Roles.insert({
+    name: 'Supervisor',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var approverRole = Roles.insert({
     name: 'Approver',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var userRole = Roles.insert({
     name: 'User',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   // create Groups
   var grp = Groups.insert({
     name: 'Test',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   // create Employees
@@ -99,9 +106,9 @@ if (Posts.find().count() === 0) {
     SL: 0.0,
     active: true,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var empApprover01Id = Employees.insert({
@@ -117,9 +124,27 @@ if (Posts.find().count() === 0) {
     SL: 0.0,
     active: true,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
+  });
+
+  var empSupervisor01Id = Employees.insert({
+    fname: 'Supervisor01',
+    lname: 'Name',
+    email: 'supervisor01@gyroscope.com',
+    roleId: supervisorRole,
+    userId: supervisor01Id,
+    supervisorId: empApprover01Id,
+    group: grp,
+    status: 'EA',
+    AL: 24.0,
+    SL: 0.0,
+    active: true,
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
   });
 
   var emp01Id = Employees.insert({
@@ -128,22 +153,40 @@ if (Posts.find().count() === 0) {
     email: 'empl01@gyroscope.com',
     roleId: userRole,
     userId: user01Id,
-    supervisorId: empApprover01Id,
+    supervisorId: empSupervisor01Id,
     group: grp,
     status: 'EA',
     AL: 24.0,
     SL: 0.0,
     active: true,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var emp02Id = Employees.insert({
     fname: 'Empl02',
     lname: 'Name',
     email: 'empl02@gyroscope.com',
+    roleId: userRole,
+    userId: null,
+    supervisorId: empSupervisor01Id,
+    group: grp,
+    status: 'EA',
+    AL: 28.0,
+    SL: 0.0,
+    active: true,
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  var emp03Id = Employees.insert({
+    fname: 'Empl03',
+    lname: 'Name',
+    email: 'empl03@gyroscope.com',
     roleId: userRole,
     userId: null,
     supervisorId: null,
@@ -153,9 +196,9 @@ if (Posts.find().count() === 0) {
     SL: 0.0,
     active: true,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   // create Schedules
@@ -177,9 +220,9 @@ if (Posts.find().count() === 0) {
     reviewedBy: null,
     reviewed: null,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -190,9 +233,9 @@ if (Posts.find().count() === 0) {
     hours: 4,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -203,9 +246,9 @@ if (Posts.find().count() === 0) {
     hours: 3.5,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -216,9 +259,9 @@ if (Posts.find().count() === 0) {
     hours: 4,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -229,9 +272,9 @@ if (Posts.find().count() === 0) {
     hours: 3.5,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -242,9 +285,9 @@ if (Posts.find().count() === 0) {
     hours: 4,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -255,9 +298,9 @@ if (Posts.find().count() === 0) {
     hours: 3.5,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var ThursdayAM = Periods.insert({
@@ -268,9 +311,9 @@ if (Posts.find().count() === 0) {
     hours: 4,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -281,9 +324,9 @@ if (Posts.find().count() === 0) {
     hours: 3.5,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -294,9 +337,9 @@ if (Posts.find().count() === 0) {
     hours: 4,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Periods.insert({
@@ -307,9 +350,162 @@ if (Posts.find().count() === 0) {
     hours: 3.5,
     status: 'approved',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
+  });
+
+  var schEmp02Id = Schedules.insert({
+    empId: emp02Id,
+    periodsCount: 10,
+    hoursCount: 37.5,
+    validS: '2014-01-01',
+    validE: '2014-12-31',
+    status: 'Not Submitted',
+    lockedBy: null,
+    locked: null,
+    submittedBy: null,
+    submitted: null,
+    approvedBy: null,
+    approved: null,
+    rejectedBy: null,
+    rejected: null,
+    reviewedBy: null,
+    reviewed: null,
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 1,               // Monday
+    start: '08:00',       // From: 8:00
+    end: '12:00',         // To: 12:00
+    hours: 4,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 1,               // Monday
+    start: '13:00',       // From: 13:00
+    end: '16:30',         // To: 16:30
+    hours: 3.5,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 2,               // Tuesday
+    start: '08:00',       // From: 8:00
+    end: '12:00',         // To: 12:00
+    hours: 4,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 2,               // Tuesday
+    start: '13:00',       // From: 13:00
+    end: '16:30',         // To: 16:30
+    hours: 3.5,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 3,               // Wednesday
+    start: '08:00',       // From: 8:00
+    end: '12:00',         // To: 12:00
+    hours: 4,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 3,               // Wednesday
+    start: '13:00',       // From: 13:00
+    end: '16:30',         // To: 16:30
+    hours: 3.5,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 4,               // Thursday
+    start: '08:00',       // From: 8:00
+    end: '12:00',         // To: 12:00
+    hours: 4,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 4,               // Thursday
+    start: '13:00',       // From: 13:00
+    end: '16:30',         // To: 16:30
+    hours: 3.5,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 5,               // Friday
+    start: '08:00',       // From: 8:00
+    end: '12:00',         // To: 12:00
+    hours: 4,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  Periods.insert({
+    schId: schEmp02Id,
+    day: 5,               // Friday
+    start: '13:00',       // From: 13:00
+    end: '16:30',         // To: 16:30
+    hours: 3.5,
+    status: 'approved',
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
   });
 
   // create Event Types
@@ -384,6 +580,21 @@ if (Posts.find().count() === 0) {
     allDay: false,
     active: true,
     order: 50,
+    parent: null,
+    ratio: 1.0
+  });
+
+  var T = EventTypes.insert({
+    title: 'Training',
+    code: 'T',
+    unit: 'h',
+    textColor: '#fff',
+    borderColor: '#000',
+    backgroundColor: '#cc0',
+    defaultDuration: 0,
+    allDay: false,
+    active: true,
+    order: 60,
     parent: null,
     ratio: 1.0
   });
@@ -465,12 +676,12 @@ if (Posts.find().count() === 0) {
     rejected: null,
     reviewedBy: null,
     reviewed: null,
-    daysCount: daysInMonth(2014, 1),
+    daysCount: 31,
     eventsCount: 1,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   var balEmp01 = Balances.insert({
@@ -503,9 +714,9 @@ if (Posts.find().count() === 0) {
     reviewed: null,
     reviewer: null,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Totals.insert({
@@ -539,9 +750,9 @@ if (Posts.find().count() === 0) {
   //   daysCount: daysInMonth(2014, 1),
   //   eventsCount: 0,
   //   createdBy: adminId,
-  //   created: new Date().toISOString(),
+  //   created: moment(new Date()).toISOString(),
   //   modifiedBy: adminId,
-  //   modified: new Date().toISOString()
+  //   modified: moment(new Date()).toISOString()
   // });
 
   Posts.insert({
@@ -560,12 +771,12 @@ if (Posts.find().count() === 0) {
     rejected: null,
     reviewedBy: null,
     reviewed: null,
-    daysCount: daysInMonth(2014, 2),
+    daysCount: 28,
     eventsCount: 0,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -573,9 +784,9 @@ if (Posts.find().count() === 0) {
     name: 'admin',
     value: adminId,
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -583,9 +794,9 @@ if (Posts.find().count() === 0) {
     name: 'lastEmpMod',
     value: new Date(),
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -593,9 +804,9 @@ if (Posts.find().count() === 0) {
     name: 'lastSchMod',
     value: new Date(),
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -603,9 +814,9 @@ if (Posts.find().count() === 0) {
     name: 'lastCalEventMod',
     value: new Date(),
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -613,9 +824,9 @@ if (Posts.find().count() === 0) {
     name: 'lastCalPeriodMod',
     value: new Date(),
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -625,9 +836,9 @@ if (Posts.find().count() === 0) {
     value: 'MM/DD/YYYY HH:mm',
     // value: 'DD/MM/YYYY HH:mm',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Settings.insert({
@@ -636,107 +847,107 @@ if (Posts.find().count() === 0) {
     value: 'hh:mm A',
     // value: 'HH:mm',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Christmas Day",
     date: '2013-12-25',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "New Year's Day",
     date: '2014-01-01',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Martin Luther King Day",
     date: '2014-01-20',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Presidents' Day",
     date: '2014-02-17',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Memorial Day",
     date: '2014-05-26',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Independence Day",
     date: '2014-07-04',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Labor Day",
     date: '2014-09-01',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Columbus Day",
     date: '2014-10-13',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Veterans Day",
     date: '2014-11-11',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Thanksgiving Day",
     date: '2014-11-27',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 
   Holidays.insert({
     title: "Christmas Day",
     date: '2014-12-25',
     createdBy: adminId,
-    created: new Date().toISOString(),
+    created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
-    modified: new Date().toISOString()
+    modified: moment(new Date()).toISOString()
   });
 }

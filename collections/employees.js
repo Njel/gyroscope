@@ -32,9 +32,9 @@ Meteor.methods({
     if (!empAttributes.email)
       throw new Meteor.Error(422, 'Please enter a email for the employee');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
-    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'userId', 'group'), {
+    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'supervisorId', 'userId', 'group'), {
       AL: parseFloat(empAttributes.AL),
       SL: parseFloat(empAttributes.SL),
       createdBy: user._id,
@@ -81,13 +81,13 @@ Meteor.methods({
             lname: empAttributes.lname,
             email: empAttributes.email,
             roleId: empAttributes.roleId,
+            supervisorId: empAttributes.supervisorId,
             userId: empAttributes.userId,
             group: empAttributes.group,
             AL: parseFloat(empAttributes.AL),
             SL: parseFloat(empAttributes.SL),
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

@@ -1,22 +1,3 @@
-Template.calendar.lastCalEventMod = function() {
-  return Settings.findOne({name: 'lastCalEventMod'}).value;
-};
-
-Template.calendar.selectedEventType = function(t) {
-  if (!Session.get('selectedEventType')) {
-    Session.set('selectedEventType', t);
-    return 'border-bottom: 8px solid gray;';
-  }
-  if (t == Session.get('selectedEventType'))
-    return 'border-bottom: 8px solid gray;';
-  else
-    return 'border-bottom: 8px;';
-};
-
-Template.calendar.eventTypes = function() {
-  return EventTypes.find({active: true, parent: null}, {sort: {order: 1}});
-};
-
 Template.calendar.helpers({
   isLocked: function() {
     if (isAdmin())
@@ -26,91 +7,10 @@ Template.calendar.helpers({
 });
 
 Template.calendar.events({
-  'click .eventType': function(evt, tmpl) {
-    // console.log(evt.toElement.id);
-    evt.preventDefault();
-    Session.set('selectedEventType', evt.toElement.id);
-  },
-  'click #resetCal': function(evt, tmpl) {
-    // console.log('Reset Calendar');
-    evt.preventDefault();
-    currEvents = Events.find({postId: Session.get('currentPostId')});
-    currEvents.forEach(function(e) {
-      var ev = {eventId: e._id};
-      Meteor.call('eventDel', ev, function(error, eventId) {
-        error && throwError(error.reason);
-      });
-    });
-    post = Posts.findOne(Session.get('currentPostId'));
-    Meteor.call('postResetCounters', post, function(error, eventId) {
-      error && throwError(error.reason);
-    });
-
-    totals = Totals.find({year: post.year, month: post.month, empId: post.empId});
-    totals.forEach(function(t) {
-      Totals.remove(t._id);
-    });
-    var s = Settings.findOne({name: 'lastCalEventMod'});
-    Settings.update(s._id, {$set: {value: new Date()}});
-    // Session.set('lastCalEventMod', new Date());
-  },
-  'click #genWDays': function(evt, tmpl) {
-    // console.log(evt.toElement.id);
-    evt.preventDefault();
-    var post = Posts.findOne(Session.get('currentPostId'));
-    var type = EventTypes.findOne({code: 'W'});
-
-    if (post) {
-      // console.log(post.empId);
-      var nbDays = new Date(post.year, post.month, 0).getDate();
-      // console.log('Nb Days: ' + nbDays);
-      var d0 = moment(new Date(post.year, post.month-1, 1));
-      var D = d0.toISOString().substring(0,10);
-      // console.log(D);
-
-      var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
-      if (s) {
-        // console.log(s);
-        for (var i = 1; i <= nbDays+1; i++) {
-          var d = d0.day();
-          if (d != 0 && d != 6) {
-            D = d0.toISOString().substring(0,10);
-            var H = Holidays.findOne({date: D});
-            if (!H) {
-              var periods = Periods.find({schId: s._id, day: d});
-              periods.forEach(function(p) {
-                var ev = {
-                  postId: post._id,
-                  start: D + 'T' + p.start + ':00.000Z',
-                  end: D + 'T' + p.end + ':00.000Z',
-                  duration: p.hours,
-                  unit: 'h',
-                  period: p._id,
-                  type: type._id,
-                  title: type.code,
-                  status: 'new',
-                  allDay: false,
-                  textColor: type.textColor,
-                  borderColor: type.borderColor,
-                  backgroundColor: type.backgroundColor
-                };
-                Meteor.call('eventNew', ev, function(error, eventId) {
-                  error && throwError(error.reason);
-                });
-              });
-            }
-          }
-          d0 = moment(new Date(post.year, post.month-1, i));
-        };
-        var s = Settings.findOne({name: 'lastCalEventMod'});
-        Settings.update(s._id, {$set: {value: new Date()}});
-        // Session.set('lastCalEventMod', new Date());
-      }
-    }
-  }
 });
 
 Template.calendar.rendered = function() {
+  // console.log('Template.calendar.rendered');
   /* initialize the external events
   -----------------------------------------------------------------*/
   // $('#external-events div.external-event').each(function() {
@@ -157,6 +57,10 @@ Template.calendar.rendered = function() {
     // ],
     // events: function(start, end, timezone, callback) {
     events: function(start, end, callback) {
+      // var view = $('#calendar').fullCalendar('getView');
+      // console.log(view);
+      // Session.set('calStartDate', view.start);
+      // Session.set('calMonthView', view.name);
       var events = [];
       currEvents = Events.find({postId: Session.get('currentPostId')});
       currEvents.forEach(function(e) {
@@ -235,6 +139,15 @@ Template.calendar.rendered = function() {
     eventDurationEditable: editable,
     // timezone: 'America/New_York',
 	  // contentHeight: 600,
+    viewRender: function(view, element) {
+      // console.log(view);
+      // Session.set('calStartDate', view.start);
+      // Session.set('calMonthView', view.name);
+    },
+    eventAfterAllRender: function(view) {
+      // console.log(view);
+      // Session.set('calMonthView', view.name);
+    },
     select: function(start, end, allDay, jsEvent, view) {
       // console.log('select');
 
@@ -803,11 +716,11 @@ Template.calendar.rendered = function() {
   });
   $('#calendar').fullCalendar('changeView', Session.get('calMonthView'));
   $('#calendar').fullCalendar('gotoDate', Session.get('calStartDate'));
-  //$('#calendar').fullCalendar('gotoDate', new Date());
+  // $('#calendar').fullCalendar('gotoDate', new Date());
   // $('#calendar').fullCalendar('viewRender', function(view, element) {
-  //     Session.set('calMonthView', view.name);
-  //   });
+  //   Session.set('calMonthView', view.name);
+  // });
   // $('#calendar').fullCalendar('viewDestroy', function(view, element) {
-  //     Session.set('calMonthView', view.name);
-  //   });
+  //   Session.set('calMonthView', view.name);
+  // });
 };

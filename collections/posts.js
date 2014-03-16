@@ -37,7 +37,7 @@ Meteor.methods({
   	if (postForSameMonth)
   	  throw new Meteor.Error(302, 'This timesheet has already been posted', postForSameMonth._id);
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
   	// pick out the whitelisted keys
   	var post = _.extend(_.pick(postAttributes, 'empId', 'title', 'year', 'month'), {
@@ -78,6 +78,110 @@ Meteor.methods({
   	return postId;
   },
 
+  postGenEvents: function(postAttributes) {
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, 'You need to login to post new timesheets');
+
+    // ensure the post has a year
+    if (!postAttributes.year)
+      throw new Meteor.Error(422, 'Please select a year');
+
+    // ensure the post has a month
+    if (!postAttributes.month)
+      throw new Meteor.Error(422, 'Please select a month');
+
+    // check that there are no previous posts with the same link
+    var post = Posts.findOne({year: postAttributes.year, month: postAttributes.month, empId: postAttributes.empId});
+    if (!post) {
+      var d = moment(new Date()).toISOString();
+
+      // pick out the whitelisted keys
+      var post = _.extend(_.pick(postAttributes, 'empId', 'title', 'year', 'month'), {
+        submitted: new Date().getTime(),
+        daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
+        eventsCount: 0,
+        createdBy: user._id,
+        created: d,
+        modifiedBy: user._id,
+        modified: d,
+        status: 'New'
+      });
+
+      var postId = Posts.insert(post);
+
+      var bal = Balances.findOne({year: postAttributes.year, empId: postAttributes.empId});
+      if (!bal) {
+        var emp = Employees.findOne(postAttributes.empId);
+        var prevBal = Balances.findOne({year: postAttributes.year - 1, empId: emp._id});
+        if (prevBal) {
+          var AL = parseFloat(prevBal.AL) + parseFloat(emp.AL * 7.5);
+          var SL = parseFloat(prevBal.SL) + parseFloat(emp.SL * 7.5);
+          var X = parseFloat(prevBal.X);
+        } else {
+          var AL = parseFloat(emp.AL * 7.5);
+          var SL = parseFloat(emp.SL * 7.5);
+          var X = 0.0;
+        }
+        Balances.insert({
+          year: postAttributes.year,
+          empId: postAttributes.empId,
+          AL: AL,
+          SL: SL,
+          X: X
+        });
+      }
+    } else {
+      var postId = post._id;
+    }
+
+    var type = EventTypes.findOne({code: postAttributes.type});
+    var sid = postAttributes.schId;
+
+    if (type && sid) {
+      var nbDays = post.daysCount;
+      // console.log('Nb Days: ' + nbDays);
+      // console.log(D);
+
+      for (var i = 1; i <= nbDays; i++) {
+        // console.log(post.year + '-' + post.month + ': ' + i);
+        var d0 = moment(new Date(post.year, post.month - 1, i));
+        var d = d0.day();
+        if (d != 0 && d != 6) {
+          D = d0.format("YYYY-MM-DD").substring(0,10);
+          var H = Holidays.findOne({date: D});
+          if (!H) {
+            var periods = Periods.find({schId: sid, day: d});
+            periods.forEach(function(p) {
+              var ev = {
+                postId: postId,
+                start: D + 'T' + p.start + ':00.000Z',
+                end: D + 'T' + p.end + ':00.000Z',
+                duration: p.hours,
+                unit: 'h',
+                period: p._id,
+                type: type._id,
+                title: type.code,
+                status: 'new',
+                allDay: false,
+                textColor: type.textColor,
+                borderColor: type.borderColor,
+                backgroundColor: type.backgroundColor
+              };
+              Meteor.call('eventNew', ev, function(error, eventId) {
+                error && throwError(error.reason);
+              });
+            });
+          }
+        }
+      };
+    }
+
+    return postId;
+  },
+
   postUpd: function(postAttributes) {
     var user = Meteor.user();
 
@@ -114,8 +218,7 @@ Meteor.methods({
               month: postAttributes.month,
               daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
               modifiedBy: user._id,
-              modified: new Date().toISOString()
-            }
+              modified: moment(new Date()).toISOString()    }
           }, function(error) {
             if (error) {
               // display the error to the user
@@ -187,8 +290,7 @@ Meteor.methods({
       postId, {
         $set: {
           lockedBy: user._id,
-          locked: new Date().toISOString()
-          // status: 'locked'
+          locked: moment(new Date()).toISOString()  // status: 'locked'
         }
       }, function(error) {
           if (error) {
@@ -241,7 +343,7 @@ Meteor.methods({
       postId, {
         $set: {
           approvedBy: user._id, 
-          approved: new Date().toISOString(), 
+          approved: moment(new Date()).toISOString(), 
           status: 'Approved'
         }
       }, function(error) {
@@ -268,7 +370,7 @@ Meteor.methods({
       postId, {
         $set: {
           rejectedBy: user._id, 
-          rejected: new Date().toISOString(),
+          rejected: moment(new Date()).toISOString(),
           submittedBy: null,
           submitted: null,
           lockedBy: null,
@@ -309,9 +411,9 @@ Meteor.methods({
               approvedBy: null,
               approved: null,
               submittedBy: user._id, 
-              submitted: new Date().toISOString(), 
+              submitted: moment(new Date()).toISOString(), 
               lockedBy: user._id,
-              locked: new Date().toISOString(),
+              locked: moment(new Date()).toISOString(),
               status: 'Submitted'
             }
           }, function(error) {

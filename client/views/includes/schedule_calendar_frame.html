@@ -1,0 +1,67 @@
+<template name="scheduleCalendarFrame">
+  <!-- <input type="hidden" name="lastMod" value="{{lastCalEventMod}}" id="lastMod"> -->
+  <!-- <div id="legend">
+    <div class="paid-day"></div>
+    <a href="reports/requests?type=paid">
+      Paid Day Off
+    </a>
+    <div class="unpaid-day margin-left-20"></div>
+    <a href="reports/requests?type=unpaid">
+      Unpaid Day Off
+    </a>
+    <div class="legal-day margin-left-20"></div>
+      Legal Day Off       
+    <div class="pending-day margin-left-20"></div>
+    <a href="reports/requests?type=pending">
+      Pending Day Off
+    </a>
+    <div class="red-day margin-left-20"></div>
+    <a href="reports/requests?type=rejected">
+      Not Granted Day Off
+    </a>
+    <div class="clear"></div>
+  </div> -->
+  <table>
+    {{#unless isLocked}}
+      <tr>
+        <td>
+          <div id='external-events' style='line-height: 14px; width: 100%;'>
+  	        <!-- <h4>Events</h4> -->
+		    <table>
+  	  	      <tr style='vertical-align: top;'>
+  			    <td style='width: 99%;'>&nbsp;</td>
+      	    	<td>
+      	          <div class='external-event label-day' id='genWYearDays' style='width: 14px;' title="Generate work events">
+      	            <i class="icon-play-circle"></i>
+      	          </div>
+    	    	</td>
+    	    	<td>
+    	    	  <div class='external-event label-day' id='resetSchedule' style='width: 14px;' title="Delete all events">
+                    <i class="icon-trash"></i>
+                  </div>
+    	        </td>
+  		      </tr>
+  		    </table>
+  	        <!-- <p>
+  			  <input type='checkbox' id='drop-remove' />
+  			  <label for='drop-remove'>remove after drop</label>
+  		    </p> -->
+	  	  </div>
+	    </td>
+	  </tr>
+    {{/unless}}
+	<tr>
+	  <td style="width: 1200px;">
+		{{> scheduleCalendar}}
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+		<br/>
+		<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">
+		  <i><u>Last updated:</u> {{lastCalPeriodMod}}</i>
+		</div>
+	  </td>
+	</tr>
+  </table>
+</template>

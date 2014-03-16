@@ -29,12 +29,21 @@
           </tr>
           {{#if isAdmin}}
           <tr>
-            <td colspan="2">
+            <td>
               <label for="role">Role <span style="color: red">*</span></label>
               <select type="text" name="role" id="role" value="{{roleId}}">
                 <option value="">(None)</option>
                 {{#each roles}}
                   <option value='{{_id}}'{{selectedValue _id emp.roleId}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </td>
+            <td>
+              <label for="role">Supervisor <span style="color: red">*</span></label>
+              <select type="text" name="supervisor" id="supervisor" value="{{supervisorId}}">
+                <option value="">(None)</option>
+                {{#each supervisors}}
+                  <option value='{{_id}}'{{selectedValue _id emp.supervisorId}}>{{fname}} {{lname}}</option>
                 {{/each}}
               </select>
             </td>
@@ -71,10 +80,16 @@
           </tr>
           {{else}}
           <tr>
-            <td colspan="2">
+            <td>
               <label for="role">Role <span style="color: red">*</span></label>
               <select type="text" name="role" id="role" value="{{roleId}}" disabled>
                 <option value='{{roleId}}' selected='selected'>{{roleName roleId}}</option>
+              </select>
+            </td>
+            <td>
+              <label for="role">Supervisor <span style="color: red">*</span></label>
+              <select type="text" name="supervisor" id="supervisor" value="{{supervisorId}}">
+                <option value='{{supervisorId}}' selected='selected'>{{empFullName supervisorId}}</option>
               </select>
             </td>
           </tr>

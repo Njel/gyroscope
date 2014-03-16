@@ -26,7 +26,7 @@ Meteor.methods({
     if (!attributes.empId)
       throw new Meteor.Error(422, 'Please select an employee for the balance');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     e = _.extend(_.pick(attributes, 'empId', 'year', 'AL', 'SL', 'X'), {
       createdBy: user._id,
@@ -65,8 +65,7 @@ Meteor.methods({
             SL: attributes.SL,
             X: attributes.X,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

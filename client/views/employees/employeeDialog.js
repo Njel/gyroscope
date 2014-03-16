@@ -20,6 +20,15 @@ Template.employeeDialog.users = function() {
   return Meteor.users.find();
 };
 
+Template.employeeDialog.supervisors = function() {
+  var supervisorRole = Roles.findOne({name: 'Supervisor'});
+  if (supervisorRole) {
+    var supervisorRoleId = supervisorRole._id;
+    return Employees.find({roleId: supervisorRoleId});
+  }
+  return [];
+};
+
 Template.employeeDialog.selectedEmployee = function() {
   return Session.get('selectedEmployee');
 };
@@ -59,6 +68,7 @@ Template.employeeDialog.emp = function() {
         lname: e.lname,
         email: e.email,
         roleId: e.roleId,
+        supervisorId: e.supervisorId,
         userId: e.userId,
         group: groupName,
         status: e.status,
@@ -77,6 +87,7 @@ Template.employeeDialog.emp = function() {
       lname: '',
       email: '',
       roleId: '',
+      supervisorId: '',
       userId: '',
       group: null,
       status: '',
@@ -103,6 +114,7 @@ Template.employeeDialog.events({
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
       roleId: tmpl.find('[name=role]').value,
+      supervisorId: tmpl.find('[name=supervisor]').value,
       userId: tmpl.find('[name=userId]').value,
       group: tmpl.find('[name=group]').value,
       AL: tmpl.find('[name=al]').value,
@@ -128,6 +140,7 @@ Template.employeeDialog.events({
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
       roleId: tmpl.find('[name=role]').value,
+      supervisorId: tmpl.find('[name=supervisor]').value,
       userId: tmpl.find('[name=userId]').value,
       group: tmpl.find('[name=group]').value,
       AL: tmpl.find('[name=al]').value,

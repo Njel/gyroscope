@@ -28,9 +28,9 @@ Meteor.methods({
 
     grp = _.extend(_.pick(grpAttributes, 'name'), {
       createdBy: user._id,
-      created: new Date().toISOString(),
+      created: moment(new Date()).toISOString(),
       modifiedBy: user._id,
-      modified: new Date().toISOString()
+      modified: moment(new Date()).toISOString()
     });
 
     // create the group, save the id
@@ -59,8 +59,7 @@ Meteor.methods({
           $set: {
             name: grpAttributes.name,
 		    modifiedBy: user._id,
-		    modified: new Date().toISOString()
-          }
+		    modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

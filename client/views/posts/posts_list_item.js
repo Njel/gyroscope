@@ -107,10 +107,10 @@ Template.postsListItem.events({
     // Meteor.call('edit', this._id);
   },
   'click .detailsBtn': function(event) {
-    console.log('Details click (' + this._id + ')');
+    // console.log('Details click (' + this._id + ')');
   },
   'click .submitBtn': function(event) {
-    console.log('Submit click (' + this._id + ')');
+    // console.log('Submit click (' + this._id + ')');
     // event.preventDefault();
     // Meteor.call('postSubmit', this._id);
   },

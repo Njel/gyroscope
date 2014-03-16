@@ -64,6 +64,10 @@ Template.employees.events({
   	event.preventDefault();
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', true);
+  },
+  'click .orderBy': function(event) {
+    console.log("Column '" + event.toElement.text + "' clicked");
+    event.preventDefault();
   }
 });
 

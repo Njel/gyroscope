@@ -23,7 +23,7 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to create totals");
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     tot = _.extend(_.pick(attributes, 'empId', 'year', 'month', 'type', 'unit', 'value'), {
       createdBy: user._id,
@@ -52,8 +52,7 @@ Meteor.methods({
           $set: {
             value: attributes.value,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user
@@ -85,8 +84,7 @@ Meteor.methods({
           $set: {
             value: tot.value + attributes.value,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

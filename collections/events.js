@@ -34,7 +34,7 @@ Meteor.methods({
     if (!eventAttributes.postId)
       throw new Meteor.Error(422, 'You must select a month to create a event');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'duration', 'unit', 'period', 'type', 'title', 'status', 'allDay'), {
       // start: moment(new Date(eventAttributes.start)),
@@ -161,7 +161,7 @@ Meteor.methods({
     // if (!eventAttributes.title)
     //   throw new Meteor.Error(422, 'Please write some content');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
     var et = EventTypes.findOne(eventAttributes.type);
@@ -253,7 +253,7 @@ Meteor.methods({
     // if (!eventAttributes.title)
     //   throw new Meteor.Error(422, 'Please write some content');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
     var et = EventTypes.findOne(ev.type);
@@ -369,7 +369,7 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to move events");
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
     var et = EventTypes.findOne(ev.type);
@@ -385,8 +385,7 @@ Meteor.methods({
             end: eventAttributes.end,
             duration: eventAttributes.duration,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user
@@ -482,7 +481,7 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to delete events");
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     var ev = Events.findOne(eventAttributes.eventId);
     var et = EventTypes.findOne(ev.type);

@@ -60,7 +60,7 @@ Meteor.subscribe('allUsers');
 Meteor.subscribe('allUsersAdmin');
 
 // Meteor.subscribe('posts');
-newPostsHandle = Meteor.subscribeWithPagination('newPosts', 10);
+newPostsHandle = Meteor.subscribeWithPagination('newPosts', 12);
 
 Meteor.autorun(function() {
   Meteor.subscribe('singlePost', Session.get('currentPostId'));

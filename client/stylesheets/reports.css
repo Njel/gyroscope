@@ -97,8 +97,9 @@
 
 #employee-calendar {
 	border: 0px solid; 
-	width:670px; 
-	height:700px;
+	width:740px; 
+    /*width:670px; */
+	/*height:700px;*/
 }
 
 #calendar {

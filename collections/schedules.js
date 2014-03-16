@@ -32,7 +32,7 @@ Meteor.methods({
     if (!schAttributes.validE)
       throw new Meteor.Error(422, 'Please enter a ending date for the schedule');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     sch = _.extend(_.pick(schAttributes, 'empId', 'validS', 'validE', 'status'), {
       lockedBy: null,
@@ -92,8 +92,7 @@ Meteor.methods({
             validE: schAttributes.validE,
             status: schAttributes.status,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user
@@ -150,8 +149,7 @@ Meteor.methods({
       schId, {
         $set: {
           lockedBy: user._id,
-          locked: new Date().toISOString()
-          // status: 'locked'
+          locked: moment(new Date()).toISOString()  // status: 'locked'
         }
       }, function(error) {
           if (error) {
@@ -192,7 +190,7 @@ Meteor.methods({
     return true;
   },
 
-  scheduleApprove: function(scheduleId) {
+  scheduleApprove: function(schId) {
     // console.log('scheduleApprove(' + schId + ')');
     var user = Meteor.user();
 
@@ -204,7 +202,7 @@ Meteor.methods({
       schId, {
         $set: {
           approvedBy: user._id, 
-          approved: new Date().toISOString(), 
+          approved: moment(new Date()).toISOString(), 
           status: 'Approved'
         }
       }, function(error) {
@@ -231,7 +229,7 @@ Meteor.methods({
       schId, {
         $set: {
           rejectedBy: user._id, 
-          rejected: new Date().toISOString(),
+          rejected: moment(new Date()).toISOString(),
           submittedBy: null,
           submitted: null,
           lockedBy: null,
@@ -280,13 +278,12 @@ Meteor.methods({
             approvedBy: null,
             approved: null,
             submittedBy: user._id, 
-            submitted: new Date().toISOString(), 
+            submitted: moment(new Date()).toISOString(), 
             lockedBy: user._id,
-            locked: new Date().toISOString(),
+            locked: moment(new Date()).toISOString(),
             status: 'Pending',
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

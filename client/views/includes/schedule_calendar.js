@@ -2,6 +2,95 @@ Template.scheduleCalendar.lastCalPeriodMod = function() {
   return Settings.findOne({name: 'lastCalPeriodMod'}).value;
 };
 
+Template.scheduleCalendar.events({
+  'click #genWYearDays': function(evt, tmpl) {
+    // console.log(evt.toElement.id);
+    evt.preventDefault();
+
+    var empId = tmpl.find('[name=empId]').value;
+    var year = parseInt(tmpl.find('[name=year]').value);
+    var month = parseInt(tmpl.find('[name=month]').value);
+    var title = moment(new Date(year, month, 1)).format('MMMM YYYY');
+    var post = {
+      empId: empId,
+      title: title,
+      year: year,
+      month: (month + 1)
+    };
+
+    // console.log(post);
+
+    Meteor.call('post', post, function(error, id) {
+      if (error) {
+        // display the error to the user
+        throwError(error.reason);
+
+        if (error.error === 302) {
+          Session.set('showDialogPost', false);
+          Meteor.Router.to('postPage', error.details);
+        }
+      // } else {
+      //   Meteor.Router.to('postPage', id);
+      } else {
+        throwMessage('New month created successfully.');
+        Session.set('selectedPost', null);
+        Session.set('showDialogPost', false);
+      }
+    });
+    
+    var post = Posts.findOne(Session.get('currentPostId'));
+    var type = EventTypes.findOne({code: 'W'});
+
+    if (post && type) {
+      // console.log(post);
+      var nbDays = new Date(post.year, post.month, 0).getDate();
+      // console.log('Nb Days: ' + nbDays);
+      var d0 = moment(new Date(post.year, post.month-1, 1));
+      var D = d0.toISOString().substring(0,10);
+      // console.log(D);
+
+      var s = Schedules.findOne({empId: post.empId, validS: {$lte: D}, validE: {$gte: D}});
+      if (s) {
+        // console.log(s);
+        for (var i = 1; i <= nbDays+1; i++) {
+          var d = d0.day();
+          if (d != 0 && d != 6) {
+            D = d0.toISOString().substring(0,10);
+            var H = Holidays.findOne({date: D});
+            if (!H) {
+              var periods = Periods.find({schId: s._id, day: d});
+              periods.forEach(function(p) {
+                var ev = {
+                  postId: post._id,
+                  start: D + 'T' + p.start + ':00.000Z',
+                  end: D + 'T' + p.end + ':00.000Z',
+                  duration: p.hours,
+                  unit: 'h',
+                  period: p._id,
+                  type: type._id,
+                  title: type.code,
+                  status: 'new',
+                  allDay: false,
+                  textColor: type.textColor,
+                  borderColor: type.borderColor,
+                  backgroundColor: type.backgroundColor
+                };
+                Meteor.call('eventNew', ev, function(error, eventId) {
+                  error && throwError(error.reason);
+                });
+              });
+            }
+          }
+          d0 = moment(new Date(post.year, post.month-1, i));
+        };
+        var s = Settings.findOne({name: 'lastCalEventMod'});
+        Settings.update(s._id, {$set: {value: new Date()}});
+        // Session.set('lastCalEventMod', new Date());
+      }
+    }
+  }
+});
+
 Template.scheduleCalendar.rendered = function() {
   // console.log('currentSchId=' + Session.get('currentSchId'));
 

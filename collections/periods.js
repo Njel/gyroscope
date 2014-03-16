@@ -43,7 +43,7 @@ Meteor.methods({
     if (!periodAttributes.schId)
       throw new Meteor.Error(422, 'You must select a schedule to create a period');
 
-    var d = new Date().toISOString();
+    var d = moment(new Date()).toISOString();
 
     p = _.extend(_.pick(periodAttributes, 'schId', 'day', 'start', 'end', 'hours', 'status'), {
       createdBy: user._id,
@@ -96,8 +96,7 @@ Meteor.methods({
             hours: periodAttributes.hours,
             status: periodAttributes.status,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user
@@ -147,8 +146,7 @@ Meteor.methods({
             hours: periodAttributes.hours,
             status: periodAttributes.status,
             modifiedBy: user._id,
-            modified: new Date().toISOString()
-          }
+            modified: moment(new Date()).toISOString()  }
         }, function(error) {
           if (error) {
             // display the error to the user

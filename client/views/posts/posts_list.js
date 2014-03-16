@@ -117,8 +117,28 @@ Template.postsList.helpers({
   },
   
   allPostsLoaded: function() {
-  	return this.handle.ready() &&
-  	  Posts.find().count() < this.handle.loaded();
+    var user = Meteor.user();
+    if (user) {
+      if (isAdmin(user)) {
+        var n = Posts.find().count();
+      } else {
+        var adminRole = Roles.findOne({name: 'Admin'});
+        if (adminRole) {
+          var emp = Employees.findOne({userId: user._id});
+          if (emp) {
+            if (emp.roleId === adminRole._id) {
+              var n =  Posts.find().count();
+            } else {
+              var n = Posts.find({empId: emp._id}).count();
+            }
+          }
+        }
+      }
+    	return this.handle.ready() &&
+    	  n < this.handle.loaded();
+    } else {
+      return true;
+    }
   }
 });
 
