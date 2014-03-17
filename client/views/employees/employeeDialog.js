@@ -17,7 +17,7 @@ Template.employeeDialog.helpers({
 });
 
 Template.employeeDialog.users = function() {
-  return Meteor.users.find();
+  return Meteor.users.find({},{sort: {username: 1}});
 };
 
 Template.employeeDialog.supervisors = function() {
@@ -57,11 +57,11 @@ Template.employeeDialog.emp = function() {
         modifiedBy = mBy.username;
       else
         modifiedBy = '<System Account>';
-      var grp = Groups.findOne(e.group);
-      if (grp)
-        groupName = grp.name;
-      else
-        groupName = "-";
+      // var grp = Groups.findOne(e.group);
+      // if (grp)
+      //   groupName = grp.name;
+      // else
+      //   groupName = "-";
 
       var emp = {
         fname: e.fname,
@@ -70,7 +70,7 @@ Template.employeeDialog.emp = function() {
         roleId: e.roleId,
         supervisorId: e.supervisorId,
         userId: e.userId,
-        group: groupName,
+        groupId: e.groupId,
         status: e.status,
         AL: e.AL,
         SL: e.SL,
@@ -89,7 +89,7 @@ Template.employeeDialog.emp = function() {
       roleId: '',
       supervisorId: '',
       userId: '',
-      group: null,
+      groupId: null,
       status: '',
       AL: 0,
       SL: 0,
@@ -104,7 +104,7 @@ Template.employeeDialog.events({
     Session.set('selectedEmployee', null);
     Session.set('showDialogEmployee', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedEmployee', null);
     Session.set('showDialogEmployee', false);
   },
@@ -113,10 +113,10 @@ Template.employeeDialog.events({
       fname: tmpl.find('[name=fname]').value,
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
-      roleId: tmpl.find('[name=role]').value,
-      supervisorId: tmpl.find('[name=supervisor]').value,
+      roleId: tmpl.find('[name=roleId]').value,
+      supervisorId: tmpl.find('[name=supervisorId]').value,
       userId: tmpl.find('[name=userId]').value,
-      group: tmpl.find('[name=group]').value,
+      groupId: tmpl.find('[name=groupId]').value,
       AL: tmpl.find('[name=al]').value,
       SL: tmpl.find('[name=sl]').value
     };
@@ -139,10 +139,10 @@ Template.employeeDialog.events({
       fname: tmpl.find('[name=fname]').value,
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,
-      roleId: tmpl.find('[name=role]').value,
-      supervisorId: tmpl.find('[name=supervisor]').value,
+      roleId: tmpl.find('[name=roleId]').value,
+      supervisorId: tmpl.find('[name=supervisorId]').value,
       userId: tmpl.find('[name=userId]').value,
-      group: tmpl.find('[name=group]').value,
+      groupId: tmpl.find('[name=groupId]').value,
       AL: tmpl.find('[name=al]').value,
       SL: tmpl.find('[name=sl]').value
     };

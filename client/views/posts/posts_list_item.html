@@ -12,8 +12,13 @@
                     <a style="color: red;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
                   </h3>
                   <p>
-                    <i>created at {{dateTimeFormat created}} by </i>
-                    <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                    {{#if isNew}}
+                      <i>created at {{dateTimeFormat created}} by </i>
+                      <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                    {{else}}
+                      <i>modified at {{dateTimeFormat modified}} by </i>
+                      <b>{{userName modifiedBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                    {{/if}}
                   </p>
                 {{else}}
                   {{#if isApproved}}
@@ -21,16 +26,26 @@
                       <a style="color: green;" href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
                     </h3>
                     <p>
-                      <i>created at {{dateTimeFormat created}} by </i>
-                      <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{#if isNew}}
+                        <i>created at {{dateTimeFormat created}} by </i>
+                        <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{else}}
+                        <i>modified at {{dateTimeFormat modified}} by </i>
+                        <b>{{userName modifiedBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{/if}}
                     </p>
                   {{else}}
                     <h3>
                       <a href="{{postPagePath this}}">{{empFullName empId}} - {{title}}</a>
                     </h3>
                     <p>
-                      <i>created at {{dateTimeFormat created}} by </i>
-                      <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{#if isNew}}
+                        <i>created at {{dateTimeFormat created}} by </i>
+                        <b>{{userName createdBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{else}}
+                        <i>modified at {{dateTimeFormat modified}} by </i>
+                        <b>{{userName modifiedBy}}</b>, <a href="{{postPagePath this}}">{{pluralize eventsCount "event"}}</a>
+                      {{/if}}
                     </p>
                   {{/if}}
                 {{/if}}
@@ -39,13 +54,13 @@
             <td style="width: 140px;">
               <div class="post-content">
                 <h3>Status</h3>
-                <p>{{status}}</p>
+                <p style="line-height: 16px;">{{status}}</p>
               </div>
             </td>
             <td style="width: 240px;">
               <div class="post-content">
                 <h3>Statistics</h3>
-                <p>{{> stats}}</p>
+                <p style="line-height: 16px;">{{> stats}}</p>
               </div>
             </td>
           </tr>
@@ -104,13 +119,13 @@
             <td style="width: 140px;">
               <div class="post-content">
                 <h3>Status</h3>
-                <p>{{status}}</p>
+                <p style="line-height: 16px;">{{status}}</p>
               </div>
             </td>
             <td style="width: 240px;">
               <div class="post-content">
                 <h3>Statistics</h3>
-                <p>{{> stats}}</p>
+                <p style="line-height: 16px;">{{> stats}}</p>
               </div>
             </td>
           </tr>
@@ -139,13 +154,13 @@
           <td style="width: 140px;">
             <div class="post-content">
               <h3>Status</h3>
-              <p>{{status}}</p>
+              <p style="line-height: 16px;">{{status}}</p>
             </div>
           </td>
           <td style="width: 240px;">
             <div class="post-content">
               <h3>Statistics</h3>
-              <p>{{> stats}}</p>
+              <p style="line-height: 16px;">{{> stats}}</p>
             </div>
           </td>
         </tr>

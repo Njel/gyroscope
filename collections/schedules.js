@@ -33,28 +33,35 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Please enter a ending date for the schedule');
 
     var d = moment(new Date()).toISOString();
+    var e = Employees.findOne(empAttributes.empId);
 
-    sch = _.extend(_.pick(schAttributes, 'empId', 'validS', 'validE', 'status'), {
-      lockedBy: null,
-      locked: null,
-      submittedBy: null,
-      submitted: null,
-      approvedBy: null,
-      approved: null,
-      rejectedBy: null,
-      rejected: null,
-      reviewedBy: null,
-      reviewed: null,
-      periodsCount: 0,
-      hoursCount: 0,
-      createdBy: user._id,
-      created: d,
-      modifiedBy: user._id,
-      modified: d
-    });
+    if (e) {
+      var empName = e.fname + ' ' + e.lname;
+      sch = _.extend(_.pick(schAttributes, 'empId', 'validS', 'validE', 'status'), {
+        emp: empName,
+        lockedBy: null,
+        locked: null,
+        submittedBy: null,
+        submitted: null,
+        approvedBy: null,
+        approved: null,
+        rejectedBy: null,
+        rejected: null,
+        reviewedBy: null,
+        reviewed: null,
+        periodsCount: 0,
+        hoursCount: 0,
+        createdBy: user._id,
+        created: d,
+        modifiedBy: user._id,
+        modified: d
+      });
 
-    // create the employee, save the id
-    sch._id = Schedules.insert(sch);
+      // create the employee, save the id
+      sch._id = Schedules.insert(sch);
+    } else {
+      throw new Meteor.Error(404, "Employee not found!");
+    }
 
     // now create a notification, informing the user that there's been a new employee
     // createEventNotification(grp);
@@ -85,12 +92,67 @@ Meteor.methods({
     var sch = Schedules.findOne(schAttributes.id);
 
     if (sch) {
+      var e = Employees.findOne(schAttributes.empId);
+      if (e) {
+        var empName = e.fname + ' ' + e.lname;
+        Schedules.update(
+          sch._id, {
+            $set: {
+              emp: empName,
+              validS: schAttributes.validS,
+              validE: schAttributes.validE,
+              status: schAttributes.status,
+              modifiedBy: user._id,
+              modified: moment(new Date()).toISOString()  }
+          }, function(error) {
+            if (error) {
+              // display the error to the user
+              alert(error.reason);
+            } else {
+
+            }
+          }
+        );
+      } else {
+        throw new Meteor.Error(404, "Employee not found!");
+      }
+    } else {
+      throw new Meteor.Error(404, "Schedule not found!");
+    }
+
+    var s = Settings.findOne({name: 'lastSchMod'});
+    Settings.update(s._id, {$set: {value: new Date()}});
+
+    return true;
+  },
+
+  scheduleResetCounters: function(schAttributes) {
+
+    var user = Meteor.user();
+
+    // ensure the user is logged in
+    if (!user)
+      throw new Meteor.Error(401, "You need to login to update schedules");
+
+    var sch = Schedules.findOne(schAttributes.schId);
+
+    if (sch) {
       Schedules.update(
         sch._id, {
           $set: {
-            validS: schAttributes.validS,
-            validE: schAttributes.validE,
-            status: schAttributes.status,
+            lockedBy: null,
+            locked: null,
+            submittedBy: null,
+            submitted: null,
+            approvedBy: null,
+            approved: null,
+            rejectedBy: null,
+            rejected: null,
+            reviewedBy: null,
+            reviewed: null,
+            periodsCount: 0,
+            hoursCount: 0,
+            status: 'Not Submitted',
             modifiedBy: user._id,
             modified: moment(new Date()).toISOString()  }
         }, function(error) {
@@ -197,12 +259,13 @@ Meteor.methods({
     // ensure the user is logged in
     if (!user)
       throw new Meteor.Error(401, "You need to login to approve schedules");
+    var d = moment(new Date()).toISOString();
 
     Schedules.update(
       schId, {
         $set: {
           approvedBy: user._id, 
-          approved: moment(new Date()).toISOString(), 
+          approved: d, 
           status: 'Approved'
         }
       }, function(error) {
@@ -214,6 +277,29 @@ Meteor.methods({
           }
         }
       );
+
+    var periods = Periods.find({schId: schId});
+    periods.forEach(function(p) {
+      if (p.status != 'Approved') {
+        Periods.update(
+          p._id, {
+            $set: {
+              status: 'Approved',
+              modifiedBy: user._id,
+              modified: d
+            }
+          }, function(error) {
+            if (error) {
+              // display the error to the user
+              alert(error.reason);
+            } else {
+
+            }
+          }
+        );
+      }
+    });
+
     return true;
   },
 

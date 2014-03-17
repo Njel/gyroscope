@@ -51,7 +51,7 @@ Template.periodDialog.events({
     Session.set('selectedCalPeriod', null);
     Session.set('showDialogCalPeriod', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedCalDateStart', null);
     Session.set('selectedCalDateEnd', null);
     Session.set('selectedCalPeriod', null);

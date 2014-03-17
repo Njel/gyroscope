@@ -1,3 +1,7 @@
+Meteor.publish('posts', function() {
+  return Posts.find();
+});
+
 // Meteor.publish('posts', function() {
 Meteor.publish('newPosts', function(limit) {
   // return Posts.find();

@@ -31,7 +31,7 @@ Template.holidayDialog.events({
     Session.set('selectedHoliday', null);
     Session.set('showDialogHoliday', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedHoliday', null);
     Session.set('showDialogHoliday', false);
   },

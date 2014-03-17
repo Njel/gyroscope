@@ -45,6 +45,10 @@ Template.postItem.helpers({
   	} else {
   	  return 'disabled';
   	}
+  },
+  isNew: function() {
+    // console.log(this.title + ': ' + this.created + ' - ' + this.modified);
+    return (this.created == this.modified);
   }
 });
 

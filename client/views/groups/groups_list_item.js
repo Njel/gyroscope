@@ -62,7 +62,7 @@ Template.groupsListItem.events({
   	// Meteor.call('edit', this._id);
   },
   'click .detailsBtn': function(event) {
-    console.log('Group Name click (' + this._id + ')');
+    // console.log('Group Name click (' + this._id + ')');
   },
   'click .deleteBtn': function(event) {
     // console.log('Group Delete click (' + this._id + ')');

@@ -27,6 +27,7 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Please enter a name for the group');
 
     grp = _.extend(_.pick(grpAttributes, 'name'), {
+      nbEmp: 0,
       createdBy: user._id,
       created: moment(new Date()).toISOString(),
       modifiedBy: user._id,
@@ -65,7 +66,10 @@ Meteor.methods({
             // display the error to the user
             alert(error.reason);
           } else {
-
+            var employees = Employees.find({groupId: g._id});
+            employees.forEach(function(e) {
+              Employees.update(e._id, {$set: {group: grpAttributes.name}});
+            });
           }
         }
       );

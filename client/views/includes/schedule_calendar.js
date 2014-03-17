@@ -94,28 +94,9 @@ Template.scheduleCalendar.events({
 Template.scheduleCalendar.rendered = function() {
   // console.log('currentSchId=' + Session.get('currentSchId'));
 
-  /* initialize the external events
-  -----------------------------------------------------------------*/
-  $('#external-events div.external-event').each(function() {
-    // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-    // it doesn't need to have a start or end
-    var eventObject = {
-      title: $.trim($(this).text()) // use the element's text as the event title
-    };
-    
-    // store the Event Object in the DOM element so we can get to it later
-    $(this).data('eventObject', eventObject);
-    
-    // make the event draggable using jQuery UI
-    $(this).draggable({
-      zIndex: 999,
-      revert: true,      // will cause the event to go back to its
-      revertDuration: 0  //  original position after the drag
-    });
-  });
-
   /* initialize the calendar
   -----------------------------------------------------------------*/
+  $('#calendar').fullCalendar("destroy");
   var calendar = $('#calendar').fullCalendar({
     // events: function(start, end, timezone, callback) {
     events: function(start, end, callback) {
@@ -147,7 +128,7 @@ Template.scheduleCalendar.rendered = function() {
       });
       callback(events);
     },
-    height: 777,
+    height: 727,
     columnFormat: {
       month: '',
       week: 'ddd',
@@ -203,7 +184,7 @@ Template.scheduleCalendar.rendered = function() {
         start: sD.toISOString().substring(11, 16),
         end: eD.toISOString().substring(11, 16),
         hours: hours,
-        status: 'moved',
+        status: 'Moved',
       };
 
       Meteor.call('periodMove', p, function(error, eventId) {
@@ -230,7 +211,7 @@ Template.scheduleCalendar.rendered = function() {
         start: sD.toISOString().substring(11, 16),
         end: eD.toISOString().substring(11, 16),
         hours: hours,
-        status: 'resized'
+        status: 'Resized'
       };
 
       Meteor.call('periodMove', p, function(error, eventId) {
@@ -270,7 +251,7 @@ Template.scheduleCalendar.rendered = function() {
         start: sD.toISOString().substring(11, 16),
         end: eD.toISOString().substring(11, 16),
         hours: hours,
-        status: 'new'
+        status: 'New'
       };
 
       Meteor.call('periodNew', p, function(error, eventId) {

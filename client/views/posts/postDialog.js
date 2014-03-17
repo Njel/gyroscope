@@ -92,7 +92,7 @@ Template.postDialog.events({
     Session.set('selectedPost', null);
     Session.set('showDialogPost', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedPost', null);
     Session.set('showDialogPost', false);
   },

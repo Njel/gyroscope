@@ -87,7 +87,7 @@ Template.scheduleDialog.events({
     Session.set('selectedSchedule', null);
     Session.set('showDialogSchedule', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedSchedule', null);
     Session.set('showDialogSchedule', false);
   },

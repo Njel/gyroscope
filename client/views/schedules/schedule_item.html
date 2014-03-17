@@ -3,21 +3,27 @@
     <div class="post-content" style="margin-top: -44px;">
     {{#if isAdmin}}
       {{#if locked}}
-        <button class="btn btn-mini unlockBtn" id='unlockBtn' style='width: 24px; margin-left: -24px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Unlock schedule">
-          <i class="icon-lock icon-white"></i>
+        <button class="btn btn-mini unlockBtn" id='unlockBtn' style='width: 22px; margin-left: -22px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Unlock schedule">
+          <!-- <i class="icon-lock icon-white"></i> -->
+          <!-- <i class="glyphicon glyphicon-lock" style="color: #f00; font-size: 12px;"></i> -->
+          <i class="fa fa-unlock-alt" style="color: #f00; font-size: 12px;"></i>
         </button>
       {{else}}
-        <button class="btn btn-mini lockBtn" id='lockBtn' style='width: 24px; margin-left: -24px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Lock schedule">
-          <i class="icon-lock"></i>
+        <button class="btn btn-mini lockBtn" id='lockBtn' style='width: 22px; margin-left: -22px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Lock schedule">
+          <!-- <i class="icon-lock"></i> -->
+          <!-- <i class="glyphicon glyphicon-lock" style="color: #000; font-size: 12px;"></i> -->
+          <i class="fa fa-lock" style="color: #000; font-size: 12px;"></i>
         </button>
       {{/if}}
       {{#unless approved}}
         {{#if submitted}}
           <button class="btn btn-success btn-mini approveBtn" id='approveBtn' style='width: 24px; margin-left: 324px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Approve schedule">
-            <i class="icon-ok icon-white"></i>
+            <!-- <i class="icon-ok icon-white"></i> -->
+            <i class="glyphicon glyphicon-ok" style="color: #fff; font-size: 12px;"></i>
           </button>
           <button class="btn btn-danger btn-mini rejectBtn" id='rejectBtn' style='width: 24px; margin-top: 20px; padding: 0px 2px 0px 2px;' title="Reject schedule">
-            <i class="icon-remove icon-white"></i>
+            <!-- <i class="icon-remove icon-white"></i> -->
+            <i class="glyphicon glyphicon-remove" style="color: #fff; font-size: 12px;"></i>
           </button>
         {{/if}}
       {{/unless}}

@@ -2,7 +2,10 @@
   <div id="scheduleDialog" class="modal">
     {{#with sch}}
       <div class="modal-header">
-        <a class="close" data-dismiss="modal">x</a>
+        <!-- <a class="close" data-dismiss="modal">x</a> -->
+        <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
+          <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
+        </a>
         {{#if selectedSchedule}}
         	<h3>Update Schedule</h3>
         {{else}}
@@ -14,7 +17,7 @@
           <label for="empId">Employee <span style="color: red">*</span></label>
           <select type="text" name="empId" id="empId" value="{{empId}}" style="width: 220px;">
             {{#each employees}}
-              <option value='{{_id}}'{{selectedValue _id post.empId}}>{{fname}} {{lname}}</option>
+              <option value='{{_id}}'{{selectedValue _id sch.empId}}>{{fname}} {{lname}}</option>
             {{/each}}
           </select>
         {{else}}
@@ -31,10 +34,10 @@
           <label for="status">Status <span style="color: red">*</span></label>
           <select type="text" name="status" id="status" value="{{status}}" style="width: 130px;">
               <option value=''{{selectedValue status ''}}></option>
-              <option value='not submitted'{{selectedValue status 'not submitted'}}>Not Submitted</option>
-              <option value='pending'{{selectedValue status 'pending'}}>Pending</option>
-              <option value='approved'{{selectedValue status 'approved'}}>Approved</option>
-              <option value='rejected'{{selectedValue status 'rejected'}}>Rejected</option>
+              <option value='not submitted'{{selectedValue status 'Not Submitted'}}>Not Submitted</option>
+              <option value='pending'{{selectedValue status 'Pending'}}>Pending</option>
+              <option value='approved'{{selectedValue status 'Approved'}}>Approved</option>
+              <option value='rejected'{{selectedValue status 'Rejected'}}>Rejected</option>
           </select>
         {{else}}
           <label for="status">Status</label>

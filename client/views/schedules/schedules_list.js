@@ -76,6 +76,56 @@ Template.schedules.showDialogSchDelConf = function() {
 
 Template.schedulesList.helpers({
   schedules: function() {
-    return Schedules.find({},{sort: {modified: -1}});
+    // return Schedules.find({},{sort: {modified: -1}});
+    return Schedules.find({}, Session.get('schedulesSortBy'));
+  },
+  sortBy: function(columnName) {
+    if (Session.get('schedulesSort') == columnName) {
+      var sortBy = Session.get('schedulesSortBy');
+      if (sortBy.sort[columnName] == 1)
+        // return 'icon-chevron-down';
+        return 'fa fa-sort-asc';
+      else
+        // return 'icon-chevron-up';
+        return 'fa fa-sort-desc';
+    }
+    else
+      return '';
+  }
+});
+
+Template.schedulesList.events({
+    'click .orderBy': function(event) {
+    event.preventDefault();
+    // console.log("Column '" + event.toElement.name + "' clicked");
+    var columnName = event.toElement.name;
+    if (Session.get('schedulesSort') == columnName) {
+      var sortBy = Session.get('schedulesSortBy');
+      var s = -sortBy.sort[columnName];
+    } else {
+      var s = 1;
+    }
+
+    switch (columnName) {
+      case 'emp':
+        Session.set('schedulesSortBy', {sort: {emp: s}});
+        break;
+      case 'periodsCount':
+        Session.set('schedulesSortBy', {sort: {periodsCount: s}});
+        break;
+      case 'hoursCount':
+        Session.set('schedulesSortBy', {sort: {hoursCount: s}});
+        break;
+      case 'validS':
+        Session.set('schedulesSortBy', {sort: {validS: s}});
+        break;
+      case 'validE':
+        Session.set('schedulesSortBy', {sort: {validE: s}});
+        break;
+      case 'status':
+        Session.set('schedulesSortBy', {sort: {status: s}});
+        break;
+    }
+    Session.set('schedulesSort', columnName);
   }
 });

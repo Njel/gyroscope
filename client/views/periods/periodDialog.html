@@ -2,7 +2,10 @@
   <div id="periodDialog" class="modal">
     {{#with evt}}
       <div class="modal-header">
-        <a class="close" data-dismiss="modal">x</a>
+        <!-- <a class="close" data-dismiss="modal">x</a> -->
+        <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
+          <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
+        </a>
         {{#if selectedCalPeriod}}
         	<h3>Update Period</h3>
         {{else}}

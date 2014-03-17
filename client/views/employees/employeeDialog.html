@@ -2,7 +2,10 @@
   <div id="employeeDialog" class="modal">
     {{#with emp}}
       <div class="modal-header">
-        <a class="close" data-dismiss="modal">x</a>
+        <!-- <a class="close" data-dismiss="modal">x</a> -->
+        <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
+          <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
+        </a>
         {{#if selectedEmployee}}
         	<h3>Update Employee</h3>
         {{else}}
@@ -30,8 +33,8 @@
           {{#if isAdmin}}
           <tr>
             <td>
-              <label for="role">Role <span style="color: red">*</span></label>
-              <select type="text" name="role" id="role" value="{{roleId}}">
+              <label for="roleId">Role <span style="color: red">*</span></label>
+              <select type="text" name="roleId" id="roleId" value="{{roleId}}">
                 <option value="">(None)</option>
                 {{#each roles}}
                   <option value='{{_id}}'{{selectedValue _id emp.roleId}}>{{name}}</option>
@@ -39,8 +42,8 @@
               </select>
             </td>
             <td>
-              <label for="role">Supervisor <span style="color: red">*</span></label>
-              <select type="text" name="supervisor" id="supervisor" value="{{supervisorId}}">
+              <label for="supervisorId">Supervisor <span style="color: red">*</span></label>
+              <select type="text" name="supervisorId" id="supervisorId" value="{{supervisorId}}">
                 <option value="">(None)</option>
                 {{#each supervisors}}
                   <option value='{{_id}}'{{selectedValue _id emp.supervisorId}}>{{fname}} {{lname}}</option>
@@ -59,11 +62,11 @@
               </select>
             </td>
             <td>
-              <label for="group">Group</label>
-              <select type="text" name="group" id="group" value="{{group}}">
+              <label for="groupId">Group</label>
+              <select type="text" name="groupId" id="groupId" value="{{groupId}}">
                 <option value="">(None)</option>
                 {{#each groups}}
-                  <option value='{{_id}}'{{selectedValue name emp.group}}>{{name}}</option>
+                  <option value='{{_id}}'{{selectedValue _id emp.groupId}}>{{name}}</option>
                 {{/each}}
               </select>
             </td>

@@ -64,10 +64,6 @@ Template.employees.events({
   	event.preventDefault();
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', true);
-  },
-  'click .orderBy': function(event) {
-    console.log("Column '" + event.toElement.text + "' clicked");
-    event.preventDefault();
   }
 });
 
@@ -87,9 +83,53 @@ Template.employees.showDialogGroup = function() {
 
 Template.employeesList.helpers({
   employees: function() {
-    return Employees.find({}, {sort: {fname: 1, lname: 1}});
+    // return Employees.find({}, {sort: {fname: 1, lname: 1}});
+    return Employees.find({}, Session.get('employeesSortBy'));
+  },
+  sortBy: function(columnName) {
+    if (Session.get('employeesSort') == columnName) {
+      var sortBy = Session.get('employeesSortBy');
+      if (sortBy.sort[columnName] == 1)
+        // return 'icon-chevron-down';
+        return 'fa fa-sort-asc';
+      else
+        // return 'icon-chevron-up';
+        return 'fa fa-sort-desc';
+    }
+    else
+      return '';
   }
 });
 
 Template.employeesList.events({
+  'click .orderBy': function(event) {
+    event.preventDefault();
+    // console.log("Column '" + event.toElement.name + "' clicked");
+    var columnName = event.toElement.name;
+    if (Session.get('employeesSort') == columnName) {
+      var sortBy = Session.get('employeesSortBy');
+      var s = -sortBy.sort[columnName];
+    } else {
+      var s = 1;
+    }
+
+    switch (columnName) {
+      case 'role':
+        Session.set('employeesSortBy', {sort: {role: s}});
+        break;
+      case 'supervisor':
+        Session.set('employeesSortBy', {sort: {supervisor: s}});
+        break;
+      case 'user':
+        Session.set('employeesSortBy', {sort: {user: s}});
+        break;
+      case 'group':
+        Session.set('employeesSortBy', {sort: {group: s}});
+        break;
+      case 'fname':
+        Session.set('employeesSortBy', {sort: {fname: s, lname: s}});
+        break;
+    }
+    Session.set('employeesSort', columnName);
+  }
 });

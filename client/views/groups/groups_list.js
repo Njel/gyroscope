@@ -37,9 +37,44 @@ Template.groups.showDialogGrpDelConf = function() {
 
 Template.groupsList.helpers({
   groups: function() {
-    return Groups.find({}, {sort: {name: 1}});
+    // return Groups.find({}, {sort: {name: 1}});
+    return Groups.find({}, Session.get('groupsSortBy'));
+  },
+  sortBy: function(columnName) {
+    if (Session.get('groupsSort') == columnName) {
+      var sortBy = Session.get('groupsSortBy');
+      if (sortBy.sort[columnName] == 1)
+        // return 'icon-chevron-down';
+        return 'fa fa-sort-asc';
+      else
+        // return 'icon-chevron-up';
+        return 'fa fa-sort-desc';
+    }
+    else
+      return '';
   }
 });
 
 Template.groupsList.events({
+  'click .orderBy': function(event) {
+    event.preventDefault();
+    // console.log("Column '" + event.toElement.name + "' clicked");
+    var columnName = event.toElement.name;
+    if (Session.get('groupsSort') == columnName) {
+      var sortBy = Session.get('groupsSortBy');
+      var s = -sortBy.sort[columnName];
+    } else {
+      var s = 1;
+    }
+
+    switch (columnName) {
+      case 'name':
+        Session.set('groupsSortBy', {sort: {name: s}});
+        break;
+      case 'nbEmp':
+        Session.set('groupsSortBy', {sort: {nbEmp: s}});
+        break;
+    }
+    Session.set('groupsSort', columnName);
+  }
 });

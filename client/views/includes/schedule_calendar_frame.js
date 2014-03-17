@@ -7,10 +7,61 @@ Template.scheduleCalendarFrame.helpers({
     if (isAdmin())
       return false;
     return (this.locked ? true : false);
+  },
+  isApproved: function() {
+    return (Schedules.findOne(this._id).status == 'Approved');
+  },
+  hasPeriods: function() {
+    return (Schedules.findOne(this._id).periodsCount > 0);
+  },
+  isAuthorized: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    if(currUser.username == 'Admin')
+      return true;
+    return false;
+  },
+  hasAccess: function() {
+    var currUser = Meteor.user();
+    if (!currUser)
+      return false;
+    var sch = Schedules.findOne(this._id);
+    var currEmp = Employees.findOne({userId: currUser._id});
+    if (sch && currEmp && sch.empId == currEmp._id)
+      return true;
+    if ((this.userId == currUser._id) || (this.createdBy == currUser._id))
+      return true;
+    if(currUser.username == 'Admin')
+      return true;
+    var adminRole = Roles.findOne({name: 'Admin'});
+    if (adminRole) {
+      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+        return true;
+      }
+    }
+    return false;
   }
 });
 
 Template.scheduleCalendarFrame.events({
+  'click #resetSchedule': function(evt, tmpl) {
+    // console.log('Reset Calendar');
+    evt.preventDefault();
+    var periods = Periods.find({schId: this._id});
+    periods.forEach(function(p) {
+      var period = {periodId: p._id};
+      Meteor.call('periodDel', period, function(error, eventId) {
+        error && throwError(error.reason);
+      });
+    });
+    var sch = {schId: this._id};
+    Meteor.call('scheduleResetCounters', sch, function(error, eventId) {
+      error && throwError(error.reason);
+    });
+
+    throwMessage('Schedule reset successfully.');
+  },
   'click #genWYearDays': function(evt, tmpl) {
     // console.log(evt.toElement.id);
     evt.preventDefault();

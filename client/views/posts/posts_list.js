@@ -95,14 +95,47 @@ Template.postsList.helpers({
     if (isAdmin(user))
       // return Posts.find({}, {sort: this.sort, limit: this.handle.limit()});
       return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
+    var userRole = Roles.findOne({name: 'User'});
+    var approverRole = Roles.findOne({name: 'Approver'});
+    var supervisorRole = Roles.findOne({name: 'Supervisor'});
     var adminRole = Roles.findOne({name: 'Admin'});
-    if (adminRole) {
+    if (userRole && approverRole && supervisorRole && adminRole) {
       var emp = Employees.findOne({userId: user._id});
       if (emp) {
-        if (emp.roleId === adminRole._id) {
-          return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
-        } else {
-          return Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: this.handle.limit()});
+        var limit = this.handle.limit();
+        switch (emp.roleId) {
+          case userRole._id:
+            Session.set('nbPosts', Posts.find({empId: emp._id}).count());
+            return Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: limit});
+            break;
+          case approverRole._id:
+            Session.set('nbPosts', Posts.find({empId: emp._id}).count());
+            return [];
+            break;
+          case supervisorRole._id:
+            var aPosts = new Meteor.Collection(null);
+            var n = 0;
+            var ePosts = Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: limit});
+            ePosts.forEach(function(p) {
+              aPosts.insert(p);
+              n++;
+            });
+            var employees = Employees.find({supervisorId: emp._id});
+            employees.forEach(function(e) {
+              ePosts = Posts.find({empId: e._id}, {sort: {year: -1, month: -1}, limit: limit});
+              ePosts.forEach(function(p) {
+                aPosts.insert(p);
+                n++;
+              });
+            });
+            console.log('Limit: ' + limit + ', ' + n + ' post(s) found.');
+            Session.set('nbPosts', n);
+            return aPosts.find({}, {sort: {year: -1, month: -1}, limit: limit});
+            break;
+          case adminRole._id:
+            Session.set('nbPosts', Posts.find({}).count());
+            return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: limit});
+            break;
         }
       }
     }
@@ -117,28 +150,32 @@ Template.postsList.helpers({
   },
   
   allPostsLoaded: function() {
-    var user = Meteor.user();
-    if (user) {
-      if (isAdmin(user)) {
-        var n = Posts.find().count();
-      } else {
-        var adminRole = Roles.findOne({name: 'Admin'});
-        if (adminRole) {
-          var emp = Employees.findOne({userId: user._id});
-          if (emp) {
-            if (emp.roleId === adminRole._id) {
-              var n =  Posts.find().count();
-            } else {
-              var n = Posts.find({empId: emp._id}).count();
-            }
-          }
-        }
-      }
-    	return this.handle.ready() &&
-    	  n < this.handle.loaded();
-    } else {
-      return true;
-    }
+    return false;
+    return this.handle.ready() &&
+      Session.get('nbPosts') < this.handle.loaded();
+
+    // var user = Meteor.user();
+    // if (user) {
+    //   if (isAdmin(user)) {
+    //     var n = Posts.find().count();
+    //   } else {
+    //     var adminRole = Roles.findOne({name: 'Admin'});
+    //     if (adminRole) {
+    //       var emp = Employees.findOne({userId: user._id});
+    //       if (emp) {
+    //         if (emp.roleId === adminRole._id) {
+    //           var n =  Posts.find().count();
+    //         } else {
+    //           var n = Posts.find({empId: emp._id}).count();
+    //         }
+    //       }
+    //     }
+    //   }
+    // 	return this.handle.ready() &&
+    // 	  n < this.handle.loaded();
+    // } else {
+    //   return true;
+    // }
   }
 });
 

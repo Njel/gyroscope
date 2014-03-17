@@ -29,7 +29,7 @@ Template.groupDialog.events({
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', false);
   },
-  'click .close': function(evt, tmpl) {
+  'click .closeBtn': function(evt, tmpl) {
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', false);
   },

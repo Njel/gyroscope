@@ -177,6 +177,7 @@ Meteor.methods({
             borderColor: et.borderColor,
             backgroundColor: et.backgroundColor,
             typeUnit: et.unit,
+            status: 'Replaced',
             modifiedBy: user._id,
             modified: d
           }
@@ -272,6 +273,7 @@ Meteor.methods({
             start: eventAttributes.start,
             end: eventAttributes.end,
             duration: eventAttributes.duration,
+            status: 'Updated',
             modifiedBy: user._id,
             modified: d
           }
@@ -384,6 +386,7 @@ Meteor.methods({
             start: eventAttributes.start,
             end: eventAttributes.end,
             duration: eventAttributes.duration,
+            status: 'Moved',
             modifiedBy: user._id,
             modified: moment(new Date()).toISOString()  }
         }, function(error) {

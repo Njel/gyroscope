@@ -22,39 +22,50 @@
     <div class="clear"></div>
   </div> -->
   <table>
-    {{#unless isLocked}}
-      <tr>
-        <td>
-	        <div id='external-events' style='line-height: 14px; width: 100%;'>
-	  	      <!-- <h4>Events</h4> -->
-    		    <table>
-  	  	      <tr style='vertical-align: top;'>
+    <tr>
+      <td>
+        <div id='external-events' style='line-height: 14px; width: 100%;'>
+  	      <!-- <h4>Events</h4> -->
+  		    <table>
+	  	      <tr style='vertical-align: top; height: 28px;'>
+              {{#if isLocked}}
+                <td style='width: 99%;'>&nbsp;</td>
+              {{else}}
   		          {{#each eventTypes}}
-    	      	      <td>
-    	      	        <div class='external-event eventType' 
-    	    	     	      style='color: {{textColor}}; background: {{backgroundColor}}; {{selectedEventType _id}}'
-    	    	      	    id='{{_id}}' title='{{title}}'>{{code}}</div>
-    	    	        </td>
+  	      	      <td>
+  	      	        <div class='external-event eventType' 
+  	    	     	      style='color: {{textColor}}; background: {{backgroundColor}}; {{selectedEventType _id}}'
+  	    	      	    id='{{_id}}' title='{{title}}'>{{code}}
+                    </div>
+  	    	        </td>
   			        {{/each}}
   			        <td style='width: 99%;'>&nbsp;</td>
       	    	  <td>
-      	    	  	<div class='external-event label-day' id='genWDays' style='width: 14px;' title="Generate work events"><i class="icon-play-circle"></i></div>
+      	    	  	<!-- <div class='external-event label-day' id='genWDays' style='width: 14px;' title="Generate work events"> -->
+                    <!-- <i class="icon-play-circle"></i> -->
+                  <!-- </div> -->
+                  <button class="btn btn-mini" id='genWDays' title="Generate work events">
+                    <i class="fa fa-toggle-right" style="font-size: 14px; color: #000"></i>
+                  </button>
     	    	    </td>
     	    	    <td>
-    	    	  	  <div class='external-event label-day' id='resetCal' style='width: 14px;' title="Delete all events">
-                    <i class="icon-trash"></i>
-                  </div>
+    	    	  	  <!-- <div class='external-event label-day' id='resetCal' style='width: 14px;' title="Delete all events"> -->
+                    <!-- <i class="icon-trash"></i> -->
+                  <!-- </div> -->
+                  <button class="btn btn-mini" id='resetCal' title="Delete all events">
+                    <i class="fa fa-trash-o" style="font-size: 14px; color: #f00;"></i>
+                  </button>
     	    	    </td>
-  		        </tr>
-  		      </table>
-  	        <!-- <p>
-  			      <input type='checkbox' id='drop-remove' />
-  			      <label for='drop-remove'>remove after drop</label>
-  		      </p> -->
-	  	    </div>
-	      </td>
-	    </tr>
-    {{/unless}}
+              {{/if}}
+		        </tr>
+		      </table>
+	        <!-- <p>
+			      <input type='checkbox' id='drop-remove' />
+			      <label for='drop-remove'>remove after drop</label>
+		      </p> -->
+  	    </div>
+      </td>
+    </tr>
 	  <tr>
 	    <td style="width: 1200px;">
         {{> calendar}}

@@ -1,16 +1,24 @@
+Session.setDefault('nbPosts', 0);
+
 Session.setDefault('selectedPost', null);
 Session.setDefault('showDialogPost', false);
 Session.setDefault('showDialogPostDelConf', false);
 
 // Session.setDefault('lastEmpMod', null);
+Session.setDefault('employeesSort', "fname");
+Session.setDefault('employeesSortBy', {sort: {fname: 1, lname: 1}});
 Session.setDefault('selectedEmployee', null);
 Session.setDefault('showDialogEmployee', false);
 Session.setDefault('showDialogEmpDelConf', false);
 
+Session.setDefault('groupsSort', "name");
+Session.setDefault('groupsSortBy', {sort: {name: 1}});
 Session.setDefault('selectedGroup', null);
 Session.setDefault('showDialogGroup', false);
 Session.setDefault('showDialogGrpDelConf', false);
 
+Session.setDefault('schedulesSort', "emp");
+Session.setDefault('schedulesSortBy', {sort: {emp: 1}});
 Session.setDefault('selectedSchedule', null);
 Session.setDefault('showDialogSchedule', false);
 Session.setDefault('showDialogSchDelConf', false);
@@ -69,6 +77,8 @@ Meteor.autorun(function() {
 
   // Meteor.subscribe('periods', Session.get('currentScheduleId'));
 });
+
+Meteor.subscribe('posts');
 
 Meteor.subscribe('employees');
 Meteor.subscribe('balances');

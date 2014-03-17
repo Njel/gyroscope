@@ -84,8 +84,18 @@ if (Posts.find().count() === 0) {
   });
 
   // create Groups
-  var grp = Groups.insert({
-    name: 'Test',
+  var grp01 = Groups.insert({
+    name: 'Test01',
+    nbEmp: 3,
+    createdBy: adminId,
+    created: moment(new Date()).toISOString(),
+    modifiedBy: adminId,
+    modified: moment(new Date()).toISOString()
+  });
+
+  var grp02 = Groups.insert({
+    name: 'Test02',
+    nbEmp: 2,
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -98,9 +108,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'administrator@gyroscope.com',
     roleId: adminRole,
+    role: 'Admin',
     userId: adminId,
+    user: 'Admin',
     supervisorId: null,
-    group: grp,
+    supervisor: '',
+    groupId: grp01,
+    group: 'Test01',
     status: 'EA',
     AL: 24.0,
     SL: 0.0,
@@ -116,9 +130,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'approver01@gyroscope.com',
     roleId: approverRole,
+    role: 'Approver',
     userId: approver01Id,
+    user: 'Approver01',
     supervisorId: AdministratorId,
-    group: grp,
+    supervisor: 'Administrator Name',
+    groupId: grp01,
+    group: 'Test01',
     status: 'EA',
     AL: 24.0,
     SL: 0.0,
@@ -134,9 +152,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'supervisor01@gyroscope.com',
     roleId: supervisorRole,
+    role: 'Supervisor',
     userId: supervisor01Id,
+    user: 'Supervisor01',
     supervisorId: empApprover01Id,
-    group: grp,
+    supervisor: 'Approver01 Name',
+    groupId: grp01,
+    group: 'Test01',
     status: 'EA',
     AL: 24.0,
     SL: 0.0,
@@ -152,9 +174,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'empl01@gyroscope.com',
     roleId: userRole,
+    role: 'User',
     userId: user01Id,
+    user: 'User01',
     supervisorId: empSupervisor01Id,
-    group: grp,
+    supervisor: 'Supervisor01 Name',
+    groupId: grp02,
+    group: 'Test02',
     status: 'EA',
     AL: 24.0,
     SL: 0.0,
@@ -170,9 +196,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'empl02@gyroscope.com',
     roleId: userRole,
+    role: 'User',
     userId: null,
+    user: '',
     supervisorId: empSupervisor01Id,
-    group: grp,
+    supervisor: 'Supervisor01 Name',
+    groupId: grp02,
+    group: 'Test02',
     status: 'EA',
     AL: 28.0,
     SL: 0.0,
@@ -188,9 +218,13 @@ if (Posts.find().count() === 0) {
     lname: 'Name',
     email: 'empl03@gyroscope.com',
     roleId: userRole,
+    role: 'User',
     userId: null,
+    user: '',
     supervisorId: null,
-    group: grp,
+    supervisor: '',
+    groupId: null,
+    group: '',
     status: 'EA',
     AL: 28.0,
     SL: 0.0,
@@ -204,6 +238,7 @@ if (Posts.find().count() === 0) {
   // create Schedules
   var scheduleId = Schedules.insert({
     empId: emp01Id,
+    emp: 'Empl01 Name',
     periodsCount: 10,
     hoursCount: 37.5,
     validS: '2014-01-01',
@@ -231,7 +266,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 8:00
     end: '17:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -244,7 +279,7 @@ if (Posts.find().count() === 0) {
     start: '18:00',       // From: 13:00
     end: '21:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -257,7 +292,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 8:00
     end: '17:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -270,7 +305,7 @@ if (Posts.find().count() === 0) {
     start: '18:00',       // From: 13:00
     end: '21:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -283,7 +318,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 8:00
     end: '17:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -296,7 +331,7 @@ if (Posts.find().count() === 0) {
     start: '18:00',       // From: 13:00
     end: '21:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -309,7 +344,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 8:00
     end: '17:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -322,7 +357,7 @@ if (Posts.find().count() === 0) {
     start: '18:00',       // From: 13:00
     end: '21:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -335,7 +370,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 8:00
     end: '17:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -348,7 +383,7 @@ if (Posts.find().count() === 0) {
     start: '18:00',       // From: 13:00
     end: '21:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -357,6 +392,7 @@ if (Posts.find().count() === 0) {
 
   var schEmp02Id = Schedules.insert({
     empId: emp02Id,
+    emp: 'Empl02 Name',
     periodsCount: 10,
     hoursCount: 37.5,
     validS: '2014-01-01',
@@ -384,7 +420,7 @@ if (Posts.find().count() === 0) {
     start: '08:00',       // From: 8:00
     end: '12:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -397,7 +433,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 13:00
     end: '16:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -410,7 +446,7 @@ if (Posts.find().count() === 0) {
     start: '08:00',       // From: 8:00
     end: '12:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -423,7 +459,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 13:00
     end: '16:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -436,7 +472,7 @@ if (Posts.find().count() === 0) {
     start: '08:00',       // From: 8:00
     end: '12:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -449,7 +485,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 13:00
     end: '16:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -462,7 +498,7 @@ if (Posts.find().count() === 0) {
     start: '08:00',       // From: 8:00
     end: '12:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -475,7 +511,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 13:00
     end: '16:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -488,7 +524,7 @@ if (Posts.find().count() === 0) {
     start: '08:00',       // From: 8:00
     end: '12:00',         // To: 12:00
     hours: 4,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -501,7 +537,7 @@ if (Posts.find().count() === 0) {
     start: '13:00',       // From: 13:00
     end: '16:30',         // To: 16:30
     hours: 3.5,
-    status: 'approved',
+    status: 'New',
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -588,10 +624,10 @@ if (Posts.find().count() === 0) {
     title: 'Training',
     code: 'T',
     unit: 'h',
-    textColor: '#fff',
+    textColor: '#000',
     borderColor: '#000',
     backgroundColor: '#cc0',
-    defaultDuration: 0,
+    defaultDuration: 1.0,
     allDay: false,
     active: true,
     order: 60,
@@ -706,7 +742,7 @@ if (Posts.find().count() === 0) {
     period: ThursdayAM,
     type: A,
     title: 'A',
-    status: 'pending',
+    status: 'Pending',
     allDay: false,
     submitted: now,
     approved: null,

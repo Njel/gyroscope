@@ -107,7 +107,7 @@ Meteor.methods({
         created: d,
         modifiedBy: user._id,
         modified: d,
-        status: 'New'
+        status: 'Generated'
       });
 
       var postId = Posts.insert(post);
@@ -145,6 +145,10 @@ Meteor.methods({
       // console.log('Nb Days: ' + nbDays);
       // console.log(D);
 
+      var n = 0;
+      var value = 0.0;
+      var cValue = 0.0;
+
       for (var i = 1; i <= nbDays; i++) {
         // console.log(post.year + '-' + post.month + ': ' + i);
         var d0 = moment(new Date(post.year, post.month - 1, i));
@@ -164,19 +168,61 @@ Meteor.methods({
                 period: p._id,
                 type: type._id,
                 title: type.code,
-                status: 'new',
+                status: 'Generated',
                 allDay: false,
-                textColor: type.textColor,
-                borderColor: type.borderColor,
-                backgroundColor: type.backgroundColor
+                approved: null,
+                approver: null,
+                reviewed: null,
+                reviewer: null,
+                submitted: new Date().getTime(),
+                createdBy: user._id,
+                created: d,
+                modifiedBy: user._id,
+                modified: d
               };
-              Meteor.call('eventNew', ev, function(error, eventId) {
-                error && throwError(error.reason);
-              });
+              n++;
+              value += p.hours;
+              cValue += (p.hours * type.ratio);
+
+              // create the event, save the id
+              Events.insert(ev);
             });
           }
         }
       };
+
+      var tot = Totals.findOne({postId: postId, type: type._id});
+      if (tot) {
+        Totals.update(tot._id, {
+          $inc: {
+            value: value,
+            cValue: cValue
+          }, 
+          $set: {
+            modifiedBy: user._id,
+            modified: d
+          }
+        });
+      } else {
+        Totals.insert({
+          postId: postId,
+          empId: post.empId,
+          year: post.year,
+          month: post.month,
+          type: type._id,
+          code: type.code,
+          unit: 'h',
+          value: value,
+          cValue: cValue,
+          createdBy: user._id,
+          created: d,
+          modifiedBy: user._id,
+          modified: d
+        });
+      }
+
+      // update the post with the number of events
+      Posts.update(postId, {$set: {status: 'Generated'}, $inc: {eventsCount: n}});
     }
 
     return postId;
@@ -217,8 +263,10 @@ Meteor.methods({
               year: postAttributes.year,
               month: postAttributes.month,
               daysCount: new Date(postAttributes.year, postAttributes.month, 0).getDate(),
+              status: 'Updated',
               modifiedBy: user._id,
-              modified: moment(new Date()).toISOString()    }
+              modified: moment(new Date()).toISOString()
+            }
           }, function(error) {
             if (error) {
               // display the error to the user
@@ -261,11 +309,37 @@ Meteor.methods({
     return true;
   },
 
+  postUpdateStatus: function(post) {
+    var user = Meteor.user();
+    Posts.update(
+      post.postId, {
+        $set: {
+          eventsCount: post.eventsCount,
+          status: post.status,
+          modifiedBy: user._id,
+          modified: moment(new Date()).toISOString()
+        }
+      }, function(error) {
+        if (error) {
+          // display the error to the user
+          alert(error.reason);
+        } else {
+
+        }
+      }
+    );
+  },
+
   postResetCounters: function(post) {
+    var user = Meteor.user();
+
     Posts.update(
       post._id, {
         $set: {
-          eventsCount: 0
+          eventsCount: 0,
+          status: 'Reset',
+          modifiedBy: user._id,
+          modified: moment(new Date()).toISOString()
         }
       }, function(error) {
         if (error) {
@@ -279,7 +353,7 @@ Meteor.methods({
   },
 
   postLock: function(postId) {
-    console.log('postLock(' + postId + ')');
+    // console.log('postLock(' + postId + ')');
     var user = Meteor.user();
 
     // ensure the user is logged in
@@ -305,7 +379,7 @@ Meteor.methods({
   },
 
   postUnlock: function(postId) {
-    console.log('postUnlock(' + postId + ')');
+    // console.log('postUnlock(' + postId + ')');
     var user = Meteor.user();
 
     // ensure the user is logged in
@@ -332,7 +406,7 @@ Meteor.methods({
   },
 
   postApprove: function(postId) {
-    console.log('postApprove(' + postId + ')');
+    // console.log('postApprove(' + postId + ')');
     var user = Meteor.user();
 
     // ensure the user is logged in
@@ -344,7 +418,9 @@ Meteor.methods({
         $set: {
           approvedBy: user._id, 
           approved: moment(new Date()).toISOString(), 
-          status: 'Approved'
+          status: 'Approved',
+          modifiedBy: user._id,
+          modified: moment(new Date()).toISOString()
         }
       }, function(error) {
           if (error) {
@@ -359,7 +435,7 @@ Meteor.methods({
   },
 
   postReject: function(postId) {
-    console.log('postReject(' + postId + ')');
+    // console.log('postReject(' + postId + ')');
     var user = Meteor.user();
 
     // ensure the user is logged in
@@ -375,7 +451,9 @@ Meteor.methods({
           submitted: null,
           lockedBy: null,
           locked: null,
-          status: 'Rejected'
+          status: 'Rejected',
+          modifiedBy: user._id,
+          modified: moment(new Date()).toISOString()
         }
       }, function(error) {
           if (error) {
@@ -390,7 +468,7 @@ Meteor.methods({
   },
 
   postSubmit: function(postId) {
-    console.log('postSubmit(' + postId + ')');
+    // console.log('postSubmit(' + postId + ')');
     var user = Meteor.user();
 
     // ensure the user is logged in
@@ -414,7 +492,9 @@ Meteor.methods({
               submitted: moment(new Date()).toISOString(), 
               lockedBy: user._id,
               locked: moment(new Date()).toISOString(),
-              status: 'Submitted'
+              status: 'Submitted',
+              modifiedBy: user._id,
+              modified: moment(new Date()).toISOString()
             }
           }, function(error) {
             if (error) {
