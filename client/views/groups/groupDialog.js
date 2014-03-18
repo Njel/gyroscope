@@ -24,12 +24,62 @@ Template.groupDialog.grp = function() {
   return grp;
 };
 
+Template.groupDialog.employees = function() {
+  var grpId = Session.get('selectedGroup');
+  var el = Employees.find();
+  var employees = [];
+
+  el.forEach(function(e) {
+    var emp = EmpGrp.findOne({empId: e._id, grpId: grpId});
+    if (!emp) {
+      employees.push({
+        _id: e._id,
+        fname: e.fname,
+        lname: e.lname
+      });
+    }
+  });
+  return employees;
+};
+
+Template.groupDialog.selectedEmployees = function() {
+  var grpId = Session.get('selectedGroup');
+  var se = EmpGrp.find({grpId: grpId});
+  var selectedEmployees = [];
+
+  se.forEach(function(e) {
+    var emp = Employees.findOne(e.empId);
+    if (emp) {
+      selectedEmployees.push({
+        _id: emp._id,
+        fname: emp.fname,
+        lname: emp.lname
+      });
+    }
+  });
+  return selectedEmployees;
+};
+
+Template.groupDialog.rendered = function() {
+  $(function() {
+    $( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".connectedSortable",
+      dropOnEmpty: true
+    }).disableSelection();
+  });
+};
+
 Template.groupDialog.events({
+  'click .addAllEmp': function(evt, tmpl) {
+  },
+  'click .rmvAllEmp': function(evt, tmpl) {
+  },
   'click .cancel': function(evt, tmpl) {
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', false);
   },
   'click .closeBtn': function(evt, tmpl) {
+    var e = tmpl.find('[name=name]').value
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', false);
   },
@@ -55,6 +105,38 @@ Template.groupDialog.events({
       id: Session.get('selectedGroup'),
       name: tmpl.find('[name=name]').value
     };
+
+    var employees = [];
+    var selectedEmployees = [];
+
+    var el = tmpl.find('[name=employees]').getElementsByTagName("li");
+    for (var i = 0; i < el.length; i++) {
+      employees.push({empId: el[i].id});
+    }
+
+    var se = tmpl.find('[name=selectedEmployees]').getElementsByTagName("li");
+    for (var i = 0; i < se.length; i++) {
+      selectedEmployees.push({empId: se[i].id});
+    }
+
+    var grpId = Session.get('selectedGroup');
+    var empInGrp = EmpGrp.find({grpId: grpId});
+    // console.log('Before: ' + empInGrp.count());
+
+    employees.forEach(function(e) {
+      var r = EmpGrp.findOne({empId: e.empId, grpId: grpId});
+      if (r)
+        EmpGrp.remove(r._id);
+    });
+
+    selectedEmployees.forEach(function(e) {
+      var r = EmpGrp.findOne({empId: e.empId, grpId: grpId});
+      if (!r)
+        EmpGrp.insert({empId: e.empId, grpId: grpId});
+    });
+
+    empInGrp = EmpGrp.find({grpId: grpId});
+    // console.log('After: ' + empInGrp.count());
 
     Meteor.call('groupUpd', g, function(error, eventId) {
       if (error) {

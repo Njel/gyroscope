@@ -30,7 +30,12 @@ Template.employeeDialog.supervisors = function() {
 };
 
 Template.employeeDialog.selectedEmployee = function() {
-  return Session.get('selectedEmployee');
+  return Session.get('selectedEmployee').empId;
+};
+
+Template.employeeDialog.selectedAction = function(action) {
+  var param = Session.get('selectedEmployee');
+  return (param && param.action == action);
 };
 
 Template.employeeDialog.roles = function() {
@@ -42,7 +47,7 @@ Template.employeeDialog.groups = function() {
 };
 
 Template.employeeDialog.emp = function() {
-  var empId = Session.get('selectedEmployee');
+  var empId = Session.get('selectedEmployee').empId;
 
   if (empId) {
     var e = Employees.findOne(empId);

@@ -1,16 +1,26 @@
 Template.employeesListItem.helpers({
+  hasPosts: function() {
+    return (Posts.find({empId: this._id}).count() > 0);
+  },
   hasAccess: function() {
-    var currUser = Meteor.user();
-    if (!currUser)
+    var c = Meteor.user();
+    if (!c)
       return false;
-    if ((this.userId == currUser._id) || (this.createdBy == currUser._id))
+    if ((this.userId == c._id) || (this.createdBy == c._id))
       return true;
-    if(currUser.username == 'Admin')
+    if(c.username == 'Admin')
       return true;
-    var adminRole = Roles.findOne({name: 'Admin'});
-    if (adminRole) {
-      var currEmp = Employees.findOne({userId: currUser._id});
-      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+    var s = Employees.findOne(this.supervisorId);
+    if (s && s.userId) {
+      // console.log('Sup. Name: ' + s.fname + ' ' + s.lname);
+      if (s.userId == c._id) {
+        return true;
+      }
+    }
+    var ar = Roles.findOne({name: 'Admin'});
+    if (ar) {
+      var ce = Employees.findOne({userId: c._id});
+      if (ce && (ce.roleId == ar._id || ce._id == this.empId)) {
         return true;
       }
     }
@@ -88,9 +98,16 @@ Template.employeesListItem.events({
   'click .edit': function(event) {
     // console.log('Edit Employee click (' + this._id + ')');
   	event.preventDefault();
-    Session.set('selectedEmployee', this._id);
+    Session.set('selectedEmployee', {action: 'Edit', empId: this._id});
     Session.set('showDialogEmployee', true);
   	// Meteor.call('edit', this._id);
+  },
+  'click .view': function(event) {
+    // console.log('Edit Employee click (' + this._id + ')');
+    event.preventDefault();
+    Session.set('selectedEmployee', {action: 'View', empId: this._id});
+    Session.set('showDialogEmployee', true);
+    // Meteor.call('edit', this._id);
   },
   'click .details': function(event) {
     // console.log('Employee Name click (' + this._id + ')');

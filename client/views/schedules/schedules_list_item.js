@@ -3,17 +3,28 @@ Template.schedulesListItem.helpers({
     return (this.status == 'Not Submitted' && this.periodsCount != 0);
   },
   hasAccess: function() {
-    var currUser = Meteor.user();
-    if (!currUser)
+    var c = Meteor.user();
+    if (!c)
       return false;
-    if ((this.userId == currUser._id) || (this.createdBy == currUser._id))
+    if (this.createdBy == c._id)
       return true;
-    if(currUser.username == 'Admin')
+    if(c.username == 'Admin')
       return true;
-    var adminRole = Roles.findOne({name: 'Admin'});
-    if (adminRole) {
-      var currEmp = Employees.findOne({userId: currUser._id});
-      if (currEmp && (currEmp.roleId == adminRole._id || currEmp._id == this.empId)) {
+    var e = Employees.findOne(this.empId);
+    if (e && e.supervisorId) {
+      // console.log('Emp. Name: ' + e.fname + ' ' + e.lname);
+      var s = Employees.findOne(e.supervisorId);
+      if (s && s.userId) {
+        // console.log('Sup. Name: ' + s.fname + ' ' + s.lname);
+        if (s.userId == c._id) {
+          return true;
+        }
+      }
+    }
+    var ar = Roles.findOne({name: 'Admin'});
+    if (ar) {
+      var ce = Employees.findOne({userId: c._id});
+      if (ce && (ce.roleId == ar._id || ce._id == this.empId)) {
         return true;
       }
     }

@@ -83,6 +83,7 @@ Meteor.subscribe('posts');
 Meteor.subscribe('employees');
 Meteor.subscribe('balances');
 Meteor.subscribe('groups');
+Meteor.subscribe('emp_grp');
 Meteor.subscribe('holidays');
 Meteor.subscribe('schedules');
 Meteor.subscribe('totals');

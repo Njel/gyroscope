@@ -24,6 +24,10 @@ Meteor.publish('groups', function() {
   return Groups.find();
 });
 
+Meteor.publish('emp_grp', function() {
+  return EmpGrp.find();
+});
+
 Meteor.publish('holidays', function() {
   return Holidays.find();
 });

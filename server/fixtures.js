@@ -95,7 +95,7 @@ if (Posts.find().count() === 0) {
 
   var grp02 = Groups.insert({
     name: 'Test02',
-    nbEmp: 2,
+    nbEmp: 4,
     createdBy: adminId,
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
@@ -233,6 +233,41 @@ if (Posts.find().count() === 0) {
     created: moment(new Date()).toISOString(),
     modifiedBy: adminId,
     modified: moment(new Date()).toISOString()
+  });
+
+  EmpGrp.insert({
+    empId: emp01Id,
+    grpId: grp02
+  });
+
+  EmpGrp.insert({
+    empId: emp02Id,
+    grpId: grp02
+  });
+
+  EmpGrp.insert({
+    empId: empSupervisor01Id,
+    grpId: grp01
+  });
+
+  EmpGrp.insert({
+    empId: empApprover01Id,
+    grpId: grp01
+  });
+
+  EmpGrp.insert({
+    empId: AdministratorId,
+    grpId: grp01
+  });
+
+  EmpGrp.insert({
+    empId: AdministratorId,
+    grpId: grp02
+  });
+
+  EmpGrp.insert({
+    empId: empSupervisor01Id,
+    grpId: grp02
   });
 
   // create Schedules

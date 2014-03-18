@@ -18,9 +18,11 @@
     {{#if hasAccess}}
       <!-- <td style="padding: 8px 2px 8px 2px; width: 72px;"> -->
       <td style="padding: 8px 2px 8px 2px;">
-        <a href="/folder/{{_id}}">
-          <button class="btn btn-mini folder" title='Folder'><i class="icon-folder-open"></i></button>
-        </a>
+        {{#if hasPosts}}
+          <a href="/folder/{{_id}}">
+            <button class="btn btn-mini folder" title='Folder'><i class="icon-folder-open"></i></button>
+          </a>
+        {{/if}}
       </td>
       <td style="padding: 8px 2px 8px 2px;">
         {{#if hasActiveSchedule}}
@@ -45,7 +47,15 @@
         </a>
       </td>
     {{else}}
-      <td colspan="4"></td>
+      <td style="padding: 8px 2px 8px 2px;"></td>
+      <td style="padding: 8px 2px 8px 2px;"></td>
+      <td style="padding: 8px 2px 8px 2px;">
+        <a href="">
+          <!-- <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button> -->
+          <button class="btn btn-mini view" title='View'><i class="icon-list-alt view"></i></button>
+        </a>
+      </td>
+      <td style="padding: 8px 2px 8px 2px;"></td>
     {{/if}}
   </tr>
 </template>

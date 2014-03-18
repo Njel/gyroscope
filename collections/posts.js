@@ -283,21 +283,23 @@ Meteor.methods({
     return true;
   },
 
-  postRemove: function(postAttributes) {
+  postRemove: function(post) {
     var user = Meteor.user();
 
     // ensure the user is logged in
     if (!user)
       throw new Meteor.Error(401, "You need to login to delete timesheets");
 
-    if (!Events.find({postId: postAttributes.id}).count() == 0) {
-      if (postAttributes.delEvts)
-        Events.remove({postId: postAttributes.id})
-      else
+    if (!Events.find({postId: post.id}).count() == 0) {
+      if (post.delEvts) {
+        Events.remove({postId: post.id});
+        Totals.remove({postId: post.id});
+      } else {
         throw new Meteor.Error(422, 'This timesheet contains events');
+      }
     }
 
-    Posts.remove(postAttributes.id, function(error) {
+    Posts.remove(post.id, function(error) {
       if (error) {
         // display the error to the user
         alert(error.reason);
@@ -346,10 +348,10 @@ Meteor.methods({
           // display the error to the user
           alert(error.reason);
         } else {
-
         }
       }
     );
+    Totals.remove({postId: post._id});
   },
 
   postLock: function(postId) {

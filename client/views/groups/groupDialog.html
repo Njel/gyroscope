@@ -13,8 +13,53 @@
         {{/if}}
       </div>
       <div class="modal-body">
-          <label for="title">Name <span style="color: red">*</span></label>
-          <input type="text" name="name" value="{{name}}" id="name">
+        <style>
+          #sortable1, #sortable2 { font-size: 12px; list-style-type: none; margin: 0; float: left; margin-right: 0px; padding: 0px; }
+          #sortable1 li, #sortable2 li { line-height: 14px; margin: 0 2px 2px 2px; padding: 5px; font-size: 12px; width: 182px; }
+        </style>
+        <table>
+          <tr>
+            <td colspan="3">
+              <label for="title">Name <span style="color: red">*</span></label>
+              <input type="text" name="name" value="{{name}}" id="name">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="employees">Employee's List</label>
+            </td>
+            <td></td>
+            <td>
+              <label for="selectedEmployees">Selected Employees</label>
+            </td>
+          </tr>
+          <tr style="vertical-align: top;">
+            <td>
+              <div style="height: 110px; width: 214px; overflow-y: auto; border: 1px solid #cccccc; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; padding: 2px 2px;">
+                <ul id="sortable1" name="employees" class="connectedSortable" style="min-height: 108px; min-width: 198px;">
+                  {{#each employees}}
+                    <li class="ui-state-default" id="{{_id}}">{{fname}} {{lname}}</li>
+                  {{/each}}
+                </ul>
+              </div>
+            </td>
+            <td style="text-align: center; vertical-align: middle;">
+              <div style="height: 124px;">
+                <a href="" class="btn btn-mini addAllEmp" style="width: 60px;">Add All</a>
+                <a href="" class="btn btn-mini rmvAllEmp" style="width: 60px;">Remove All</a>
+              </div>
+            </td>
+            <td>
+              <div style="height: 110px; width: 214px; overflow-y: auto; border: 1px solid #cccccc; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; padding: 2px 2px;">
+                <ul id="sortable2" name="selectedEmployees" class="connectedSortable" style="min-height: 108px; min-width: 198px;">
+                  {{#each selectedEmployees}}
+                    <li class="ui-state-default" id="{{_id}}">{{fname}} {{lname}}</li>
+                  {{/each}}
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
       <div class="modal-footer">
         {{#if selectedGroup}}

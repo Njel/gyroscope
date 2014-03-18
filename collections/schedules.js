@@ -33,7 +33,7 @@ Meteor.methods({
       throw new Meteor.Error(422, 'Please enter a ending date for the schedule');
 
     var d = moment(new Date()).toISOString();
-    var e = Employees.findOne(empAttributes.empId);
+    var e = Employees.findOne(schAttributes.empId);
 
     if (e) {
       var empName = e.fname + ' ' + e.lname;
@@ -98,6 +98,7 @@ Meteor.methods({
         Schedules.update(
           sch._id, {
             $set: {
+              empId: schAttributes.empId,
               emp: empName,
               validS: schAttributes.validS,
               validE: schAttributes.validE,
@@ -300,6 +301,29 @@ Meteor.methods({
       }
     });
 
+    var sch = Schedules.findOne(schId);
+    var emp = Employees.findOne(sch.empId);
+    var sup = Employees.findOne({userId: user._id});
+    if (sup) {
+      Notifications.insert({
+        title: 'Schedule approved',
+        authorName: sup.fname + ' ' + sup.lname,
+        link: '/schedules/' + sch._id,
+        read: false,
+        userId: emp.userId,
+        time: new Date()
+      });
+    } else {
+      Notifications.insert({
+        title: 'Schedule approved',
+        authorName: user.username,
+        link: '/schedules/' + sch._id,
+        read: false,
+        userId: emp.userId,
+        time: new Date()
+      });
+    }
+
     return true;
   },
 
@@ -323,14 +347,38 @@ Meteor.methods({
           status: 'Rejected'
         }
       }, function(error) {
-          if (error) {
-            // display the error to the user
-            alert(error.reason);
-          } else {
+        if (error) {
+          // display the error to the user
+          alert(error.reason);
+        } else {
 
-          }
         }
-      );
+      }
+    );
+
+    var sch = Schedules.findOne(schId);
+    var emp = Employees.findOne(sch.empId);
+    var sup = Employees.findOne({userId: user._id});
+    if (sup) {
+      Notifications.insert({
+        title: 'Schedule rejected',
+        authorName: sup.fname + ' ' + sup.lname,
+        link: '/schedules/' + sch._id,
+        read: false,
+        userId: emp.userId,
+        time: new Date()
+      });
+    } else {
+      Notifications.insert({
+        title: 'Schedule rejected',
+        authorName: user.username,
+        link: '/schedules/' + sch._id,
+        read: false,
+        userId: emp.userId,
+        time: new Date()
+      });
+    }
+
     return true;
   },
 
@@ -381,18 +429,14 @@ Meteor.methods({
       );
 
       // console.log('user._id: ' + user._id);
-      var emp = Employees.findOne({userId: user._id});
+      var emp = Employees.findOne(sch.empId);
       if (emp) {
         // console.log('Employee found: ' + emp.fname + ' ' + emp.lname);
         var userId = null;
         if (emp.supervisorId) {
           var sup = Employees.findOne(emp.supervisorId);
           if (sup) {
-            var empId = sup._id;
-            var emp = Employees.findOne(empId);
-            if (emp) {
-              userId = emp.userId;
-            }
+            userId = sup.userId;
           }
         }
         if(!userId) {
@@ -410,6 +454,8 @@ Meteor.methods({
           userId: userId,
           time: new Date()
         });
+      } else {
+        throw new Meteor.Error(404, "Employee not found!");  
       }
     } else {
       throw new Meteor.Error(404, "Schedule not found!");

@@ -34,10 +34,10 @@
           <label for="status">Status <span style="color: red">*</span></label>
           <select type="text" name="status" id="status" value="{{status}}" style="width: 130px;">
               <option value=''{{selectedValue status ''}}></option>
-              <option value='not submitted'{{selectedValue status 'Not Submitted'}}>Not Submitted</option>
-              <option value='pending'{{selectedValue status 'Pending'}}>Pending</option>
-              <option value='approved'{{selectedValue status 'Approved'}}>Approved</option>
-              <option value='rejected'{{selectedValue status 'Rejected'}}>Rejected</option>
+              <option value='Not Submitted'{{selectedValue status 'Not Submitted'}}>Not Submitted</option>
+              <option value='Pending'{{selectedValue status 'Pending'}}>Pending</option>
+              <option value='Approved'{{selectedValue status 'Approved'}}>Approved</option>
+              <option value='Rejected'{{selectedValue status 'Rejected'}}>Rejected</option>
           </select>
         {{else}}
           <label for="status">Status</label>

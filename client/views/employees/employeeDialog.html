@@ -6,10 +6,16 @@
         <a style="float: right; margin-top: -4px; margin-right: -10px;" class="closeBtn" data-dismiss="modal">
           <button class="btn btn-mini btn-danger"><i class="icon-white icon-remove"></i></button>
         </a>
-        {{#if selectedEmployee}}
-        	<h3>Update Employee</h3>
+        {{#if selectedAction 'View'}}
+          <h3>Employee Details</h3>
         {{else}}
-          <h3>Add an Employee</h3>
+          {{#if selectedAction 'Edit'}}
+        	  <h3>Update Employee</h3>
+          {{else}}
+            {{#if selectedAction 'Add'}}
+              <h3>Add an Employee</h3>
+            {{/if}}
+          {{/if}}
         {{/if}}
       </div>
       <div class="modal-body">
@@ -127,7 +133,10 @@
         </table>
       </div>
       <div class="modal-footer">
-        {{#if selectedEmployee}}
+        {{#if selectedAction 'Add'}}
+          <a href="" class="btn btn-success add">Add</a>
+          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+        {{else}}
           <table>
             <tr>
               <td style="width: 400px; text-align: left; font-family: Tahoma, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 8pt; padding: 0; line-height: 13px; border-spacing: 0;">
@@ -135,14 +144,15 @@
                 Last modified at {{dateTimeFormat modified}} by {{modifiedBy}}
               </td>
               <td style="width: 160px;">
-                <a href="" class="btn btn-success save">Save</a>
-                <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+                {{#if selectedAction 'Edit'}}
+                  <a href="" class="btn btn-success save">Save</a>
+                  <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
+                {{else}}
+                  <a href="" class="btn cancel" data-dismiss="modal">Close</a>
+                {{/if}}
               </td>
             </tr>
           </table>
-        {{else}}
-          <a href="" class="btn btn-success add">Add</a>
-          <a href="" class="btn cancel" data-dismiss="modal">Cancel</a>
         {{/if}}
       </div>
     {{/with}}
