@@ -50,6 +50,10 @@ Template.newPosts.helpers({
   }
 });
 
+Template.newPosts.selectedGroupFilter = function() {
+  return Session.get('selectedGroupFilter');
+};
+
 Template.newPosts.showDialogPost = function() {
   return Session.get('showDialogPost');
 };
@@ -60,6 +64,31 @@ Template.newPosts.showDialogPostDelConf = function() {
 
 Template.newPosts.showDialogGroup = function() {
   return Session.get('showDialogGroup');
+};
+
+Template.newPosts.groups = function() {
+  return Groups.find({}, {sort: {name: 1}});
+};
+
+Template.newPosts.years = function() {
+  var Y = Posts.find({},{sort: {year: -1}});
+  var R = [];
+  var E = {};
+  Y.forEach(function(y) {
+    if (!E[y.year]) {
+      E[y.year] = true;
+      R.push({year: y.year});
+    }
+  });
+  return R;
+};
+
+Template.newPosts.months = function() {
+  var M = [];
+  for (var m = 0; m < 12; m++) {
+    M.push({mm: moment(new Date(2014, m, 1)).format("MMM")});
+  }
+  return M;
 };
 
 Template.newPosts.events({
@@ -74,6 +103,14 @@ Template.newPosts.events({
     event.preventDefault();
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', true);
+  },
+  'change #groupId': function(event, tmpl) {
+    var groupId = tmpl.find('[name=groupId]').value
+    if (groupId == '') {
+      Session.set('selectedGroupFilter', null);
+    } else {
+      Session.set('selectedGroupFilter', groupId);
+    }
   }
 });
 
@@ -92,9 +129,29 @@ Template.postsList.helpers({
     // console.log(user);
     if (!user)
       return [];
-    if (isAdmin(user))
-      // return Posts.find({}, {sort: this.sort, limit: this.handle.limit()});
-      return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
+    if (isAdmin(user)) {
+      // return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: this.handle.limit()});
+      var groupId = Session.get('selectedGroupFilter');
+      if (groupId) {
+        var aPosts = new Meteor.Collection(null);
+        var n = 0;
+        var empIds = new Meteor.Collection(null);
+        var empInGrp = EmpGrp.find({grpId: groupId});
+        empInGrp.forEach(function(e) {
+          ePosts = Posts.find({empId: e.empId}, {sort: {year: -1, month: -1}, limit: limit});
+          ePosts.forEach(function(p) {
+            aPosts.insert(p);
+            n++;
+          });
+        });
+        console.log('Limit: ' + limit + ', ' + n + ' post(s) found.');
+        Session.set('nbPosts', n);
+        return aPosts.find({}, {sort: {year: -1, month: -1}, limit: limit});
+      } else {
+        Session.set('nbPosts', Posts.find({}).count());
+        return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: limit});
+      }
+    }
     var userRole = Roles.findOne({name: 'User'});
     var approverRole = Roles.findOne({name: 'Approver'});
     var supervisorRole = Roles.findOne({name: 'Supervisor'});
@@ -115,26 +172,70 @@ Template.postsList.helpers({
           case supervisorRole._id:
             var aPosts = new Meteor.Collection(null);
             var n = 0;
-            var ePosts = Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: limit});
-            ePosts.forEach(function(p) {
-              aPosts.insert(p);
-              n++;
-            });
-            var employees = Employees.find({supervisorId: emp._id});
-            employees.forEach(function(e) {
-              ePosts = Posts.find({empId: e._id}, {sort: {year: -1, month: -1}, limit: limit});
+            var groupId = Session.get('selectedGroupFilter');
+            if (groupId) {
+              var empIds = new Meteor.Collection(null);
+              var empInGrp = EmpGrp.find({grpId: groupId});
+              empInGrp.forEach(function(e) {
+                empIds.insert({empId: e.empId});
+              });
+              if(empIds.findOne({empId: emp._id})) {
+                var ePosts = Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: limit});
+                ePosts.forEach(function(p) {
+                  aPosts.insert(p);
+                  n++;
+                });
+              }
+              var employees = Employees.find({supervisorId: emp._id});
+              employees.forEach(function(e) {
+                if (empIds.findOne({empId: e._id})) {
+                  ePosts = Posts.find({empId: e._id}, {sort: {year: -1, month: -1}, limit: limit});
+                  ePosts.forEach(function(p) {
+                    aPosts.insert(p);
+                    n++;
+                  });
+                }
+              });
+            } else {
+              var ePosts = Posts.find({empId: emp._id}, {sort: {year: -1, month: -1}, limit: limit});
               ePosts.forEach(function(p) {
                 aPosts.insert(p);
                 n++;
               });
-            });
+              var employees = Employees.find({supervisorId: emp._id});
+              employees.forEach(function(e) {
+                ePosts = Posts.find({empId: e._id}, {sort: {year: -1, month: -1}, limit: limit});
+                ePosts.forEach(function(p) {
+                  aPosts.insert(p);
+                  n++;
+                });
+              });
+            }
             console.log('Limit: ' + limit + ', ' + n + ' post(s) found.');
             Session.set('nbPosts', n);
             return aPosts.find({}, {sort: {year: -1, month: -1}, limit: limit});
             break;
           case adminRole._id:
-            Session.set('nbPosts', Posts.find({}).count());
-            return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: limit});
+            var groupId = Session.get('selectedGroupFilter');
+            if (groupId) {
+              var aPosts = new Meteor.Collection(null);
+              var n = 0;
+              var empIds = new Meteor.Collection(null);
+              var empInGrp = EmpGrp.find({grpId: groupId});
+              empInGrp.forEach(function(e) {
+                ePosts = Posts.find({empId: e.empId}, {sort: {year: -1, month: -1}, limit: limit});
+                ePosts.forEach(function(p) {
+                  aPosts.insert(p);
+                  n++;
+                });
+              });
+              console.log('Limit: ' + limit + ', ' + n + ' post(s) found.');
+              Session.set('nbPosts', n);
+              return aPosts.find({}, {sort: {year: -1, month: -1}, limit: limit});
+            } else {
+              Session.set('nbPosts', Posts.find({}).count());
+              return Posts.find({}, {sort: {year: -1, month: -1, modified: -1}, limit: limit});
+            }
             break;
         }
       }
@@ -150,7 +251,7 @@ Template.postsList.helpers({
   },
   
   allPostsLoaded: function() {
-    return false;
+    // return false;
     return this.handle.ready() &&
       Session.get('nbPosts') < this.handle.loaded();
 

@@ -84,16 +84,24 @@ Template.groupDialog.events({
     Session.set('showDialogGroup', false);
   },
   'click .add': function(evt, tmpl) {
+    var se = tmpl.find('[name=selectedEmployees]').getElementsByTagName("li");
+
     var g = {
-      name: tmpl.find('[name=name]').value
+      name: tmpl.find('[name=name]').value,
+      nbEmp: se.length
     };
     
     // console.log(g);
 
-    Meteor.call('groupNew', g, function(error, eventId) {
+    Meteor.call('groupNew', g, function(error, grpId) {
       if (error) {
         error && throwError(error.reason);
       } else {
+        // console.log(grpId);
+        for (var i = 0; i < se.length; i++) {
+          EmpGrp.insert({empId: se[i].id, grpId: grpId})
+        }
+
         throwMessage('New group created successfully.');
         Session.set('selectedGroup', null);
         Session.set('showDialogGroup', false);
@@ -101,11 +109,6 @@ Template.groupDialog.events({
     });
   },
   'click .save': function(evt, tmpl) {
-    var g = {
-      id: Session.get('selectedGroup'),
-      name: tmpl.find('[name=name]').value
-    };
-
     var employees = [];
     var selectedEmployees = [];
 
@@ -137,6 +140,12 @@ Template.groupDialog.events({
 
     empInGrp = EmpGrp.find({grpId: grpId});
     // console.log('After: ' + empInGrp.count());
+
+    var g = {
+      id: Session.get('selectedGroup'),
+      name: tmpl.find('[name=name]').value,
+      nbEmp: se.length
+    };
 
     Meteor.call('groupUpd', g, function(error, eventId) {
       if (error) {

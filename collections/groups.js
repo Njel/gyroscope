@@ -26,8 +26,7 @@ Meteor.methods({
     if (!grpAttributes.name)
       throw new Meteor.Error(422, 'Please enter a name for the group');
 
-    grp = _.extend(_.pick(grpAttributes, 'name'), {
-      nbEmp: 0,
+    grp = _.extend(_.pick(grpAttributes, 'name', 'nbEmp'), {
       createdBy: user._id,
       created: moment(new Date()).toISOString(),
       modifiedBy: user._id,
@@ -59,17 +58,19 @@ Meteor.methods({
         g._id, {
           $set: {
             name: grpAttributes.name,
-		    modifiedBy: user._id,
-		    modified: moment(new Date()).toISOString()  }
+            nbEmp: grpAttributes.nbEmp,
+		        modifiedBy: user._id,
+		        modified: moment(new Date()).toISOString()
+          }
         }, function(error) {
           if (error) {
             // display the error to the user
             alert(error.reason);
           } else {
-            var employees = Employees.find({groupId: g._id});
-            employees.forEach(function(e) {
-              Employees.update(e._id, {$set: {group: grpAttributes.name}});
-            });
+            // var employees = Employees.find({groupId: g._id});
+            // employees.forEach(function(e) {
+            //   Employees.update(e._id, {$set: {group: grpAttributes.name}});
+            // });
           }
         }
       );
@@ -83,7 +84,10 @@ Meteor.methods({
     if (!user)
       throw new Meteor.Error(401, "You need to login to delete groups");
 
-    if (!Employees.find({group: grpAttributes.id}).count() == 0)
+    // if (!Employees.find({group: grpAttributes.id}).count() == 0)
+    //   throw new Meteor.Error(422, 'This group contains employees');
+
+    if (!EmpGrp.find({grpId: grpAttributes.id}).count() == 0)
       throw new Meteor.Error(422, 'This group contains employees');
 
     Groups.remove(grpAttributes.id, function(error) {

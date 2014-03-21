@@ -12,10 +12,19 @@
           <button class="btn"><i class="icon-search"></i> Search</button>
         </form>
       </td>
-      <td style="text-align: right; padding: 0 0 21px;">
-        All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 144px;">
+        <select type="text" name="groupId" id="groupId" 
+          style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 140px; height: 24px; font-size: 10px;">
+          <option value="">(None)</option>
+          {{#each groups}}
+            <option value='{{_id}}'{{selectedValue _id selectedGroupFilter}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td style="text-align: right; padding: 0 0 21px; width: 80px;">
+        <!-- All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
         {{#if isAdmin}}
-          <a href="" class="btn btn-mini add-group">+ Add group</a>
+          <a href="" class="btn btn-mini add-group" style="height: 23px;">+ Add group</a>
         {{/if}}
       </td>
     </tr>
@@ -55,7 +64,7 @@
             <a name="user" href="" class="orderBy">User</a> <i class="{{sortBy 'user'}}" style="opacity:1.0;"></i>
           </td>
           <td width="150">
-            <a name="group" href="" class="orderBy">Group</a> <i class="{{sortBy 'group'}}" style="opacity:1.0;"></i>
+            <!-- <a name="group" href="" class="orderBy">Group</a> <i class="{{sortBy 'group'}}" style="opacity:1.0;"></i> -->
           </td>
           <!-- <td width="60">AL</td> -->
           <!-- <td width="60">SL</td> -->

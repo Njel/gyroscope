@@ -8,25 +8,25 @@
     <td>{{validE}}</td>
     <td>{{status}}</td>
     <td></td>
-    <td style="padding: 8px 2px 8px 2px;">
+    <td style="padding: 8px 0px 8px 0px; width: 30px;">
       <!-- <a href="/schedules/{{_id}}"><button class="btn btn-mini btn-primary"><i class="icon-white icon-edit"></i>&nbsp;&nbsp;Details</button></a> -->
       <a href="/schedules/{{_id}}">
         <button class="btn btn-mini detailsBtn" title="Details"><i class="icon-calendar"></i></button>
       </a>
     </td>
     {{#if hasAccess}}
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 30px;">
         <!-- <a href=""><button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button></a> -->
         <a href=""><button class="btn btn-mini editBtn" title="Edit"><i class="icon-edit"></i></button></a>
       </td>
       {{#if notSubmitted}}
-        <td style="padding: 8px 2px 8px 2px;">
+        <td style="padding: 8px 0px 8px 0px; width: 30px;">
           <a href=""><button class="btn btn-mini submitBtn" title="Submit"><i class="icon-upload"></i></button></a>
         </td>
       {{else}}
-        <td style="padding: 8px 2px 8px 2px; width: 28px;"></td>
+        <td style="padding: 8px 0px 8px 0px; width: 30px;"></td>
       {{/if}}
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 30px;">
         <!-- <a href=""><button class="btn btn-mini btn-danger delete"><i class="icon-white icon-remove delete"></i></button></a> -->
         <a href=""><button class="btn btn-mini deleteBtn" title="Delete"><i class="icon-trash"></i></button></a>
       </td>

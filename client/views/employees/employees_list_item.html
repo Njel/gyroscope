@@ -12,19 +12,20 @@
     <td>{{role}}
     <td>{{supervisor}}
     <td>{{user}}
-    <td>{{group}}</td>
+    <td></td>
+    <!-- <td>{{group}}</td> -->
     <!-- <td>{{AL}}</td> -->
     <!-- <td>{{SL}}</td> -->
     {{#if hasAccess}}
       <!-- <td style="padding: 8px 2px 8px 2px; width: 72px;"> -->
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 32px;">
         {{#if hasPosts}}
           <a href="/folder/{{_id}}">
             <button class="btn btn-mini folder" title='Folder'><i class="icon-folder-open"></i></button>
           </a>
         {{/if}}
       </td>
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 29px;">
         {{#if hasActiveSchedule}}
         <a href="/schedules/{{activeScheduleId}}">
           <!-- <button class="btn btn-mini btn-primary" {{hasActiveSchedule}}><i class="icon-white icon-calendar"></i>&nbsp;&nbsp;Schedule</button> -->
@@ -34,28 +35,28 @@
         {{/if}}
       </td>
       <!-- <td style="padding: 8px 2px 8px 2px; width: 51px;"> -->
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 29px;">
         <a href="">
           <!-- <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button> -->
           <button class="btn btn-mini edit" title='Edit'><i class="icon-edit edit"></i></button>
         </a>
       </td>
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 29px;">
         <a href="">
           <!-- <button class="btn btn-mini btn-danger delete" title='Delete'><i class="icon-white icon-remove delete"></i></button> -->
           <button class="btn btn-mini delete" title='Delete'><i class="icon-trash delete"></i></button>
         </a>
       </td>
     {{else}}
-      <td style="padding: 8px 2px 8px 2px;"></td>
-      <td style="padding: 8px 2px 8px 2px;"></td>
-      <td style="padding: 8px 2px 8px 2px;">
+      <td style="padding: 8px 0px 8px 0px; width: 29px;"></td>
+      <td style="padding: 8px 0px 8px 0px; width: 29px;"></td>
+      <td style="padding: 8px 0px 8px 0px; width: 29px;">
         <a href="">
           <!-- <button class="btn btn-mini edit"><i class="icon-edit edit"></i>&nbsp;&nbsp;Edit</button> -->
           <button class="btn btn-mini view" title='View'><i class="icon-list-alt view"></i></button>
         </a>
       </td>
-      <td style="padding: 8px 2px 8px 2px;"></td>
+      <td style="padding: 8px 0px 8px 0px; width: 29px;"></td>
     {{/if}}
   </tr>
 </template>

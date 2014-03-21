@@ -12,12 +12,39 @@
           <button class="btn"><i class="icon-search"></i> Search</button>
         </form>
       </td>
-      <!-- <td style="text-align: right; padding: 0 0 21px;"> -->
+      <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 60px;">
+        <select type="text" name="mm" id="mm" title="Month"
+          style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 56px; height: 24px; font-size: 10px;">
+          <option value="">(All)</option>
+          {{#each months}}
+            <option value='{{_id}}'{{selectedValue _id selectedMonthFilter}}>{{mm}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 60px;">
+        <select type="text" name="yr" id="yr" title="Year"
+          style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 56px; height: 24px; font-size: 10px;">
+          <option value="">(All)</option>
+          {{#each years}}
+            <option value='{{_id}}'{{selectedValue _id selectedYearFilter}}>{{year}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 144px;">
+        <select type="text" name="groupId" id="groupId" title="Group"
+          style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 140px; height: 24px; font-size: 10px;">
+          <option value="">(None)</option>
+          {{#each groups}}
+            <option value='{{_id}}'{{selectedValue _id selectedGroupFilter}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td style="text-align: right; padding: 0 0 21px; width: 80px;">
         <!-- All&nbsp;&nbsp;&nbsp;&nbsp;<a href="/groups/view?id=1">Test</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
-        <!-- {{#if isAdmin}} -->
-          <!-- <a href="" class="btn btn-mini add-group">+ Add group</a> -->
-        <!-- {{/if}} -->
-      <!-- </td> -->
+        {{#if isAdmin}}
+          <a href="" class="btn btn-mini add-group" style="height: 23px;">+ Add group</a>
+        {{/if}}
+      </td>
     </tr>
   </table>
   {{#if showDialogPost}}

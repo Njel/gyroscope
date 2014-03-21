@@ -42,9 +42,9 @@ Template.employeeDialog.roles = function() {
   return Roles.find({}, {sort: {name: 1}});
 };
 
-Template.employeeDialog.groups = function() {
-  return Groups.find({}, {sort: {name: 1}});
-};
+// Template.employeeDialog.groups = function() {
+//   return Groups.find({}, {sort: {name: 1}});
+// };
 
 Template.employeeDialog.emp = function() {
   var empId = Session.get('selectedEmployee').empId;
@@ -75,7 +75,7 @@ Template.employeeDialog.emp = function() {
         roleId: e.roleId,
         supervisorId: e.supervisorId,
         userId: e.userId,
-        groupId: e.groupId,
+        // groupId: e.groupId,
         status: e.status,
         AL: e.AL,
         SL: e.SL,
@@ -94,7 +94,7 @@ Template.employeeDialog.emp = function() {
       roleId: '',
       supervisorId: '',
       userId: '',
-      groupId: null,
+      // groupId: null,
       status: '',
       AL: 0,
       SL: 0,
@@ -121,7 +121,7 @@ Template.employeeDialog.events({
       roleId: tmpl.find('[name=roleId]').value,
       supervisorId: tmpl.find('[name=supervisorId]').value,
       userId: tmpl.find('[name=userId]').value,
-      groupId: tmpl.find('[name=groupId]').value,
+      // groupId: tmpl.find('[name=groupId]').value,
       AL: tmpl.find('[name=al]').value,
       SL: tmpl.find('[name=sl]').value
     };
@@ -147,7 +147,7 @@ Template.employeeDialog.events({
       roleId: tmpl.find('[name=roleId]').value,
       supervisorId: tmpl.find('[name=supervisorId]').value,
       userId: tmpl.find('[name=userId]').value,
-      groupId: tmpl.find('[name=groupId]').value,
+      // groupId: tmpl.find('[name=groupId]').value,
       AL: tmpl.find('[name=al]').value,
       SL: tmpl.find('[name=sl]').value
     };
