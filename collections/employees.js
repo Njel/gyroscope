@@ -58,11 +58,10 @@ Meteor.methods({
       var groupName = '';
     }
 
-    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'supervisorId', 'userId', 'groupId'), {
+    e = _.extend(_.pick(empAttributes, 'fname', 'lname', 'email', 'roleId', 'supervisorId', 'userId'), {
       role: roleName,
       supervisor: supervisorName,
       user: userName,
-      group: groupName,
       AL: parseFloat(empAttributes.AL),
       SL: parseFloat(empAttributes.SL),
       createdBy: currUser._id,
@@ -73,8 +72,6 @@ Meteor.methods({
 
     // create the employee, save the id
     e._id = Employees.insert(e);
-
-    Groups.update(group._id, {$inc: {nbEmp: 1}});
 
     // now create a notification, informing the user that there's been a new employee
     // createEventNotification(grp);
@@ -122,12 +119,6 @@ Meteor.methods({
       } else {
         var userName = '';
       }
-      var group = Groups.findOne(empAttributes.groupId);
-      if (group) {
-        var groupName = group.name;
-      } else {
-        var groupName = '';
-      }
 
       Employees.update(
         e._id, {
@@ -141,8 +132,6 @@ Meteor.methods({
             supervisor: supervisorName,
             userId: empAttributes.userId,
             user: userName,
-            groupId: empAttributes.groupId,
-            group: groupName,
             AL: parseFloat(empAttributes.AL),
             SL: parseFloat(empAttributes.SL),
             modifiedBy: currUser._id,
@@ -162,11 +151,6 @@ Meteor.methods({
           }
         }
       );
-
-      if (e.groupId != group._id) {
-        Groups.update(e.groupId, {$inc: {nbEmp: -1}});
-        Groups.update(group._id, {$inc: {nbEmp: 1}});
-      }
     } else {
       throw new Meteor.Error(404, "Employee not found!");
     }
@@ -200,7 +184,11 @@ Meteor.methods({
 
         }
       });
-      Groups.update(e.groupId, {$inc: {nbEmp: -1}});
+      var groups = EmpGrp.find({empId: empAttributes.id});
+      groups.forEach(function(g) {
+        EmpGrp.remove(g._id);
+        Groups.update(g.grpId, {$inc: {nbEmp: -1}});  
+      });
     } else {
       throw new Meteor.Error(404, "Employee not found!");
     }

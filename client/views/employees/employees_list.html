@@ -13,6 +13,15 @@
         </form>
       </td>
       <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 144px;">
+        <select type="text" name="roleId" id="roleId" title="Role"
+          style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 140px; height: 24px; font-size: 10px;">
+          <option value="">(All)</option>
+          {{#each roles}}
+            <option value='{{_id}}'{{selectedValue _id selectedRoleFilter}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td style="text-align: right; vertical-align: bottom; padding: 0 0 21px; width: 144px;">
         <select type="text" name="groupId" id="groupId" 
           style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 140px; height: 24px; font-size: 10px;">
           <option value="">(None)</option>

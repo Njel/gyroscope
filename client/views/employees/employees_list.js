@@ -6,10 +6,13 @@ Template.employees.lastEmpMod = function() {
    return null;
 };
 
+Template.employees.roles = function() {
+  return Roles.find({}, {sort: {name: 1}});
+};
+
 Template.employees.groups = function() {
   return Groups.find({}, {sort: {name: 1}});
 };
-
 
 Template.employees.helpers({
   isAuthorized: function() {
@@ -70,6 +73,14 @@ Template.employees.events({
     Session.set('selectedGroup', null);
     Session.set('showDialogGroup', true);
   },
+  'change #roleId': function(event, tmpl) {
+    var roleId = tmpl.find('[name=roleId]').value
+    if (roleId == '') {
+      Session.set('selectedRoleFilter', null);
+    } else {
+      Session.set('selectedRoleFilter', roleId);
+    }
+  },
   'change #groupId': function(event, tmpl) {
     var groupId = tmpl.find('[name=groupId]').value
     if (groupId == '') {
@@ -100,6 +111,11 @@ Template.employees.showDialogGroup = function() {
 
 Template.employeesList.helpers({
   employees: function() {
+    var filter = {};
+    var roleId = Session.get('selectedRoleFilter');
+    if (roleId) {
+      filter = {roleId: roleId};
+    }
     var groupId = Session.get('selectedGroupFilter');
     if (groupId) {
       var employees = new Meteor.Collection(null);
@@ -110,10 +126,12 @@ Template.employeesList.helpers({
           employees.insert(emp);
         }
       });
-      return employees.find({}, Session.get('employeesSortBy'));
+      // return employees.find({}, Session.get('employeesSortBy'));
+      return employees.find(filter, Session.get('employeesSortBy'));
     } else {
       // return Employees.find({}, {sort: {fname: 1, lname: 1}});
-      return Employees.find({}, Session.get('employeesSortBy'));
+      // return Employees.find({}, Session.get('employeesSortBy'));
+      return Employees.find(filter, Session.get('employeesSortBy'));
     }
   },
   sortBy: function(columnName) {

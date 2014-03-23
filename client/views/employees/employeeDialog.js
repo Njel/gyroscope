@@ -140,7 +140,7 @@ Template.employeeDialog.events({
   },
   'click .save': function(evt, tmpl) {
     var e = {
-      id: Session.get('selectedEmployee'),
+      id: Session.get('selectedEmployee').empId,
       fname: tmpl.find('[name=fname]').value,
       lname: tmpl.find('[name=lname]').value,
       email: tmpl.find('[name=email]').value,

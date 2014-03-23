@@ -35,11 +35,9 @@ Template.folderPage.helpers({
   },
   currentEmployee: function() {
   	if (Session.get('currentEmpId') == 'All') {
-  	  var e = {
-  	  	_id: 'All'
-  	  };
+  	  var e = {_id: 'All'};
   	} else {
-	  var e = Employees.findOne(Session.get('currentEmpId'));
+      var e = Employees.findOne(Session.get('currentEmpId'));
   	}
   	return e;
   },
@@ -53,7 +51,7 @@ Template.folderPage.helpers({
     if (Session.get('currentEmpId') == 'All') {
       return {AL: '-', SL: '-', X: '-'};
     } else {
-      var b = Balances.findOne({empId: Session.get('currentEmpId'), year: Session.get('currentYear')});
+      var b = Balances.findOne({empId: Session.get('currentEmpId'), year: parseInt(Session.get('currentYear'))});
       return {
         AL: b.AL,
         SL: b.SL,
@@ -83,7 +81,7 @@ Template.folderPage.helpers({
   },
   months: function() {
     var M = [];
-    var y = Session.get('currentYear');
+    var y = parseInt(Session.get('currentYear'));
     var e = Session.get('currentEmpId');
     if (e == 'All') {
       for (var m = 1; m <= 12; m++) {
@@ -122,9 +120,9 @@ Template.folderPage.helpers({
   	var tot = 0.0;
   	var unit = '';
   	if (Session.get('currentEmpId') == 'All') {
-  	  var T = Totals.find({year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
+  	  var T = Totals.find({year: parseInt(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
   	} else {
-  	  var T = Totals.find({empId: Session.get('currentEmpId'), year: parseFloat(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
+  	  var T = Totals.find({empId: Session.get('currentEmpId'), year: parseInt(Session.get('currentYear')), type: this._id}, {sort: {month: 1}});
   	}
   	var E = {};
   	var V = {};
@@ -182,7 +180,7 @@ Template.folderPage.helpers({
   etTotals: function() {
     var R = [];
     var Total = 0.0;
-    var y = parseFloat(Session.get('currentYear'));
+    var y = parseInt(Session.get('currentYear'));
     var e = Session.get('currentEmpId');
     if (e == 'All') {
       for (var m = 1; m <= 12; m++) {
@@ -485,7 +483,7 @@ function calcMTotals() {
   var R = [];
   var i = 1;
   var unit = '';
-  var y = parseFloat(Session.get('currentYear'));
+  var y = parseInt(Session.get('currentYear'));
   var e = Session.get('currentEmpId');
   if (e == 'All') {
     for (var m = 1; m <= 12; m++) {
@@ -533,7 +531,7 @@ function calcXTotals() {
   var R = [];
   var i = 1;
   var unit = '';
-  var y = parseFloat(Session.get('currentYear'));
+  var y = parseInt(Session.get('currentYear'));
   var e = Session.get('currentEmpId');
   var X = EventTypes.findOne({code: 'X'});
   if (X) {
@@ -583,7 +581,7 @@ function calcExtraBal() {
   var B = [];
   var i = 1;
   var unit = '';
-  var y = parseFloat(Session.get('currentYear'));
+  var y = parseInt(Session.get('currentYear'));
   var e = Session.get('currentEmpId');
   var X = EventTypes.findOne({code: 'X'});
   var R = EventTypes.findOne({code: 'R'});
@@ -660,7 +658,7 @@ function calcALBal() {
   var B = [];
   var i = 1;
   var unit = '';
-  var y = parseFloat(Session.get('currentYear'));
+  var y = parseInt(Session.get('currentYear'));
   var e = Session.get('currentEmpId');
   var A = EventTypes.findOne({code: 'A'});
   if (A) {
@@ -723,7 +721,7 @@ function calcSLBal() {
   var B = [];
   var i = 1;
   var unit = '';
-  var y = parseFloat(Session.get('currentYear'));
+  var y = parseInt(Session.get('currentYear'));
   var e = Session.get('currentEmpId');
   var S = EventTypes.findOne({code: 'S'});
   if (S) {
@@ -815,7 +813,7 @@ function drawChart() {
   }
 
   var empId = Session.get('currentEmpId');
-  var year = parseFloat(Session.get('currentYear'));
+  var year = parseInt(Session.get('currentYear'));
   // var year = $('#yearCb').val();
   // console.log($('#yearCb').val());
   var ET = EventTypes.find({active: true, parent: null});

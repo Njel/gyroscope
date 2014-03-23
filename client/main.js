@@ -10,6 +10,10 @@ Session.setDefault('employeesSortBy', {sort: {fname: 1, lname: 1}});
 Session.setDefault('selectedEmployee', null);
 Session.setDefault('showDialogEmployee', false);
 Session.setDefault('showDialogEmpDelConf', false);
+
+Session.setDefault('selectedMonthFilter', null);
+Session.setDefault('selectedYearFilter', null);
+Session.setDefault('selectedRoleFilter', null);
 Session.setDefault('selectedGroupFilter', null);
 
 Session.setDefault('groupsSort', "name");
