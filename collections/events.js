@@ -19,6 +19,7 @@ Events.allow({
 Meteor.methods({
   eventNew: function(eventAttributes) {
     var user = Meteor.user();
+    var post = Posts.findOne(eventAttributes.postId);
     //var post = Posts.findOne(eventAttributes.postId);
 
     // ensure the user is logged in
@@ -37,6 +38,9 @@ Meteor.methods({
     var d = moment(new Date()).toISOString();
 
     ev = _.extend(_.pick(eventAttributes, 'postId', 'start', 'end', 'duration', 'unit', 'period', 'type', 'title', 'status', 'allDay'), {
+      empId: post.empId,
+      year: post.year,
+      month: post.month,
       // start: moment(new Date(eventAttributes.start)),
       // end: moment(new Date(eventAttributes.end)),
       // start: new Date(eventAttributes.start).toISOString(),
@@ -63,7 +67,6 @@ Meteor.methods({
     // createEventNotification(ev);
 
     var et = EventTypes.findOne(eventAttributes.type);
-    var post = Posts.findOne(eventAttributes.postId);
 
     // Calculate Extra hours
     // if (et.code = 'X') {

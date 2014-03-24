@@ -1,5 +1,9 @@
 Template.calendarFrame.lastCalEventMod = function() {
-  return Settings.findOne({name: 'lastCalEventMod'}).value;
+  var v = Settings.findOne({name: 'lastCalEventMod'});
+  if (v)
+    return v.value;
+  else
+    return null;
 };
 
 Template.calendarFrame.selectedEventType = function(t) {
@@ -112,6 +116,9 @@ Template.calendarFrame.events({
               periods.forEach(function(p) {
                 var ev = {
                   postId: post._id,
+                  empId: post.empId,
+                  year: post.year,
+                  month: post.month,
                   start: D + 'T' + p.start + ':00.000Z',
                   end: D + 'T' + p.end + ':00.000Z',
                   duration: p.hours,

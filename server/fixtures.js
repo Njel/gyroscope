@@ -766,6 +766,8 @@ if (Posts.find().count() === 0) {
   Events.insert({
     postId: firstPostId,
     empId: emp01Id,
+    year: 2014,
+    month: 1,
     // start: moment(new Date(2014, 0, 1, 8, 0)),
     // end: moment(new Date(2014, 0, 1, 12, 0)),
     start: '2014-01-02T13:00:00.000Z',

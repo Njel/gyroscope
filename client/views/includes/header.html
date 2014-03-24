@@ -17,11 +17,20 @@
         <li class="{{activeRouteClass 'schedules'}}">
           <a href="/schedules">Schedules</a>
         </li>
+        <!-- <li class="dropdown {{activeRouteClass 'reports'}}"> -->
+          <!-- <a href="/reports">Reports</a> -->
+        <li class="dropdown">
+          <a href="#" class="dropdown" data-toggle="dropdown">Reports</a>
+          <div class="dropdown-menu">
+            <ul role="menu" aria-labelledby="dLabel">
+              <li>
+                <a class="calendar" href="/calendar">Calendar</a>
+              </li>
+            </ul>
+          </div>
+        </li>
         <li class="{{activeRouteClass 'holidays'}}">
           <a href="/holidays">Holidays</a>
-        </li>
-        <li class="{{activeRouteClass 'reports'}}">
-          <a href="/reports">Reports</a>
         </li>
         <li class="{{activeRouteClass 'settings'}}">
           <a href="/settings">Settings</a>

@@ -1,7 +1,7 @@
 /*!
- * FullCalendar v2.0.0-beta Stylesheet
+ * FullCalendar v1.6.4-yearview Stylesheet
  * Docs & License: http://arshaw.com/fullcalendar/
- * (c) 2013 Adam Shaw
+ * (c) 2013 Adam Shaw - 2014 Tanguy Pruvot
  */
 
 
@@ -57,7 +57,6 @@ html .fc,
 .fc-header-title h2 {
 	margin-top: 0;
 	white-space: nowrap;
-	font-size: 20px;
 	}
 	
 .fc .fc-header-space {
@@ -102,14 +101,11 @@ html .fc,
 ------------------------------------------------------------------------*/
 	
 .fc-content {
-	position: relative;
-	z-index: 1; /* scopes all other z-index's to be inside this container */
 	clear: both;
 	zoom: 1; /* for IE7, gives accurate coordinates for [un]freezeContentHeight */
 	}
 	
 .fc-view {
-	position: relative;
 	width: 100%;
 	overflow: hidden;
 	}
@@ -125,7 +121,8 @@ html .fc,
 	}
 	
 .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
-	background: #fcf8e3;
+	/*background: #fcf8e3;*/
+	background: #FFEC8B;
 	}
 	
 .fc-cell-overlay { /* semi-transparent rectangle while dragging */
@@ -169,38 +166,32 @@ html .fc,
 	and we'll try to make them look good cross-browser.
 */
 
-.fc-button .fc-icon {
+.fc-text-arrow {
 	margin: 0 .1em;
 	font-size: 2em;
 	font-family: "Courier New", Courier, monospace;
 	vertical-align: baseline; /* for IE7 */
 	}
 
-.fc-icon-left-single-arrow:after {
-	content: "\02039";
+.fc-button-prev .fc-text-arrow,
+.fc-button-next .fc-text-arrow { /* for &lsaquo; &rsaquo; */
 	font-weight: bold;
-	}
-
-.fc-icon-right-single-arrow:after {
-	content: "\0203A";
-	font-weight: bold;
-	}
-
-.fc-icon-left-double-arrow:after {
-	content: "\000AB";
-	}
-
-.fc-icon-right-double-arrow:after {
-	content: "\000BB";
 	}
 	
 /* icon (for jquery ui) */
-
+	
+.fc-button .fc-icon-wrap {
+	position: relative;
+	float: left;
+	top: 50%;
+	}
+	
 .fc-button .ui-icon {
 	position: relative;
-	top: 50%;
 	float: left;
-	margin-top: -8px; /* we know jqui icons are always 16px tall */
+	margin-top: -50%;
+	*margin-top: 0;
+	*top: -50%;
 	}
 	
 /*
@@ -301,7 +292,6 @@ a.fc-event,
 .fc-event-time,
 .fc-event-title {
 	padding: 0 1px;
-	font-size: 10px;
 	}
 	
 .fc .ui-resizable-handle {
@@ -326,19 +316,15 @@ a.fc-event,
 .fc-ltr .fc-event-hori.fc-event-start,
 .fc-rtl .fc-event-hori.fc-event-end {
 	border-left-width: 1px;
-	/*border-top-left-radius: 3px;*/
-	/*border-bottom-left-radius: 3px;*/
-	border-top-left-radius: 1px;
-	border-bottom-left-radius: 1px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
 	}
 
 .fc-ltr .fc-event-hori.fc-event-end,
 .fc-rtl .fc-event-hori.fc-event-start {
 	border-right-width: 1px;
-	/*border-top-right-radius: 3px;*/
-	/*border-bottom-right-radius: 3px;*/
-	border-top-right-radius: 1px;
-	border-bottom-right-radius: 1px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
 	}
 	
 /* resizable */
@@ -432,7 +418,6 @@ table.fc-border-separate {
 	
 .fc-grid .fc-event-time {
 	font-weight: bold;
-	font-size: 9px;
 	}
 	
 /* right-to-left */
@@ -445,7 +430,102 @@ table.fc-border-separate {
 	float: right;
 	}
 	
-	
+/* year view */
+
+.fc-year-main-table {
+	border-spacing: 5px;
+	}
+
+.fc-year-monthly-td {
+	text-align: center;
+	font-size: 9px;
+	}
+
+.fc-year-month-separator {
+	width: 8px;
+	}
+
+.fc-year-monthly-footer {
+	}
+
+.fc-year-monthly-header {
+	border: thin solid #dddddd;
+	border-bottom: none;
+	}
+
+.fc-view-year .fc-event-inner {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	/*display: none;*/
+	}
+
+.fc-year-monthly-name {
+	margin-top: 16px;
+	line-height: 24px;
+	}
+
+.fc-year-monthly-name.fc-first {
+	margin-top: 0;
+	}
+
+.fc-year-monthly-name a {
+	color: black;
+	font-size: 15px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.fc-year-main-table .fc-first {
+	/*border-left: none;*/
+}
+
+.fc-year-main-table .fc-last {
+	/*border-right: none;*/
+}
+
+.fc-view-year .fc-day-content div {
+	min-height: 4px;
+}
+
+/*.fc-view-year .fc-today {*/
+	/*background-color: #FFFCC0;*/
+/*}*/
+
+.fc-sun,
+.fc-sat {
+	background-color: #E7E7E7;
+}
+
+.fc-view-year a.fc-event {
+	border: 1px solid black;
+}
+
+.fc-view-year .year-holiday {
+	height: 10px;
+	background-color: #E2EBD7;
+	border: 1px solid black;
+}
+
+.fc-view-year .year-group-event {
+	height: 10px;
+	background-color: #E2EBD7;
+	border: 1px solid black;
+}
+
+.fc-view-year div.fc-event {
+	min-height: 4px;
+	cursor: pointer;
+}
+
+.fc-view-year .fc-year-main-table .fc-day-number {
+	line-height: 10px;
+}
+
+.fc-view-year .fc-event-time,
+.fc-view-year .fc-event-title {
+	display: none;
+	font-size: 8px;
+}
 
 /* Agenda Week View, Agenda Day View
 ------------------------------------------------------------------------*/
@@ -463,11 +543,8 @@ table.fc-border-separate {
 	padding: 0 4px;
 	vertical-align: middle;
 	text-align: right;
-	font-weight: normal;
-	}
-
-.fc-agenda-slots .fc-agenda-axis {
 	white-space: nowrap;
+	font-weight: normal;
 	}
 
 .fc-agenda .fc-week-number {
@@ -562,8 +639,7 @@ table.fc-border-separate {
 	
 .fc-event-vert .fc-event-time {
 	white-space: nowrap;
-	/*font-size: 10px;*/
-	font-size: 9px;
+	font-size: 10px;
 	}
 
 .fc-event-vert .fc-event-inner {

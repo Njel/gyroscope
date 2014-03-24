@@ -14,6 +14,13 @@ Meteor.Router.add({
 
   '/submit': {to: 'postSubmit'},
 
+  '/calendar': 'calendarPage',
+
+  '/calendar/:_id': {
+    to: 'calendarPage',
+    name: 'Employee Calendar'
+  },
+
   '/reports': {to: 'reports', name: 'Reports'},
 
   '/employees': 'employees',

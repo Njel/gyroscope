@@ -1,5 +1,9 @@
 Template.scheduleCalendarFrame.lastCalPeriodMod = function() {
-  return Settings.findOne({name: 'lastCalPeriodMod'}).value;
+  var v = Settings.findOne({name: 'lastCalPeriodMod'});
+  if (v)
+    return v.value;
+  else
+    return null;
 };
 
 Template.scheduleCalendarFrame.helpers({

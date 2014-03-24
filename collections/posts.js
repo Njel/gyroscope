@@ -161,6 +161,9 @@ Meteor.methods({
             periods.forEach(function(p) {
               var ev = {
                 postId: postId,
+                empId: postAttributes.empId,
+                year: parseInt(post.year),
+                month: parseInt(post.month),
                 start: D + 'T' + p.start + ':00.000Z',
                 end: D + 'T' + p.end + ':00.000Z',
                 duration: p.hours,

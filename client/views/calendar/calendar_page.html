@@ -1,0 +1,68 @@
+<template name="calendarPage">
+  {{#with currentEmployee}}
+    <table>
+      <tr style="height: 36px;">
+        <td style="width: 160px; font-weight: bold;">
+          <label for="empIdCb" style="font-weight: bold;">Employee Name</label>
+        </td>
+        <td>
+          <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
+            {{#if isAdmin}}
+              <option value='All' text='All Employees'{{selectedValue 'All' currentEmployee._id}}>All Employees</option>
+            {{/if}}
+            {{#each employees}}
+              <option value='{{_id}}' text='{{fname}} {{lname}}'{{selectedValue _id currentEmployee._id}}>{{fname}} {{lname}}</option>
+            {{/each}}
+          </select>
+        </td>
+      </tr>
+      <tr style="height: 36px;">
+        <td style="font-weight: bold;">
+          <label for="yearCb" style="font-weight: bold;">Year</label>
+        </td>
+        <td>
+          <select style="width: 70px; margin: 0px;" type="text" name="yearCb" value="{{currentYear}}" id="yearCb" class="yearCb">
+            {{#each years}}
+              <option value='{{year}}' text='{{year}}'{{selectedValue year currentYear}}>{{year}}</option>
+            {{/each}}
+          </select>
+        </td>
+      </tr>
+      <tr style="height: 36px;">
+        <td style="font-weight: bold;">
+          <label style="font-weight: bold;">Event Types</label>
+        </td>
+        <td>
+          <div id='external-events' style='line-height: 14px; width: 100%;'>
+            <table>
+              <tr style='vertical-align: top; height: 28px;'>
+                {{#each eventTypes}}
+                  <td>
+                    <div class='external-event eventType' 
+                      style='width: 40px; color: {{textColor}}; background: {{backgroundColor}}; {{selectedEventType _id}}'
+                      id='{{_id}}' title='{{title}}'>                         
+                        <input style="margin: 0px 6px 0px 0px;" type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked><span style="font-weight: bold;">{{code}}</span>
+                    </div>
+                  </td>
+                {{/each}}
+                <!-- <td style='width: 99%;'>&nbsp;</td> -->
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    {{#with selectedEventTypes}}
+      <div id="calendar">
+      </div>
+    {{/with}}
+    <div id="eventDetails" class="dropdown-menu" style="font-size: 10px; padding: 4px; min-width: 80px;">
+     <!-- style="position: absolute; display: none; border: 1px solid black; background-color: #fff; opacity: 1.0; padding: 4px;"> -->
+      Event Details
+    </div>
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px;">
+      <br/>
+      <i><u>Last updated:</u> {{lastCalEventMod}}</i>
+    </div>
+  {{/with}}
+</template>

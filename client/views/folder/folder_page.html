@@ -5,7 +5,7 @@
       	<!-- <td style="width: 120px; font-weight: bold;">Id</td> -->
         <!-- <td>{{_id}}</td> -->
       <!-- </tr> -->
-      <tr>
+      <tr style="height: 36px;">
       	<!-- <td style="width: 120px; font-weight: bold;">Name</td> -->
         <!-- <td>{{fname}} {{lname}}</td> -->
         <td style="width: 160px; font-weight: bold;">
@@ -22,7 +22,7 @@
           </select>
         </td>
       </tr>
-      <tr>
+      <tr style="height: 36px;">
         <td style="font-weight: bold;">
           <label for="yearCb" style="font-weight: bold;">Year</label>
         </td>
@@ -34,13 +34,14 @@
           </select>
         </td>
       </tr>
-      <tr>
+      <tr style="height: 36px;">
         {{#with balances}}
-          <td style="font-weight: bold;"><label style="font-weight: bold;">Starting Balances - AL:</label></td>
+          <td style="font-weight: bold;"><label style="font-weight: bold;">Starting Balances</label></td>
+          <td><label style="font-weight: bold; text-align: left;">AL:</label></td>
           <td><input type="text" value="{{AL}}" id="balALTxt" title="Annual Leave" style="width: 40px; text-align: right;" disabled></td>
-          <td><label style="font-weight: bold; text-align: right;">SL:</label></td>
+          <td><label style="font-weight: bold; text-align: left;">SL:</label></td>
           <td><input type="text" value="{{SL}}" id="balSLTxt" title="Sick Leave" style="width: 40px; text-align: right;" disabled></td>
-          <td><label style="font-weight: bold; text-align: right;">X:</label></td>
+          <td><label style="font-weight: bold; text-align: left;">X:</label></td>
           <td><input type="text" value="{{X}}" id="balXTxt" title="Extra" style="width: 40px; text-align: right;" disabled></td>
         {{/with}}
         <td></td>
@@ -90,7 +91,7 @@
       {{else}}
       <tr class="{{parent}}">
         <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
-          <input type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked>
+          <input style="margin: 0px;" type="checkBox" id="eventType{{code}}" class="eventTypeChk" name="eventType{{code}}" checked>
         </td>
         {{#if hasSubTypes this._id}}
           <td style="text-align: center; background-color: {{backgroundColor}}; width: 10px;">
@@ -115,7 +116,7 @@
       {{/each}}
       <tr style="border: 1px solid black;">
         <td style="text-align: center; background-color: #ddd; width: 20px;">
-          <input type="checkBox" id="totalsChk" class="eventTypeChk" name="totalsChk">
+          <input style="margin: 0px;" type="checkBox" id="totalsChk" class="eventTypeChk" name="totalsChk">
         </td>
         <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #ddd; color: #000;" colspan="3">Totals</td>
         {{#each mTotals}}
@@ -129,7 +130,7 @@
       </tr>
       <tr style="border: 1px solid black;">
         <td style="text-align: center; background-color: #555; width: 20px;">
-          <input type="checkBox" id="extraTotChk" class="eventTypeChk" name="extraTotChk">
+          <input style="margin: 0px;" type="checkBox" id="extraTotChk" class="eventTypeChk" name="extraTotChk">
         </td>
         <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #555; color: #fff;" colspan="3">Extra</td>
         {{#each XTotals}}
@@ -143,7 +144,7 @@
       </tr>
       <tr style="border: 1px solid black;">
         <td style="text-align: center; background-color: #333; width: 20px;">
-          <input type="checkBox" id="extraBalChk" class="eventTypeChk" name="extraBalChk">
+          <input style="margin: 0px;" type="checkBox" id="extraBalChk" class="eventTypeChk" name="extraBalChk">
         </td>
         <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: #333; color: #fff;" colspan="3">Extra Bal.</td>
         {{#each XBalances}}
@@ -159,7 +160,7 @@
       <tr style="border: 1px solid black;">
         {{#with ALEventType}}
         <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
-          <input type="checkBox" id="ALBalChk" class="eventTypeChk" name="ALBalChk">
+          <input style="margin: 0px;" type="checkBox" id="ALBalChk" class="eventTypeChk" name="ALBalChk">
         </td>
         <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: {{backgroundColor}}; color: {{textColor}};" colspan="3">AL Bal.</td>
         {{/with}}
@@ -177,7 +178,7 @@
       <tr style="border: 1px solid black;">
         {{#with SLEventType}}
         <td style="text-align: center; background-color: {{backgroundColor}}; width: 20px;">
-          <input type="checkBox" id="SLBalChk" class="eventTypeChk" name="SLBalChk">
+          <input style="margin: 0px;" type="checkBox" id="SLBalChk" class="eventTypeChk" name="SLBalChk">
         </td>
         <td style="border-right: 1px solid black; text-align: right; font-weight: bold; width: 80px; padding: 0px 4px 0px 4px; background-color: {{backgroundColor}}; color: {{textColor}};" colspan="3">SL Bal.</td>
         {{/with}}
