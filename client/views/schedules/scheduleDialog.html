@@ -17,7 +17,7 @@
           <label for="empId">Employee <span style="color: red">*</span></label>
           <select type="text" name="empId" id="empId" value="{{empId}}" style="width: 220px;">
             {{#each employees}}
-              <option value='{{_id}}'{{selectedValue _id sch.empId}}>{{fname}} {{lname}}</option>
+              <option value='{{_id}}' {{selectedValue _id sch.empId}}>{{fname}} {{lname}}</option>
             {{/each}}
           </select>
         {{else}}
@@ -33,11 +33,11 @@
         {{#if isAdmin}}
           <label for="status">Status <span style="color: red">*</span></label>
           <select type="text" name="status" id="status" value="{{status}}" style="width: 130px;">
-              <option value=''{{selectedValue status ''}}></option>
-              <option value='Not Submitted'{{selectedValue status 'Not Submitted'}}>Not Submitted</option>
-              <option value='Pending'{{selectedValue status 'Pending'}}>Pending</option>
-              <option value='Approved'{{selectedValue status 'Approved'}}>Approved</option>
-              <option value='Rejected'{{selectedValue status 'Rejected'}}>Rejected</option>
+              <option value='' {{selectedValue status ''}}></option>
+              <option value='Not Submitted' {{selectedValue status 'Not Submitted'}}>Not Submitted</option>
+              <option value='Pending' {{selectedValue status 'Pending'}}>Pending</option>
+              <option value='Approved' {{selectedValue status 'Approved'}}>Approved</option>
+              <option value='Rejected' {{selectedValue status 'Rejected'}}>Rejected</option>
           </select>
         {{else}}
           <label for="status">Status</label>

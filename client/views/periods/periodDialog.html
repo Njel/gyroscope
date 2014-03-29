@@ -16,7 +16,7 @@
         <label for="day">Day <span style="color: red">*</span></label>
         <select type="text" name="day" id="day">
           {{#each days}}
-            <option value='{{i}}'{{selectedValue i evt.day}}>{{d}}</option>
+            <option value='{{i}}' {{selectedValue i evt.day}}>{{d}}</option>
           {{/each}}
         </select>
         <label for="title">From <span style="color: red">*</span></label>

@@ -17,7 +17,7 @@
           <label for="empId">Employee <span style="color: red">*</span></label>
           <select type="text" name="empId" id="empId" value="{{empId}}" style="width: 220px;">
             {{#each employees}}
-              <option value='{{_id}}'{{selectedValue _id post.empId}}>{{fname}} {{lname}}</option>
+              <option value='{{_id}}' {{selectedValue _id post.empId}}>{{fname}} {{lname}}</option>
             {{/each}}
           </select>
         {{else}}
@@ -31,7 +31,7 @@
         <label for="month">Month <span style="color: red">*</span></label>
         <select type="text" name="month" id="month" value="{{month}}" style="width: 120px;">
           {{#each months}}
-            <option value='{{v}}'{{selectedValue v post.month}}>{{m}}</option>
+            <option value='{{v}}' {{selectedValue v post.month}}>{{m}}</option>
           {{/each}}
         </select>
       </div>

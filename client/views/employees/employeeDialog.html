@@ -43,7 +43,7 @@
               <select type="text" name="roleId" id="roleId" value="{{roleId}}">
                 <option value="">(None)</option>
                 {{#each roles}}
-                  <option value='{{_id}}'{{selectedValue _id emp.roleId}}>{{name}}</option>
+                  <option value='{{_id}}' {{selectedValue _id emp.roleId}}>{{name}}</option>
                 {{/each}}
               </select>
             </td>
@@ -52,7 +52,7 @@
               <select type="text" name="supervisorId" id="supervisorId" value="{{supervisorId}}">
                 <option value="">(None)</option>
                 {{#each supervisors}}
-                  <option value='{{_id}}'{{selectedValue _id emp.supervisorId}}>{{fname}} {{lname}}</option>
+                  <option value='{{_id}}' {{selectedValue _id emp.supervisorId}}>{{fname}} {{lname}}</option>
                 {{/each}}
               </select>
             </td>
@@ -63,7 +63,7 @@
               <select type="text" name="userId" id="userId" value="{{userId}}">
                 <option value="">(None)</option>
                 {{#each users}}
-                  <option value='{{_id}}'{{selectedValue _id emp.userId}}>{{username}}</option>
+                  <option value='{{_id}}' {{selectedValue _id emp.userId}}>{{username}}</option>
                 {{/each}}
               </select>
             </td>
@@ -72,7 +72,7 @@
               <!-- <select type="text" name="groupId" id="groupId" value="{{groupId}}"> -->
                 <!-- <option value="">(None)</option> -->
                 {{#each groups}}
-                  <!-- <option value='{{_id}}'{{selectedValue _id emp.groupId}}>{{name}}</option> -->
+                  <!-- <option value='{{_id}}' {{selectedValue _id emp.groupId}}>{{name}}</option> -->
                 {{/each}}
               <!-- </select> -->
             </td>
@@ -114,7 +114,7 @@
               <select type="text" name="group" id="group" value="{{group}}">
                 <option value="">(None)</option>
                 {{#each groups}}
-                  <option value='{{_id}}'{{selectedValue name emp.group}}>{{name}}</option>
+                  <option value='{{_id}}' {{selectedValue name emp.group}}>{{name}}</option>
                 {{/each}}
               </select>
             </td>

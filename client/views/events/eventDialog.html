@@ -20,7 +20,7 @@
         <label for="type">Type <span style="color: red">*</span></label>
         <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb" {{#if isUpdate}}disabled="disabled"{{/if}}>
           {{#each eventTypes}}
-            <option value='{{_id}}' text='{{code}}'{{selectedValue _id evt.type}}>{{code}} - {{title}}</option>
+            <option value='{{_id}}' text='{{code}}' {{selectedValue _id evt.type}}>{{code}} - {{title}}</option>
           {{/each}}
         </select>
         <label for="title">Title</label>
@@ -39,7 +39,7 @@
                     <option value='allDay' text='All Day'>All Day</option>
                   {{/unless}}
                   {{#each periods this}}
-                    <option value='{{_id}}' text='{{start}} - {{end}}'{{selectedValue _id evt.period}}>{{start}} - {{end}}</option>
+                    <option value='{{_id}}' text='{{start}} - {{end}}' {{selectedValue _id evt.period}}>{{start}} - {{end}}</option>
                   {{/each}}
                 </select>
               </td>

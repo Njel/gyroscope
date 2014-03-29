@@ -17,7 +17,7 @@
           style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 56px; height: 24px; font-size: 10px;">
           <option value="">(All)</option>
           {{#each months}}
-            <option value='{{m}}'{{selectedValue m selectedMonthFilter}}>{{mm}}</option>
+            <option value='{{m}}' {{selectedValue m selectedMonthFilter}}>{{mm}}</option>
           {{/each}}
         </select>
       </td>
@@ -26,7 +26,7 @@
           style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 56px; height: 24px; font-size: 10px;">
           <option value="">(All)</option>
           {{#each years}}
-            <option value='{{year}}'{{selectedValue year selectedYearFilter}}>{{year}}</option>
+            <option value='{{year}}' {{selectedValue year selectedYearFilter}}>{{year}}</option>
           {{/each}}
         </select>
       </td>
@@ -35,7 +35,7 @@
           style="margin: 0px 0px 3px 0px; padding: 4px 2px 4px 2px; width: 140px; height: 24px; font-size: 10px;">
           <option value="">(None)</option>
           {{#each groups}}
-            <option value='{{_id}}'{{selectedValue _id selectedGroupFilter}}>{{name}}</option>
+            <option value='{{_id}}' {{selectedValue _id selectedGroupFilter}}>{{name}}</option>
           {{/each}}
         </select>
       </td>
