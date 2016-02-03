@@ -18,7 +18,8 @@
       </div>
       <div class="modal-body">
         <label for="type">Type <span style="color: red">*</span></label>
-        <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb" {{#if isUpdate}}disabled="disabled"{{/if}}>
+        <!--<select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb" {{#if isUpdate}}disabled="disabled"{{/if}}>-->
+        <select style="width: 160px;" type="text" name="type" value="{{type}}" id="type" class="typeCb">
           {{#each eventTypes}}
             <option value='{{_id}}' text='{{code}}' {{selectedValue _id evt.type}}>{{code}} - {{title}}</option>
           {{/each}}

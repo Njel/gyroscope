@@ -1,0 +1,303 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', '-g', 'meteorite' ]
+2 info using npm@1.3.10
+3 info using node@v0.10.25
+4 verbose cache add [ 'meteorite', null ]
+5 verbose cache add name=undefined spec="meteorite" args=["meteorite",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'meteorite',
+6 verbose parsed url   path: 'meteorite',
+6 verbose parsed url   href: 'meteorite' }
+7 silly lockFile 8f2f99a9-meteorite meteorite
+8 verbose lock meteorite /home/jel/.npm/8f2f99a9-meteorite.lock
+9 silly lockFile 8f2f99a9-meteorite meteorite
+10 silly lockFile 8f2f99a9-meteorite meteorite
+11 verbose addNamed [ 'meteorite', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile bf6d5fee-meteorite meteorite@
+14 verbose lock meteorite@ /home/jel/.npm/bf6d5fee-meteorite.lock
+15 silly addNameRange { name: 'meteorite', range: '*', hasData: false }
+16 verbose url raw meteorite
+17 verbose url resolving [ 'https://registry.npmjs.org/', './meteorite' ]
+18 verbose url resolved https://registry.npmjs.org/meteorite
+19 info trying registry request attempt 1 at 18:56:44
+20 verbose etag "78A0MG4MIYQ2JZWOZIK175AM4"
+21 http GET https://registry.npmjs.org/meteorite
+22 http 200 https://registry.npmjs.org/meteorite
+23 silly registry.get cb [ 200,
+23 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+23 silly registry.get     etag: '"D5T967RGDDA3DTVTBQ78I6P3U"',
+23 silly registry.get     'content-type': 'application/json',
+23 silly registry.get     'cache-control': 'max-age=60',
+23 silly registry.get     'content-length': '92244',
+23 silly registry.get     'accept-ranges': 'bytes',
+23 silly registry.get     date: 'Mon, 09 Nov 2015 23:56:44 GMT',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     age: '0',
+23 silly registry.get     connection: 'keep-alive',
+23 silly registry.get     'x-served-by': 'cache-iad2145-IAD',
+23 silly registry.get     'x-cache': 'MISS',
+23 silly registry.get     'x-cache-hits': '0',
+23 silly registry.get     'x-timer': 'S1447113404.300006,VS0,VE97',
+23 silly registry.get     vary: 'Accept' } ]
+24 silly addNameRange number 2 { name: 'meteorite', range: '*', hasData: true }
+25 silly addNameRange versions [ 'meteorite',
+25 silly addNameRange   [ '0.0.1',
+25 silly addNameRange     '0.0.2',
+25 silly addNameRange     '0.0.3',
+25 silly addNameRange     '0.0.4',
+25 silly addNameRange     '0.0.5',
+25 silly addNameRange     '0.0.6',
+25 silly addNameRange     '0.0.7',
+25 silly addNameRange     '0.0.8',
+25 silly addNameRange     '0.0.9',
+25 silly addNameRange     '0.0.10',
+25 silly addNameRange     '0.0.11',
+25 silly addNameRange     '0.0.12',
+25 silly addNameRange     '0.0.13',
+25 silly addNameRange     '0.0.14',
+25 silly addNameRange     '0.0.15',
+25 silly addNameRange     '0.0.16',
+25 silly addNameRange     '0.0.17',
+25 silly addNameRange     '0.0.18',
+25 silly addNameRange     '0.0.19',
+25 silly addNameRange     '0.1.0',
+25 silly addNameRange     '0.1.1',
+25 silly addNameRange     '0.2.0',
+25 silly addNameRange     '0.2.1',
+25 silly addNameRange     '0.2.2',
+25 silly addNameRange     '0.3.0',
+25 silly addNameRange     '0.3.1',
+25 silly addNameRange     '0.3.3',
+25 silly addNameRange     '0.4.0',
+25 silly addNameRange     '0.4.1',
+25 silly addNameRange     '0.4.2',
+25 silly addNameRange     '0.4.3',
+25 silly addNameRange     '0.4.4',
+25 silly addNameRange     '0.4.5',
+25 silly addNameRange     '0.4.6',
+25 silly addNameRange     '0.4.7',
+25 silly addNameRange     '0.4.8',
+25 silly addNameRange     '0.4.9',
+25 silly addNameRange     '0.5.0',
+25 silly addNameRange     '0.5.1',
+25 silly addNameRange     '0.6.0',
+25 silly addNameRange     '0.6.1',
+25 silly addNameRange     '0.6.2',
+25 silly addNameRange     '0.6.3',
+25 silly addNameRange     '0.6.4',
+25 silly addNameRange     '0.6.5',
+25 silly addNameRange     '0.6.6',
+25 silly addNameRange     '0.6.7',
+25 silly addNameRange     '0.6.8',
+25 silly addNameRange     '0.6.9',
+25 silly addNameRange     '0.6.10',
+25 silly addNameRange     '0.6.11',
+25 silly addNameRange     '0.6.12',
+25 silly addNameRange     '0.6.13',
+25 silly addNameRange     '0.6.14',
+25 silly addNameRange     '0.6.15',
+25 silly addNameRange     '0.6.16',
+25 silly addNameRange     '0.7.0',
+25 silly addNameRange     '0.7.1',
+25 silly addNameRange     '0.7.2',
+25 silly addNameRange     '0.7.3',
+25 silly addNameRange     '0.7.4',
+25 silly addNameRange     '0.7.5',
+25 silly addNameRange     '0.7.6',
+25 silly addNameRange     '0.7.7',
+25 silly addNameRange     '0.7.8',
+25 silly addNameRange     '0.9.0',
+25 silly addNameRange     '0.9.1',
+25 silly addNameRange     '0.9.2',
+25 silly addNameRange     '0.9.3' ] ]
+26 verbose addNamed [ 'meteorite', '0.9.3' ]
+27 verbose addNamed [ '0.9.3', '0.9.3' ]
+28 silly lockFile a295ca8c-meteorite-0-9-3 meteorite@0.9.3
+29 verbose lock meteorite@0.9.3 /home/jel/.npm/a295ca8c-meteorite-0-9-3.lock
+30 silly lockFile 70534b61-rg-meteorite-meteorite-0-9-3-tgz https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz
+31 verbose lock https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz /home/jel/.npm/70534b61-rg-meteorite-meteorite-0-9-3-tgz.lock
+32 verbose addRemoteTarball [ 'https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz',
+32 verbose addRemoteTarball   '26dfe87ce9fca73d41057b908987c6e14942a346' ]
+33 info retry fetch attempt 1 at 18:56:44
+34 verbose fetch to= /home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz
+35 http GET https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz
+36 http 200 https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz
+37 verbose tar unpack /home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz
+38 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+39 verbose lock tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package /home/jel/.npm/dd7253d3-04509-0-7597095009405166-package.lock
+40 silly lockFile c13ef054-04509-0-7597095009405166-tmp-tgz tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz
+41 verbose lock tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz /home/jel/.npm/c13ef054-04509-0-7597095009405166-tmp-tgz.lock
+42 silly gunzTarPerm modes [ '755', '644' ]
+43 silly gunzTarPerm extractEntry package.json
+44 silly gunzTarPerm extractEntry README.md
+45 silly gunzTarPerm extractEntry CHANGELOG.md
+46 silly gunzTarPerm extractEntry CONTRIBUTING.md
+47 silly gunzTarPerm extractEntry LICENSE.txt
+48 silly gunzTarPerm extractEntry bin/mrt.js
+49 silly gunzTarPerm extractEntry completions/mrt.bash
+50 silly gunzTarPerm extractEntry completions/postinstall.sh
+51 silly gunzTarPerm extractEntry lib/atmosphere.js
+52 silly gunzTarPerm extractEntry lib/config.js
+53 silly gunzTarPerm extractEntry lib/console.js
+54 silly gunzTarPerm extractEntry lib/debug.js
+55 silly gunzTarPerm extractEntry lib/command.js
+56 silly gunzTarPerm extractEntry lib/meteor.js
+57 silly gunzTarPerm extractEntry lib/meteorite.js
+58 silly gunzTarPerm extractEntry lib/project.js
+59 silly gunzTarPerm extractEntry lib/utils/fs.js
+60 silly gunzTarPerm extractEntry lib/utils/git.js
+61 silly gunzTarPerm extractEntry lib/sources/git.js
+62 silly gunzTarPerm extractEntry lib/sources/local.js
+63 silly gunzTarPerm extractEntry lib/sources/source.js
+64 silly gunzTarPerm extractEntry lib/dependencies/dependencies.js
+65 silly gunzTarPerm extractEntry lib/dependencies/package.js
+66 silly gunzTarPerm extractEntry lib/dependencies/resolver.js
+67 silly gunzTarPerm extractEntry scripts/add-git-urls.rb
+68 silly gunzTarPerm extractEntry scripts/claim-mrt-packages.rb
+69 silly gunzTarPerm extractEntry scripts/config.rb
+70 silly gunzTarPerm extractEntry scripts/fetch-metadata.rb
+71 silly gunzTarPerm extractEntry scripts/migrate-all.rb
+72 silly gunzTarPerm extractEntry scripts/migrate-dummies.rb
+73 silly gunzTarPerm extractEntry scripts/migrate-dummy.rb
+74 silly gunzTarPerm extractEntry scripts/migrate-package.rb
+75 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+76 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+77 silly lockFile c13ef054-04509-0-7597095009405166-tmp-tgz tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz
+78 silly lockFile c13ef054-04509-0-7597095009405166-tmp-tgz tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/tmp.tgz
+79 verbose tar pack [ '/home/jel/.npm/meteorite/0.9.3/package.tgz',
+79 verbose tar pack   '/home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package' ]
+80 verbose tarball /home/jel/.npm/meteorite/0.9.3/package.tgz
+81 verbose folder /home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+82 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+83 verbose lock tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package /home/jel/.npm/dd7253d3-04509-0-7597095009405166-package.lock
+84 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+85 verbose lock tar:///home/jel/.npm/meteorite/0.9.3/package.tgz /home/jel/.npm/4ee2f078--npm-meteorite-0-9-3-package-tgz.lock
+86 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+87 silly lockFile dd7253d3-04509-0-7597095009405166-package tar:///home/jel/tmp/npm-7138-m6BIeddT/1447113404509-0.7597095009405166/package
+88 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+89 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+90 silly lockFile 6c89723f--jel-npm-meteorite-0-9-3-package /home/jel/.npm/meteorite/0.9.3/package
+91 verbose lock /home/jel/.npm/meteorite/0.9.3/package /home/jel/.npm/6c89723f--jel-npm-meteorite-0-9-3-package.lock
+92 silly lockFile 6c89723f--jel-npm-meteorite-0-9-3-package /home/jel/.npm/meteorite/0.9.3/package
+93 silly lockFile 6c89723f--jel-npm-meteorite-0-9-3-package /home/jel/.npm/meteorite/0.9.3/package
+94 verbose tar unpack /home/jel/.npm/meteorite/0.9.3/package.tgz
+95 silly lockFile 93d03c7b--jel-npm-meteorite-0-9-3-package tar:///home/jel/.npm/meteorite/0.9.3/package
+96 verbose lock tar:///home/jel/.npm/meteorite/0.9.3/package /home/jel/.npm/93d03c7b--jel-npm-meteorite-0-9-3-package.lock
+97 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+98 verbose lock tar:///home/jel/.npm/meteorite/0.9.3/package.tgz /home/jel/.npm/4ee2f078--npm-meteorite-0-9-3-package-tgz.lock
+99 silly gunzTarPerm modes [ '755', '644' ]
+100 silly gunzTarPerm extractEntry package.json
+101 silly gunzTarPerm extractEntry README.md
+102 silly gunzTarPerm extractEntry CHANGELOG.md
+103 silly gunzTarPerm extractEntry CONTRIBUTING.md
+104 silly gunzTarPerm extractEntry LICENSE.txt
+105 silly gunzTarPerm extractEntry bin/mrt.js
+106 silly gunzTarPerm extractEntry completions/mrt.bash
+107 silly gunzTarPerm extractEntry completions/postinstall.sh
+108 silly gunzTarPerm extractEntry lib/atmosphere.js
+109 silly gunzTarPerm extractEntry lib/config.js
+110 silly gunzTarPerm extractEntry lib/console.js
+111 silly gunzTarPerm extractEntry lib/debug.js
+112 silly gunzTarPerm extractEntry lib/command.js
+113 silly gunzTarPerm extractEntry lib/meteor.js
+114 silly gunzTarPerm extractEntry lib/meteorite.js
+115 silly gunzTarPerm extractEntry lib/project.js
+116 silly gunzTarPerm extractEntry lib/utils/fs.js
+117 silly gunzTarPerm extractEntry lib/utils/git.js
+118 silly gunzTarPerm extractEntry lib/sources/git.js
+119 silly gunzTarPerm extractEntry lib/sources/local.js
+120 silly gunzTarPerm extractEntry lib/sources/source.js
+121 silly gunzTarPerm extractEntry lib/dependencies/dependencies.js
+122 silly gunzTarPerm extractEntry lib/dependencies/package.js
+123 silly gunzTarPerm extractEntry lib/dependencies/resolver.js
+124 silly gunzTarPerm extractEntry scripts/add-git-urls.rb
+125 silly gunzTarPerm extractEntry scripts/claim-mrt-packages.rb
+126 silly gunzTarPerm extractEntry scripts/config.rb
+127 silly gunzTarPerm extractEntry scripts/fetch-metadata.rb
+128 silly gunzTarPerm extractEntry scripts/migrate-all.rb
+129 silly gunzTarPerm extractEntry scripts/migrate-dummies.rb
+130 silly gunzTarPerm extractEntry scripts/migrate-dummy.rb
+131 silly gunzTarPerm extractEntry scripts/migrate-package.rb
+132 silly lockFile 93d03c7b--jel-npm-meteorite-0-9-3-package tar:///home/jel/.npm/meteorite/0.9.3/package
+133 silly lockFile 93d03c7b--jel-npm-meteorite-0-9-3-package tar:///home/jel/.npm/meteorite/0.9.3/package
+134 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+135 silly lockFile 4ee2f078--npm-meteorite-0-9-3-package-tgz tar:///home/jel/.npm/meteorite/0.9.3/package.tgz
+136 verbose chmod /home/jel/.npm/meteorite/0.9.3/package.tgz 644
+137 verbose chown /home/jel/.npm/meteorite/0.9.3/package.tgz [ 1000, 1000 ]
+138 silly lockFile 70534b61-rg-meteorite-meteorite-0-9-3-tgz https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz
+139 silly lockFile 70534b61-rg-meteorite-meteorite-0-9-3-tgz https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz
+140 silly lockFile a295ca8c-meteorite-0-9-3 meteorite@0.9.3
+141 silly lockFile a295ca8c-meteorite-0-9-3 meteorite@0.9.3
+142 silly lockFile bf6d5fee-meteorite meteorite@
+143 silly lockFile bf6d5fee-meteorite meteorite@
+144 silly resolved [ { name: 'meteorite',
+144 silly resolved     version: '0.9.3',
+144 silly resolved     homepage: 'http://oortcloud.github.com/meteorite',
+144 silly resolved     engines: [ 'node >=0.8.0' ],
+144 silly resolved     description: 'Installer & smart package manager for Meteor',
+144 silly resolved     author:
+144 silly resolved      { name: 'Tom Coleman',
+144 silly resolved        email: 'tom@percolatestudio.com',
+144 silly resolved        url: 'http://percolatestudio.com' },
+144 silly resolved     dependencies:
+144 silly resolved      { ddp: '>=0.3.1 <0.5.0',
+144 silly resolved        underscore: '1.3.3',
+144 silly resolved        wrench: '1.3.9',
+144 silly resolved        fstream: '>=0.1.18',
+144 silly resolved        optimist: '>=0.3.4',
+144 silly resolved        prompt: '0.2.11',
+144 silly resolved        colors: '0.6.0-1',
+144 silly resolved        async: '0.2.9',
+144 silly resolved        rolling_timeout_exec: '>=0.0.1' },
+144 silly resolved     devDependencies: { mocha: '>=1.2.2', connect: '>=2.3.6', which: '>=1.0.5' },
+144 silly resolved     scripts:
+144 silly resolved      { test: 'mocha spec/unit spec/acceptance -t 240000 -R spec',
+144 silly resolved        flushcache: 'rm -rf spec/support/cache',
+144 silly resolved        postinstall: 'sh ./completions/postinstall.sh' },
+144 silly resolved     repository:
+144 silly resolved      { type: 'git',
+144 silly resolved        url: 'https://github.com/oortcloud/meteorite.git' },
+144 silly resolved     bin: { mrt: './bin/mrt.js' },
+144 silly resolved     readme: '# Meteorite\n\n*NOTE: As of [Meteor 0.9.0](https://www.meteor.com/blog/2014/08/26/meteor-090-new-packaging-system), Meteorite is no longer required! You can now install [Atmosphere packages](https://atmospherejs.com) directly via the `meteor` tool.*\n\n\nMeteorite is a Meteor package installer.\n\nIt provides an easy way to install Meteor packages into your project from sources such as git and the filesystem. \n\nIt also gives a (now deprecated) method of publishing and installing packages from the [Old Atmosphere Server](http://old-atmosphere.meteor.com). Please note that the latest and greatest packages are on the [Real Atmosphere Server](https://atmospherejs.com) and can be installed directly with Meteor.\n\n\n## Installing Meteorite\n\nMeteorite can be installed via [npm](https://npmjs.org/).\n\n``` sh\n$ npm install -g meteorite\n```\n\n### NOTE:\nIf your system requires root access to install global npm packages, make sure you use the `-H` flag:\n\n``` sh\n$ sudo -H npm install -g meteorite\n```\n\n\n### NOTES\n\n- Meteor is not officially supported on windows; you can run it thanks to [Tom Wijman\'s excellent work](http://win.meteor.com). However, meteorite\'s git based approach runs counter to the MSI installation that\'s required to get it working. So meteorite *does not* work under windows right now. Pull Requests which change this would be gladly accepted! Also, see [this blog post](http://www.discovermeteor.com/2013/03/20/using-meteor-and-atmopshere-on-windows/) for some information about how to use it.\n\n- You\'ll also need to ensure you have [git](http://git-scm.com) installed and available in your path. Also, you\'ll need to make sure that `mrt`\'s install location (usually `/usr/local/bin/`) is on your path.\n\n\n## Usage\n\n### `smart.json`\n\nList your packages in a `smart.json` file in the top level of the project. There are two (non-deprecated) ways to include packages:\n\n```\n{\n  "packages": {\n    "my:fork": {\n      "git": "https://github.com/my/fork.git"\n    },\n    "local:version": {\n      "path": "to/the/package/"\n    }\n  }\n}\n```\n\n\n### `mrt install`\n\nInstall all packages listed in `smart.json` that aren\'t already installed on your machine. Use this command if you are working collaboratively and your colleagues install new packages (`smart.lock` changes).\n\n### `mrt update`\n\nInstalls any available updates to the app\'s desired Meteor version and packages -- use this if a new version is available on git, for instance.\n\n\n### `mrt link-package path/to/foo`\n\nLinks `packages/foo` to `path/to/foo` so that you can use a local version without changing `smart.json`. Useful for quick changes to a package you maintain when developing an application. \n\nNote that `mrt install` or `mrt` will _overwrite_ this link if you also have `foo` in your `smart.json` (which you probably will). This may change in the future.\n\n\n\n\n\n## Options\n\nOptions can be passed at the very end of the command.\n\n### `--verbose`\n\nLog debug information to the console.\n\nExample: `mrt add crypto-sha1 --verbose`\n\n## Deprecated commands\n\nAs Meteorite now installs packages into the `packages/` directory, you can simply run `meteor` to start your app. You may need to run `mrt install` first.\nYou can run any meteor executable you like (e.g. from a checkout somewhere on your machine). \n\n### `mrt`\n\nWorks like `meteor`, but checks and installs the app\'s desired Meteor version and package dependencies before running the app. You may still want to use this, but it\'s no longer the official way to use Meteorite.\n\nIf however you want to use a forked version of Meteor in your project, you can still list it in your `smart.json`, and Meteorite will run it via `mrt`. (Of course you could just run it directly from a checkout too, which may be simpler).\n\n\n\n### `mrt add <package>`\n\nWorks like `meteor add`, but if the package isn\'t one of Meteor\'s included packages, it installs it from [Old Atmosphere](https://old-atmosphere.meteor.com).\n\nUnlike `meteor add`, only one package can be added at a time with `mrt add`.\n\n``` sh\n# Add the latest version of the moment package on Atmosphere.\n$ mrt add moment\n# Add a specific version of a package.\n$ mrt add router --pkg-version 0.3.4\n# Meteorite will install page.js too, because router depends on it.\n```\n\nNote the packages on the old site are only likely to work with Meteor < 0.9.0.\n\n### `mrt remove <package>`\n\nSimilarly, removes a package from `smart.json`, and unlinks it from your project (as well as telling Meteor not to use it).\n\n\n### Other commands\n\nWhen Meteorite is executed for an app, it checks or installs the app\'s desired Meteor version, packages and dependencies, then does the required book-keeping (described below), and finally passes the command onto `meteor`.\n\n## Permission woes?\n\nIt is *not* required that you run `sudo mrt`. If you do so, your home directory will pick up some root-owned files and you\'ll struggle to run `mrt` without `sudo` from then on. This isn\'t good.\n\nTo fix the problem, try cleaning up potentially "sudo-ed" files:\n\n```bash\nsudo mrt uninstall\nsudo mrt uninstall --system\nsudo chown -R `whoami` ~/.npm\n```\n\nIf possible, try not to install Meteorite as root either. If you have permissions problems, make sure you install with `sudo -H npm install -g meteorite`. If you\'ve installed without `-H`, your `~/.npm` directory will be owned by root and you should run the `chown` command above to fix it.\n\n\n\n## How Meteorite works\n\nApps tell Meteorite the Meteor version and packages they want with a file called `smart.json` in their root directory. Meteorite will install those dependencies the next time it is executed within that app.\n\nMeteorite writes to a `smart.lock` file in the app\'s root directory to track the exact versions of its dependencies, even when it\'s set up in a fresh environment. You should check the `smart.lock` file into your app\'s version control, to ensure that other developers are running the same versions of the dependencies. Any changes in `smart.json` take precendence over `smart.lock`. The `smart.lock` file is reset with the `mrt update` command.\n\n### Example `smart.json`\n\nThe `meteor` property is not required: apps will depend on Meteor\'s master branch by default. You can specify `meteor.branch`, `meteor.tag` or `meteor.git` to use alternate branches, tags and forks respectively. Note that `meteor.git` expects an actual URL, use `ssh://git@github.com/meteor/meteor.git` instead of `git@github.com:meteor/meteor.git`.\n\n``` json\n{\n  "packages": {\n    "moment": {},\n    "router": "0.3.4",\n    "roles": {\n      "version": "1.0.1"\n    },\n    "accounts-persona": {\n      "git": "https://github.com/vladikoff/meteor-accounts-persona"\n    },\n    "normalize.css": {\n      "git": "https://github.com/rithis/meteor-normalize.css",\n      "tag": "v2.0.1"\n    },\n    "branch-of-package": {\n      "git": "https://github.com/EventedMind/iron-router.git",\n      "branch": "dev"\n    },\n    "my-experiment": {\n      "path": "/path/to/local/package"\n    }\n  }\n}\n```\n\n## Bash Completion\n\nUse Meteorite\'s bash completion by sourcing it in your .bashrc or .bash_profile.\n\nDepending on where you installed Meteorite:\n\n```bash\nif [ -f /path/to/meteorite/completions/mrt.bash ]; then\n  . /path/to/meteorite/completions/mrt.bash\nfi\n```\n\nAlternatively, you can create a symbolic link under bash_completion.d:\n\n```bash\nln -s /path/to/meteorite/completions/mrt.bash /path/to/bash_completion.d/mrt\n```\n\n## Running Meteorite In a Git Hook Script\n\nIf you encounter checkout errors while running `mrt install` or `mrt update` within a Git hook script, it is because `GIT_DIR` is set to an unexpected value when running within a hook. The solution is to temporarily unset it just before running the `mrt` command.\n\n```bash\n(unset GIT_DIR; mrt update)\n```\n\n## Contributing\n\nContributions to meteorite are very welcome! Please see the [Contribution Guide](https://github.com/oortcloud/meteorite/blob/master/CONTRIBUTING.md) for details.\n',
+144 silly resolved     readmeFilename: 'README.md',
+144 silly resolved     bugs: { url: 'https://github.com/oortcloud/meteorite/issues' },
+144 silly resolved     _id: 'meteorite@0.9.3',
+144 silly resolved     dist: { shasum: 'f8ddd6a1a271dd345602909e775c48c9bc3c502e' },
+144 silly resolved     _from: 'meteorite@',
+144 silly resolved     _resolved: 'https://registry.npmjs.org/meteorite/-/meteorite-0.9.3.tgz' } ]
+145 info install meteorite@0.9.3 into /usr/local/lib
+146 info installOne meteorite@0.9.3
+147 info /usr/local/lib/node_modules/meteorite unbuild
+148 info preuninstall meteorite@0.7.8
+149 info uninstall meteorite@0.7.8
+150 verbose true,/usr/local/lib/node_modules,/usr/local/lib/node_modules unbuild meteorite@0.7.8
+151 verbose /usr/local/bin,[object Object] binRoot
+152 info /usr/local/lib/node_modules/meteorite unbuild
+153 info preuninstall meteorite@0.7.8
+154 info uninstall meteorite@0.7.8
+155 verbose true,/usr/local/lib/node_modules,/usr/local/lib/node_modules unbuild meteorite@0.7.8
+156 verbose /usr/local/bin,[object Object] binRoot
+157 error error rolling back Error: EACCES, unlink '/usr/local/bin/mrt'
+157 error error rolling back  meteorite@0.9.3 { [Error: EACCES, unlink '/usr/local/bin/mrt'] errno: 3, code: 'EACCES', path: '/usr/local/bin/mrt' }
+158 error Error: EACCES, unlink '/usr/local/bin/mrt'
+158 error  { [Error: EACCES, unlink '/usr/local/bin/mrt'] errno: 3, code: 'EACCES', path: '/usr/local/bin/mrt' }
+159 error Please try running this command again as root/Administrator.
+160 error System Linux 3.13.0-49-generic
+161 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "-g" "meteorite"
+162 error cwd /home/jel/projects/meteor/gyroscope
+163 error node -v v0.10.25
+164 error npm -v 1.3.10
+165 error path /usr/local/bin/mrt
+166 error code EACCES
+167 error errno 3
+168 error stack Error: EACCES, unlink '/usr/local/bin/mrt'
+169 verbose exit [ 3, true ]

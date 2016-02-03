@@ -12,12 +12,13 @@
           <label for="empIdCb" style="font-weight: bold;">Employee Name</label>
         </td>
         <td colspan="7">
-          <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>
+          <!--<select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb" {{#unless hasAccess}}disabled="disabled"{{/unless}}>-->
+          <select style="width: 320px; margin: 0px;" type="text" name="empIdCb" value="{{currentEmpId}}" id="empIdCb" class="empIdCb">
             {{#if isAdmin}}
-              <option value='All' text='All Employees'{{selectedValue 'All' currentEmployee._id}}>All Employees</option>
+              <option value='All' text='All Employees' {{selectedValue 'All' currentEmployee._id}}>All Employees</option>
             {{/if}}
             {{#each employees}}
-              <option value='{{_id}}' text='{{fname}} {{lname}}'{{selectedValue _id currentEmployee._id}}>{{fname}} {{lname}}</option>
+              <option value='{{_id}}' text='{{fname}} {{lname}}' {{selectedValue _id currentEmployee._id}}>{{fname}} {{lname}}</option>
             {{/each}}
           </select>
         </td>
@@ -29,7 +30,7 @@
         <td colspan="7">
           <select style="width: 70px; margin: 0px;" type="text" name="yearCb" value="{{currentYear}}" id="yearCb" class="yearCb">
             {{#each years}}
-              <option value='{{year}}' text='{{year}}'{{selectedValue year currentYear}}>{{year}}</option>
+              <option value='{{year}}' text='{{year}}' {{selectedValue year currentYear}}>{{year}}</option>
             {{/each}}
           </select>
         </td>
